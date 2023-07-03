@@ -6,7 +6,8 @@ const userSchema = {
   surname: String,
   email: String,
   phone: Number,
-  role: ObjectId
+  role_id: ObjectId,
+  subscription_id: ObjectId
 };
 
 const User = mongoose.model("User", userSchema);
