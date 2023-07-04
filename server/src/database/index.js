@@ -2,11 +2,14 @@ const mongoose = require("mongoose");
 const User = require("../models/user");
 const Activity = require("../models/Activity");
 const seedDb = require("../seeders");
+require("dotenv").config();
+
+const MONGO_URI = process.env.MONGO_URI;
 
 const connectAndPopulateDb = async () => {
   // connect to the db
   mongoose
-    .connect("mongodb://localhost:27017/ManaGym")
+    .connect(MONGO_URI)
     .then(() => console.log("Database connected successfully!"))
     .catch(error => console.error(`Database connection error: ${error}`));
 
