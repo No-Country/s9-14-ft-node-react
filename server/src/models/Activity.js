@@ -8,7 +8,7 @@ const activitySchema = {
   days: [String],
   hours: String,
   limit: Number,
-  trainer_id: ObjectId
+  trainer: ObjectId
 };
 
 const Activity = mongoose.model("Activity", activitySchema);
