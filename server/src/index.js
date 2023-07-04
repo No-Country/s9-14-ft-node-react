@@ -12,10 +12,9 @@ app.use(cors());
 
 const PORT = process.env.PORT || 5000;
 
-connectAndPopulateDb();
-
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
 
+connectAndPopulateDb();
 module.exports = app;
