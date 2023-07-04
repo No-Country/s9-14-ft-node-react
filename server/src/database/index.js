@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/user");
-const { ObjectId } = require("mongodb");
+const Activity = require("../models/Activity");
+const seedDb = require("../seeders");
 
 const connectAndPopulateDb = async () => {
   // connect to the db
@@ -11,16 +12,11 @@ const connectAndPopulateDb = async () => {
 
   // populate the db
   const users = await User.find();
-  if (!users.length) {
+  const activities = await Activity.find();
+
+  if (!users.length && !activities.length) {
     // create some sample data for the database to work with in case it's empty
-    User.create({
-      name: "Test",
-      surname: "Test",
-      email: "test@email.com",
-      phone: 246939613,
-      role_id: new ObjectId(1),
-      subscription_id: new ObjectId(1)
-    });
+    seedDb();
   }
 };
 
