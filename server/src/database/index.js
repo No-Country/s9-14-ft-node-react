@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("../models/user");
+const User = require("../models/User");
 const { ObjectId } = require("mongodb");
 
 const connectAndPopulateDb = async () => {
@@ -18,9 +18,10 @@ const connectAndPopulateDb = async () => {
       surname: "Test",
       email: "test@email.com",
       phone: 246939613,
-      role_id: new ObjectId(1),
-      subscription_id: new ObjectId(1)
-    });
+      role: 'affiliate',
+      password: '123456',
+      subscription: null
+    }); 
   }
 };
 

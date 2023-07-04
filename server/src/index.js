@@ -4,11 +4,18 @@ const cors = require("cors");
 const connectAndPopulateDb = require("./database");
 require("dotenv").config();
 
-const app = express();
+//routes
+const {
+  authRouter
+} = require("./routes");
+
+const app = express(); 
 
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+
+app.use('/auth', authRouter);
 
 const PORT = process.env.PORT || 5000;
 
