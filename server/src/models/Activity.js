@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 
 const activitySchema = {
@@ -8,7 +7,7 @@ const activitySchema = {
   days: [String],
   hours: String,
   limit: Number,
-  trainer: ObjectId
+  trainer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 };
 
 const Activity = mongoose.model("Activity", activitySchema);
