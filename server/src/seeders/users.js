@@ -1,5 +1,3 @@
-const { ObjectId } = require("mongodb");
-
 const usersToSeed = [
   {
     name: "Test1",
@@ -7,7 +5,7 @@ const usersToSeed = [
     email: "test1@email.com",
     password: "test123",
     phone: 246939613,
-    role_id: new ObjectId(1)
+    role: "admin"
   },
   {
     name: "Test2",
@@ -15,7 +13,7 @@ const usersToSeed = [
     email: "test2@email.com",
     password: "test123",
     phone: 342361344,
-    role_id: new ObjectId(2)
+    role: "trainer"
   },
   {
     name: "Test3",
@@ -23,7 +21,7 @@ const usersToSeed = [
     email: "test3@email.com",
     password: "test123",
     phone: 754655225,
-    role_id: new ObjectId(3)
+    role: "affiliate"
   }
 ];
 

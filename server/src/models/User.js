@@ -7,8 +7,8 @@ const userSchema = {
   email: String,
   password: String,
   phone: Number,
-  role_id: ObjectId,
-  subscription_id: { type: ObjectId || null, default: null }
+  role: { type: String, enum: ["admin", "trainer", "affiliate"] },
+  subscription: { type: ObjectId || null, default: null }
 };
 
 const User = mongoose.model("User", userSchema);
