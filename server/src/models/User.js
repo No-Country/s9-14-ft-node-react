@@ -5,9 +5,10 @@ const userSchema = {
   name: String,
   surname: String,
   email: String,
+  password: String,
   phone: Number,
-  role_id: ObjectId,
-  subscription_id: ObjectId
+  role: { type: String, enum: ["admin", "trainer", "affiliate"] },
+  subscription: { type: ObjectId || null, default: null }
 };
 
 const User = mongoose.model("User", userSchema);
