@@ -1,5 +1,5 @@
 const { User } = require("../models");
-const bcryptjs = require("bcryptjs");
+//const bcryptjs = require("bcryptjs");
 const { generateJWT } = require("../helpers/generateJWT.js");
 
 const login = async (req, res) => {
