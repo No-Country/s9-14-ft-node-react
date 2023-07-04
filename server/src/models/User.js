@@ -1,7 +1,7 @@
 const { ObjectId } = require("mongodb");
-const mongoose = require("mongoose");
+const { Schema, model } = require("mongoose");
 
-const userSchema = {
+const UserSchema = Schema({
   name: String,
   surname: String,
   email: String,
@@ -9,8 +9,13 @@ const userSchema = {
   phone: Number,
   role: { type: String, enum: ["admin", "trainer", "affiliate"] },
   subscription: { type: ObjectId || null, default: null }
+});
+
+UserSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...user } = this.toObject();
+  return user;
 };
 
-const User = mongoose.model("User", userSchema);
+const User = model("User", UserSchema);
 
 module.exports = User;

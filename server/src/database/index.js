@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const User = require("../models/user");
+const User = require("../models/User");
 const Activity = require("../models/Activity");
 const seedDb = require("../seeders");
 require("dotenv").config();
