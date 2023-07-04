@@ -1,6 +1,7 @@
+import { Burger } from "@/components/Burger"
 
 export default function Home() {
   return (
-    <h1>hello world</h1>
+    <Burger/>
   )
 }
