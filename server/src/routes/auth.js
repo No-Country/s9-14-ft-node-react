@@ -5,6 +5,65 @@ const { login } = require("../controllers/auth");
 
 const router = Router();
 
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     User:
+ *       type: object
+ *       properties:
+ *         name:
+ *           type: string
+ *         surname:
+ *           type: string
+ *         email:
+ *           type: string
+ *         password:
+ *           type: string
+ *         phone:
+ *           type: number
+ *         role:
+ *           type: string
+ *           enum: [admin, trainer, affiliate]
+ *         subscription:
+ *           type: string
+ *           nullable: true
+ */
+
+/**
+ * @openapi
+ * /auth/login:
+ *   post:
+ *     tags:
+ *       - Login
+ *     requestBody:
+ *       description: Credentials for user login
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                    $ref: '#/components/schemas/User'
+ *
+ */
+
 router.post(
   "/login",
   [
