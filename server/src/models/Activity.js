@@ -5,7 +5,7 @@ const activitySchema = {
   description: String,
   image: String,
   days: [String],
-  hours: String,
+  schedule: String,
   limit: Number,
   trainer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
 };
