@@ -1,28 +1,21 @@
-const { Schema, model, Types } = require("mongoose");
+const { ObjectId } = require("mongodb");
+const { Schema, model } = require("mongoose");
 
-const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
-  surname: {
-    type: String
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  email: {
-    type: String,
-    required: true
-  },
-  phone: {
-    type: Number
-  },
+const UserSchema = Schema({
+  name: String,
+  surname: String,
+  email: String,
+  password: String,
+  phone: Number,
   role: { type: String, enum: ["admin", "trainer", "affiliate"] },
-  subscription: { type: Types.ObjectId || null, default: null }
+  subscription: { type: ObjectId || null, default: null }
 });
 
-const User = model("User", userSchema);
+UserSchema.methods.toJSON = function () {
+  const { __v, password, _id, ...user } = this.toObject();
+  return user;
+};
+
+const User = model("User", UserSchema);
 
 module.exports = User;
