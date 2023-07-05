@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors());
 
-// routes
+// api routes
 app.use("/api", rootRouter);
 
 const PORT = process.env.PORT || 5000;
