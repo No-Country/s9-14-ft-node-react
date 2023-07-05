@@ -1,16 +1,16 @@
 const mongoose = require("mongoose");
 const { ObjectId } = require("mongodb");
 
-const UserSchema = {
-  name: String,
-  surname: String,
-  email: String,
-  password: String,
-  phone: Number,
-  role: { type: String, enum: ["admin", "trainer", "affiliate"] },
+const userSchema = {
+  name: { type: String, required: true },
+  surname: { type: String, required: true },
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  phone: { type: Number || null, default: null },
+  role: { type: String, enum: ["admin", "trainer", "affiliate"], required: true },
   subscription: { type: ObjectId || null, default: null }
 };
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model("User", userSchema);
 
 module.exports = User;
