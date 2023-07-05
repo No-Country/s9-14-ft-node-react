@@ -1,8 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
-const { authRouter, activitiesRouter, usersRouter } = require("./routes");
-const swaggerDocs = require("./routes/swagger");
+const rootRouter = require("./routes");
+const swaggerDocs = require("./swagger");
 const connectAndPopulateDb = require("./database");
 require("dotenv").config();
 
@@ -14,9 +14,7 @@ app.use(morgan("dev"));
 app.use(cors());
 
 // routes
-app.use("/auth", authRouter);
-app.use("/activities", activitiesRouter);
-app.use("/users", usersRouter);
+app.use("/api", rootRouter);
 
 const PORT = process.env.PORT || 5000;
 
