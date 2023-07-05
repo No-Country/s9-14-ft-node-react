@@ -67,7 +67,7 @@ const router = Router();
 router.post(
   "/login",
   [
-    body("email", "email is required").isEmail(),
+    body("email", "email is required and must be of type email").isEmail(),
     body("password", "password is required").not().isEmpty(),
     validateFields
   ],
