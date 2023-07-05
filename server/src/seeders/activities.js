@@ -1,5 +1,3 @@
-const { ObjectId } = require("mongodb");
-
 const activitiesToSeed = [
   {
     name: "Body Pump",
@@ -10,7 +8,7 @@ const activitiesToSeed = [
     days: ["Jueves", "Viernes"],
     schedule: "10am-12pm",
     limit: 20,
-    trainer: new ObjectId(2)
+    trainer: {}
   },
   {
     name: "Zumba",
@@ -21,7 +19,7 @@ const activitiesToSeed = [
     days: ["Miércoles"],
     schedule: "8am-10am",
     limit: 20,
-    trainer: new ObjectId(2)
+    trainer: {}
   },
   {
     name: "HBX Boxing",
@@ -31,7 +29,7 @@ const activitiesToSeed = [
     days: ["Martes", "Miércoles", "Jueves"],
     schedule: "6pm-8pm",
     limit: 20,
-    trainer: new ObjectId(1)
+    trainer: {}
   },
   {
     name: "Spinning",
@@ -41,7 +39,7 @@ const activitiesToSeed = [
     days: ["Martes"],
     schedule: "9pm-10pm",
     limit: 20,
-    trainer: new ObjectId(3)
+    trainer: {}
   },
   {
     name: "Pilates",
@@ -52,7 +50,7 @@ const activitiesToSeed = [
     days: ["Miércoles", "Viernes"],
     schedule: "11am-1pm",
     limit: 20,
-    trainer: new ObjectId(5)
+    trainer: {}
   },
   {
     name: "Bosu",
@@ -63,7 +61,7 @@ const activitiesToSeed = [
     days: ["Viernes"],
     schedule: "7pm-8pm",
     limit: 20,
-    trainer: new ObjectId(7)
+    trainer: {}
   },
   {
     name: "TRX",
@@ -73,7 +71,7 @@ const activitiesToSeed = [
     days: ["Lunes", "Jueves"],
     schedule: "8am-10am",
     limit: 20,
-    trainer: new ObjectId(6)
+    trainer: {}
   },
   {
     name: "CrossFit",
@@ -84,7 +82,7 @@ const activitiesToSeed = [
     days: ["Martes", "Miércoles"],
     schedule: "9am-11am",
     limit: 20,
-    trainer: new ObjectId(7)
+    trainer: {}
   },
   {
     name: "Funcional",
@@ -94,7 +92,7 @@ const activitiesToSeed = [
     days: ["Lunes", "Viernes"],
     schedule: "2pm-4pm",
     limit: 20,
-    trainer: new ObjectId(9)
+    trainer: {}
   },
   {
     name: "Aerobics",
@@ -104,7 +102,7 @@ const activitiesToSeed = [
     days: ["Martes", "Jueves"],
     schedule: "4pm-5pm",
     limit: 20,
-    trainer: new ObjectId(8)
+    trainer: {}
   }
 ];
 
