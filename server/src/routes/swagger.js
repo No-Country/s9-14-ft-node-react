@@ -1,5 +1,6 @@
 const swaggerJSDoc = require("swagger-jsdoc");
 const swaggerUi = require("swagger-ui-express");
+require("dotenv").config();
 
 // Metada info about our API
 const options = {
@@ -21,7 +22,7 @@ const swaggerDocs = (app, port) => {
     res.setHeader("Content-Type", "application/json");
     res.send(swaggerSpec);
   });
-  console.log(`Version Docs are available at http://localhost:${process.env.PORT}/auth/login/docs`);
+  console.log(`Version Docs are available at ${process.env.SERVER_URL}/auth/login/docs`);
 };
 
 module.exports = swaggerDocs;
