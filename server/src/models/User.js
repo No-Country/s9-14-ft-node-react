@@ -19,14 +19,8 @@ const userSchema = new Schema({
   phone: {
     type: Number
   },
-  role_id: {
-    type: Types.ObjectId,
-    ref: "Role"
-  },
-  subscription_id: {
-    type: Types.ObjectId,
-    ref: "Subscription"
-  }
+  role: { type: String, enum: ["admin", "trainer", "affiliate"] },
+  subscription: { type: Types.ObjectId || null, default: null }
 });
 
 const User = model("User", userSchema);
