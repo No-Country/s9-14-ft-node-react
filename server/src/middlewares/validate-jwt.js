@@ -4,9 +4,7 @@ const User = require("../models/User");
 const validateJWT = async (req, res, next) => {
   const token = req.header("x-token");
   if (!token) {
-    return res.status(401).json({
-      msg: "There is no token in the request"
-    });
+    return res.status(401).json({ msg: "There is no token in the request" });
   }
 
   try {
@@ -14,21 +12,14 @@ const validateJWT = async (req, res, next) => {
     const user = await User.findById(_id);
 
     if (!user) {
-      return res.status(401).json({
-        msg: "Invalid token - user does not exist"
-      });
+      return res.status(401).json({ msg: "Invalid token - user does not exist" });
     }
 
     req.user = user;
     next();
   } catch (error) {
-    console.log(error);
-    return res.status(401).json({
-      msg: "Invalid token"
-    });
+    return res.status(401).json({ msg: `Invalid token: ${error}` });
   }
 };
 
-module.exports = {
-  validateJWT
-};
+module.exports = { validateJWT };

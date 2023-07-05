@@ -1,5 +1,5 @@
-const { User } = require("../models");
-//const bcryptjs = require("bcryptjs");
+const User = require("../models/User");
+const bcrypt = require("bcrypt");
 const { generateJWT } = require("../helpers/generateJWT.js");
 
 const login = async (req, res) => {
@@ -8,23 +8,13 @@ const login = async (req, res) => {
   try {
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(400).json({
-        msg: "The email is not registered"
-      });
+      return res.status(400).json({ msg: "The email is not registered" });
     }
 
-    //temporal
-    if (user.password !== password) {
-      return res.status(400).json({
-        msg: "Wrong password"
-      }); 
-    }
-    /*  const validPassword = bcryptjs.compareSync(password, user.password);
+    const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-      return res.status(400).json({
-        msg: "Wrong password"
-      });
-    } */
+      return res.status(400).json({ msg: "Wrong password" });
+    }
 
     if (user.role === "affiliate" && user.subscription === null) {
       return res.status(400).json({
@@ -32,20 +22,12 @@ const login = async (req, res) => {
       });
     }
 
-    const token = await generateJWT(user._id);
+    const token = await generateJWT(user);
 
-    res.json({
-      user,
-      token
-    });
+    return res.status(200).json({ user, token });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({
-      msg: "Server error"
-    });
+    return res.status(500).json({ msg: `Login error: ${error}` });
   }
 };
 
-module.exports = {
-  login
-};
+module.exports = { login };

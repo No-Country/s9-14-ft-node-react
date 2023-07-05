@@ -6,7 +6,7 @@ const swaggerDocs = require("./routes/swagger");
 require("dotenv").config();
 
 //routes
-const { authRouter } = require("./routes");
+const { authRouter, activitiesRouter } = require("./routes");
 
 const app = express();
 
@@ -15,6 +15,7 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.use("/auth", authRouter);
+app.use("/activities", activitiesRouter);
 
 const PORT = process.env.PORT || 5000;
 
