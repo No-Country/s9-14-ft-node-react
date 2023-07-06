@@ -6,7 +6,7 @@ const getUsers = async (req, res) => {
     res.status(200).json({ users });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -21,7 +21,7 @@ const getUser = async (req, res) => {
 
     res.status(200).json({ user });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -41,7 +41,7 @@ const registerUser = async (req, res) => {
     return res.status(201).json({ newUser });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Server error." });
+    return res.status(500).json({ error: error.message });
   }
 };
 
@@ -60,14 +60,13 @@ const updateUser = async (req, res) => {
 
     res.status(200).json({ message: "User updated successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
 const deleteUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("dfssdsd", id);
 
     const user = await User.findById(id);
 
@@ -81,7 +80,7 @@ const deleteUser = async (req, res) => {
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: error.message });
   }
 };
 
