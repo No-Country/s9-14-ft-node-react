@@ -72,9 +72,140 @@ const router = Router();
  *                         __v: 0
  */
 router.get("/", getUsers);
-/**/
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   get:
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       active:
+ *                         type: boolean
+ *                       subscription:
+ *                         nullable: true
+ *                         type: object
+ *                       _id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       surname:
+ *                         type: string
+ *                       password:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       phone:
+ *                         type: number
+ *                       role_id:
+ *                         type: string
+ *                       subscription_id:
+ *                         type: string
+ *                       __v:
+ *                         type: number
+ *                     example:
+ *                       - active: true
+ *                         subscription: null
+ *                         _id: "64a44c888fe089bcbfb5fa9b"
+ *                         name: "Test"
+ *                         surname: "Test"
+ *                         password: "123123"
+ *                         email: "test@example.com"
+ *                         phone: 246939613
+ *                         role_id: "000000018fe089bcbfb5fa99"
+ *                         subscription_id: "000000018fe089bcbfb5fa9a"
+ *                         __v: 0
+ *
+ */
 router.get("/:id", getUser);
-/**/
+/**
+ * @openapi
+ * /api/users:
+ *   post:
+ *     tags:
+ *       - Users
+ *     requestBody:
+ *       description: Información del nuevo usuario
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               active:
+ *                 type: boolean
+ *               phone:
+ *                 type: number
+ *               role:
+ *                 type: string
+ *                 enum: [admin, trainer, affiliate]
+ *               subscription:
+ *                 type: string
+ *                 nullable: true
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newUser:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                         surname:
+ *                           type: string
+ *                         email:
+ *                           type: string
+ *                         password:
+ *                           type: string
+ *                         active:
+ *                           type: boolean
+ *                         phone:
+ *                           type: number
+ *                         role:
+ *                           type: string
+ *                           enum: [admin, trainer, affiliate]
+ *                         subscription:
+ *                           type: string
+ *                           nullable: true
+ */
 router.post("/", registerUser);
 /**/
 router.put("/:id", updateUser);
