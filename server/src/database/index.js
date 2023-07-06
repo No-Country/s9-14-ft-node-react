@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = require("../models/User");
 const Activity = require("../models/Activity");
+const Subscription = require("../models/Subscription");
 const seedDb = require("../seeders");
 require("dotenv").config();
 
@@ -17,13 +18,14 @@ const connectAndPopulateDb = async () => {
     // populate the db
     const users = await User.find();
     const activities = await Activity.find();
-    if (!users.length && !activities.length) {
-      console.log("aca deberia entrrar");
+    const subscriptions = await Subscription.find();
+
+    if (!users.length && !activities.length && !subscriptions.length) {
       // create some sample data for the database to work with in case it's empty
       seedDb();
     }
   } catch (error) {
-    console.log(error);
+    console.error(`Connecting and populating db error: ${error}`);
   }
 };
 
