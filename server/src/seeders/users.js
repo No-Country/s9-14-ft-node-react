@@ -53,7 +53,8 @@ const usersToSeed = [
     email: "afiliado1@email.com",
     password: "afiliado123",
     phone: 754655225,
-    role: "affiliate"
+    role: "affiliate",
+    subscriptions: []
   },
   {
     name: "Usuario",
@@ -61,7 +62,8 @@ const usersToSeed = [
     email: "afiliado2@email.com",
     password: "afiliado123",
     phone: 353436468,
-    role: "affiliate"
+    role: "affiliate",
+    subscriptions: []
   },
   {
     name: "Usuario",
@@ -69,7 +71,8 @@ const usersToSeed = [
     email: "afiliado3@email.com",
     password: "afiliado123",
     phone: 435475859,
-    role: "affiliate"
+    role: "affiliate",
+    subscriptions: []
   }
 ];
 

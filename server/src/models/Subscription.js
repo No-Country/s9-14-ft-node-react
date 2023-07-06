@@ -1,10 +1,35 @@
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 
-const SubscriptionSchema = {
-  name: String,
-  price: String
-};
+const SubscriptionSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  benefits: {
+    type: [String],
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true,
+    unique: true
+  },
+  duration: {
+    type: String,
+    enum: ["mensual", "anual"],
+    required: true
+  },
+  startDate: {
+    type: Date
+  },
+  endDate: {
+    type: Date
+  }
+});
 
 const Subscription = mongoose.model("Subscription", SubscriptionSchema);
 

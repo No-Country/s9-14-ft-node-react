@@ -1,4 +1,5 @@
-const User = require("./User");
 const Activity = require("./Activity");
+const User = require("./User");
+const Subscription = require("./Subscription");
 
-module.exports = { User, Activity };
+module.exports = { Activity, User, Subscription };
