@@ -1,15 +1,40 @@
 const mongoose = require("mongoose");
 
-const activitySchema = {
-  name: String,
-  description: String,
-  image: String,
-  days: [String],
-  schedule: String,
-  limit: Number,
-  trainer: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }
-};
+const ActivitySchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  description: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  image: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  days: {
+    type: [String]
+  },
+  schedule: {
+    type: String
+  },
+  limit: {
+    type: Number
+  },
+  trainer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+  affiliates: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User"
+  }
+});
 
-const Activity = mongoose.model("Activity", activitySchema);
+const Activity = mongoose.model("Activity", ActivitySchema);
 
 module.exports = Activity;
