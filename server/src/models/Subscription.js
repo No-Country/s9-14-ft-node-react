@@ -9,6 +9,10 @@ const SubscriptionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  benefits: {
+    type: [String],
+    required: true
+  },
   price: {
     type: Number,
     required: true,
@@ -20,12 +24,10 @@ const SubscriptionSchema = new mongoose.Schema({
     required: true
   },
   startDate: {
-    type: Date || null,
-    default: null
+    type: Date
   },
   endDate: {
-    type: Date || null,
-    default: null
+    type: Date
   }
 });
 

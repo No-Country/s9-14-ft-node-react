@@ -19,8 +19,7 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   phone: {
-    type: Number || null,
-    default: null
+    type: Number
   },
   role: {
     type: String,
@@ -28,9 +27,8 @@ const UserSchema = new mongoose.Schema({
     required: true
   },
   subscriptions: {
-    type: [mongoose.Schema.Types.ObjectId] || null,
-    ref: "Subscription",
-    default: null
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Subscription"
   }
 });
 

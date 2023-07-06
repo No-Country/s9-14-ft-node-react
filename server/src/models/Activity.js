@@ -17,21 +17,21 @@ const ActivitySchema = new mongoose.Schema({
     unique: true
   },
   days: {
-    type: [String] || null,
-    default: null
+    type: [String]
   },
   schedule: {
-    type: String || null,
-    default: null
+    type: String
   },
   limit: {
-    type: Number || null,
-    default: null
+    type: Number
   },
   trainer: {
-    type: mongoose.Schema.Types.ObjectId || null,
-    ref: "User",
-    default: null
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+  affiliates: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "User"
   }
 });
 
