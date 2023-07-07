@@ -13,10 +13,10 @@ const getAllActivities = async (req, res) => {
 };
 
 const getActivity = async (req, res) => {
-  const { aid } = req.params;
+  const { id } = req.params;
 
   try {
-    const activity = await Activity.findById(aid).populate("trainer", "name surname");
+    const activity = await Activity.findById(id).populate("trainer", "name surname");
     res.json(activity);
   } catch (error) {
     console.log(error);
@@ -43,11 +43,11 @@ const addActivity = async (req, res) => {
 };
 
 const updateActivity = async (req, res) => {
-  const { aid } = req.params;
+  const { id } = req.params;
   const { body } = req;
 
   try {
-    const activity = await Activity.findByIdAndUpdate(aid, body, { new: true });
+    const activity = await Activity.findByIdAndUpdate(id, body, { new: true });
     res.json({ updated: true, activity });
   } catch (error) {
     console.log(error);
@@ -58,10 +58,10 @@ const updateActivity = async (req, res) => {
 };
 
 const deleteActivity = async (req, res) => {
-  const { aid } = req.params;
+  const { id } = req.params;
 
   try {
-    const activity = await Activity.findByIdAndDelete(aid);
+    const activity = await Activity.findByIdAndDelete(id);
     res.json({ removed: true, activity });
   } catch (error) {
     console.log(error);

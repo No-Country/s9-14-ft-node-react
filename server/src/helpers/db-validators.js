@@ -1,10 +1,11 @@
 const { Activity } = require("../models");
 
-const activityExistById = async aid => {
-  const activityExist = await Activity.findById(aid);
+//function that checks if the activity exists in the database
+const activityExistById = async id => {
+  const activityExist = await Activity.findById(id);
 
   if (!activityExist) {
-    throw new Error(`There is no activity with the id ${aid}`);
+    throw new Error(`There is no activity with the id ${id}`);
   }
 };
 
