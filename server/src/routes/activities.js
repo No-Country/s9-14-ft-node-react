@@ -135,10 +135,10 @@ router.get("/", getAllActivities);
  *                             example: "Entrenador 2"
  */
 router.get(
-  "/:aid",
+  "/:id",
   [
-    param("aid", "id is not a MongoId").isMongoId(),
-    param("aid").custom(activityExistById),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
     validateFields
   ],
   getActivity
@@ -166,10 +166,10 @@ router.post(
 );
 
 router.put(
-  "/:aid",
+  "/:id",
   [
-    param("aid", "id is not a MongoId").isMongoId(),
-    param("aid").custom(activityExistById),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
     body("name", "title must have between 1 and 50 characters")
       .optional()
       .isString()
@@ -192,10 +192,10 @@ router.put(
 );
 
 router.delete(
-  "/:aid",
+  "/:id",
   [
-    param("aid", "id is not a MongoId").isMongoId(),
-    param("aid").custom(activityExistById),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
     validateFields
   ],
   deleteActivity
