@@ -8,7 +8,12 @@ const options = {
     openapi: "3.0.0",
     info: { title: "ManaGym API", version: "1.0.0" }
   },
-  apis: ["src/routes/auth.js", "src/database/index.js"]
+  apis: [
+    "src/routes/auth.js",
+    "src/routes/activities.js",
+    "src/routes/users.js",
+    "src/database/index.js"
+  ]
 };
 
 // Documentation JSON

@@ -1,15 +1,40 @@
 const mongoose = require("mongoose");
-const { ObjectId } = require("mongodb");
 
-const UserSchema = {
-  name: String,
-  surname: String,
-  email: String,
-  password: String,
-  phone: Number,
-  role: { type: String, enum: ["admin", "trainer", "affiliate"] },
-  subscription: { type: ObjectId || null, default: null }
-};
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  surname: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  active: {
+    type: Boolean,
+    default: true
+  },
+  phone: {
+    type: Number
+  },
+  role: {
+    type: String,
+    enum: ["admin", "trainer", "affiliate"],
+    required: true
+  },
+  subscriptions: {
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Subscription"
+  }
+});
 
 const User = mongoose.model("User", UserSchema);
 

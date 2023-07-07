@@ -7,31 +7,6 @@ const router = Router();
 
 /**
  * @openapi
- * components:
- *   schemas:
- *     User:
- *       type: object
- *       properties:
- *         name:
- *           type: string
- *         surname:
- *           type: string
- *         email:
- *           type: string
- *         password:
- *           type: string
- *         phone:
- *           type: number
- *         role:
- *           type: string
- *           enum: [admin, trainer, affiliate]
- *         subscription:
- *           type: string
- *           nullable: true
- */
-
-/**
- * @openapi
  * /auth/login:
  *   post:
  *     tags:
@@ -60,8 +35,24 @@ const router = Router();
  *                   type: string
  *                   example: OK
  *                 data:
- *                    $ref: '#/components/schemas/User'
- *
+ *                   type: object
+ *                   properties:
+ *                     name:
+ *                       type: string
+ *                     surname:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     password:
+ *                       type: string
+ *                     phone:
+ *                       type: number
+ *                     role:
+ *                       type: string
+ *                       enum: [admin, trainer, affiliate]
+ *                     subscription:
+ *                       type: string
+ *                       nullable: true
  */
 
 router.post(
