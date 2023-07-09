@@ -177,3 +177,29 @@
     }
   }
 }
+.pagination {
+  display: flex;
+  margin-top: 1rem;
+  margin-left: 0.5rem;
+  width: 22rem;
+  height: 2.75rem;
+  align-items: center;
+  justify-content: space-evenly;
+
+  background-color: whitesmoke;
+  color: white;
+  .pagination_h3_l {
+    color: rgb(190, 187, 187);
+    font-size: 1rem;
+  }
+  .pagination_h3_r {
+    color: rgb(58, 57, 57);
+    font-size: 1rem;
+  }
+  .pagination_p {
+    color: rgb(58, 57, 57);
+    padding: 0 3px;
+    border: 1px solid rgb(190, 187, 187);
+    border-radius: 50%;
+  }
+}

@@ -136,6 +136,13 @@ export function AdminHeader() {
         </div>
         <hr className={style.hr} />
       </section>
+      <section className={style.pagination}>
+        <h3 className={style.pagination_h3_l}>Previous Page</h3>
+        <span className={style.pagination_p}>1</span>
+        <span className={style.pagination_p}>2</span>
+        <span className={style.pagination_p}>3</span>
+        <h3 className={style.pagination_h3_r}>Next Page</h3>
+      </section>
     </>
   );
 }
