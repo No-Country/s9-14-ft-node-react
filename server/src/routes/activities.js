@@ -1,14 +1,29 @@
 const { Router } = require("express");
 const { body, param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
+const { validateJWT } = require("../middlewares/validate-jwt");
+
 const {
   addActivity,
   getActivity,
   getAllActivities,
   updateActivity,
-  deleteActivity
+  deleteActivity,
+  addAffiliateInActivity,
+  getAffiliatesInActivity,
+  removeAffiliateOfActivity,
+  getVacanciesOfActivity,
+  addAffiliateInActivityFromBack,
+  removeAffiliateOfActivityFromBack
 } = require("../controllers/activities");
 const { activityExistById } = require("../helpers/db-validators");
+const {
+  affiliateNotEnrolled,
+  affiliateNotEnrolledFromBack,
+  affiliateEnrolled,
+  affiliateEnrolledFromBack
+} = require("../middlewares/validate-affiliateInActivity");
+const hasRole = require("../middlewares/validate-rol");
 
 const router = Router();
 
@@ -69,7 +84,7 @@ const router = Router();
  *                             type: string
  *                             example: "Entrenador 2"
  */
-router.get("/", getAllActivities);
+router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAllActivities);
 
 /**
  * @openapi
@@ -137,6 +152,8 @@ router.get("/", getAllActivities);
 router.get(
   "/:id",
   [
+    validateJWT,
+    hasRole(["admin", "trainer", "affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(activityExistById),
     validateFields
@@ -147,6 +164,8 @@ router.get(
 router.post(
   "/",
   [
+    validateJWT,
+    hasRole(["admin"]),
     body("name", "title must have between 1 and 50 characters")
       .isString()
       .isLength({ min: 1, max: 50 }),
@@ -168,6 +187,8 @@ router.post(
 router.put(
   "/:id",
   [
+    validateJWT,
+    hasRole(["admin"]),
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(activityExistById),
     body("name", "title must have between 1 and 50 characters")
@@ -194,11 +215,88 @@ router.put(
 router.delete(
   "/:id",
   [
+    validateJWT,
+    hasRole(["admin"]),
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(activityExistById),
     validateFields
   ],
   deleteActivity
+);
+
+router.patch(
+  "/:id/addAffiliate",
+  [
+    validateJWT,
+    hasRole(["affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    affiliateNotEnrolled,
+    validateFields
+  ],
+  addAffiliateInActivity
+);
+
+router.patch(
+  "/:id/removeAffiliate",
+  [
+    validateJWT,
+    hasRole(["affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    affiliateEnrolled,
+    validateFields
+  ],
+  removeAffiliateOfActivity
+);
+
+router.get(
+  "/:id/affiliates",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
+    validateFields
+  ],
+  getAffiliatesInActivity
+);
+
+router.get(
+  "/:id/vacancies",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
+    validateFields
+  ],
+  getVacanciesOfActivity
+);
+
+// admins/trainers paths
+router.patch(
+  "/:activityId/addAffiliate/:affiliateId",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("activityId", "activityId is not a MongoId").isMongoId(),
+    param("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    affiliateNotEnrolledFromBack,
+    validateFields
+  ],
+  addAffiliateInActivityFromBack
+);
+
+router.patch(
+  "/:activityId/removeAffiliate/:affiliateId",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("activityId", "activityId is not a MongoId").isMongoId(),
+    param("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    affiliateEnrolledFromBack,
+    validateFields
+  ],
+  removeAffiliateOfActivityFromBack
 );
 
 module.exports = router;
