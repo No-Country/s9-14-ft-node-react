@@ -22,17 +22,26 @@ const ActivitySchema = new mongoose.Schema({
   schedule: {
     type: String
   },
-  limit: {
-    type: Number
+  vacancies: {
+    type: Map,
+    of: Number
   },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
   },
-  affiliates: {
-    type: [mongoose.Schema.Types.ObjectId],
-    ref: "User"
-  }
+  affiliates: [
+    {
+      affiliate: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      },
+      day: {
+        type: String,
+        required: true
+      }
+    }
+  ]
 });
 
 const Activity = mongoose.model("Activity", ActivitySchema);
