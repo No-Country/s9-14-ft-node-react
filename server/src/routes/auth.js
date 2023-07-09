@@ -25,7 +25,7 @@ const router = Router();
  *                 type: string
  *     responses:
  *       200:
- *         description: OK
+ *         description: Respuesta del login
  *         content:
  *           application/json:
  *             schema:
