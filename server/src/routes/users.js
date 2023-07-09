@@ -28,7 +28,7 @@ const router = Router();
  *                       active:
  *                         type: boolean
  *                       subscription:
- *                         nullable: true
+ *                         nullable: array
  *                         type: object
  *                       _id:
  *                         type: string
@@ -50,7 +50,7 @@ const router = Router();
  *                         type: number
  *                     example:
  *                       - active: true
- *                         subscription: null
+ *                         subscription: []
  *                         _id: "64a44c888fe089bcbfb5fa9b"
  *                         name: "Test"
  *                         surname: "Test"
@@ -68,7 +68,7 @@ const router = Router();
  *                         password: "$2b$10$YPlQ..UhJi0LyX53KT66t.K7wZnXnkZP2yXLAHRLUT/EZHasH45cu"
  *                         phone: 246939617
  *                         role: "admin"
- *                         subscription: null
+ *                         subscription: []
  *                         __v: 0
  */
 router.get("/", getUsers);
@@ -92,50 +92,46 @@ router.get("/", getUsers);
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
- *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       active:
- *                         type: boolean
- *                       subscription:
- *                         nullable: true
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     active:
+ *                       type: boolean
+ *                     subscriptions:
+ *                       nullable: true
+ *                       type: array
+ *                       items:
  *                         type: object
- *                       _id:
- *                         type: string
- *                       name:
- *                         type: string
- *                       surname:
- *                         type: string
- *                       password:
- *                         type: string
- *                       email:
- *                         type: string
- *                       phone:
- *                         type: number
- *                       role_id:
- *                         type: string
- *                       subscription_id:
- *                         type: string
- *                       __v:
- *                         type: number
- *                     example:
- *                       - active: true
- *                         subscription: null
- *                         _id: "64a44c888fe089bcbfb5fa9b"
- *                         name: "Test"
- *                         surname: "Test"
- *                         password: "123123"
- *                         email: "test@example.com"
- *                         phone: 246939613
- *                         role_id: "000000018fe089bcbfb5fa99"
- *                         subscription_id: "000000018fe089bcbfb5fa9a"
- *                         __v: 0
- *
+ *                     _id:
+ *                       type: string
+ *                     name:
+ *                       type: string
+ *                     surname:
+ *                       type: string
+ *                     password:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *                     phone:
+ *                       type: number
+ *                     role_id:
+ *                       type: string
+ *                     subscription_id:
+ *                       type: string
+ *                     __v:
+ *                       type: number
+ *                   example:
+ *                     active: true
+ *                     subscriptions: []
+ *                     _id: "64a44c888fe089bcbfb5fa9b"
+ *                     name: "Test"
+ *                     surname: "Test"
+ *                     password: "123123"
+ *                     email: "test@example.com"
+ *                     phone: 246939613
+ *                     role_id: "000000018fe089bcbfb5fa99"
+ *                     subscription_id: "000000018fe089bcbfb5fa9a"
+ *                     __v: 0
  */
 router.get("/:id", getUser);
 /**
@@ -167,9 +163,11 @@ router.get("/:id", getUser);
  *               role:
  *                 type: string
  *                 enum: [admin, trainer, affiliate]
- *               subscription:
- *                 type: string
- *                 nullable: true
+ *               subscriptions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: []
  *     responses:
  *       200:
  *         description: OK
@@ -178,9 +176,6 @@ router.get("/:id", getUser);
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
  *                 data:
  *                   type: object
  *                   properties:
@@ -189,27 +184,199 @@ router.get("/:id", getUser);
  *                       properties:
  *                         name:
  *                           type: string
+ *                           example: string
  *                         surname:
  *                           type: string
+ *                           example: string
  *                         email:
  *                           type: string
+ *                           example: string
  *                         password:
  *                           type: string
+ *                           example: string
  *                         active:
  *                           type: boolean
+ *                           example: true
  *                         phone:
  *                           type: number
+ *                           example: 0
  *                         role:
  *                           type: string
  *                           enum: [admin, trainer, affiliate]
- *                         subscription:
+ *                           example: admin
+ *                         subscriptions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
  *                           type: string
- *                           nullable: true
+ *                         __v:
+ *                           type: number
+ *               example:
+ *                 data:
+ *                   newUser:
+ *                     name: string
+ *                     surname: string
+ *                     email: string
+ *                     password: string
+ *                     active: true
+ *                     phone: 0
+ *                     role: admin
+ *                     subscriptions: []
+ *                     _id: "64ab394bbd43f7dcfcc3ccaa"
+ *                     __v: 0
  */
 router.post("/", registerUser);
-/**/
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   put:
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     requestBody:
+ *       description: Actualizacion del usuario
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               active:
+ *                 type: boolean
+ *               phone:
+ *                 type: number
+ *               role:
+ *                 type: string
+ *                 enum: [admin, trainer, affiliate]
+ *               subscriptions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: []
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newUser:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: string
+ *                         surname:
+ *                           type: string
+ *                           example: string
+ *                         email:
+ *                           type: string
+ *                           example: string
+ *                         password:
+ *                           type: string
+ *                           example: string
+ *                         active:
+ *                           type: boolean
+ *                           example: true
+ *                         phone:
+ *                           type: number
+ *                           example: 0
+ *                         role:
+ *                           type: string
+ *                           enum: [admin, trainer, affiliate]
+ *                           example: admin
+ *                         subscriptions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                         __v:
+ *                           type: number
+ *               example:
+ *                 {"message": "User updated successfully"}
+ */
 router.put("/:id", updateUser);
-/**/
+/**
+ * @openapi
+ * /api/users/{id}:
+ *   delete:
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID de la actividad
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newUser:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: string
+ *                         surname:
+ *                           type: string
+ *                           example: string
+ *                         email:
+ *                           type: string
+ *                           example: string
+ *                         password:
+ *                           type: string
+ *                           example: string
+ *                         active:
+ *                           type: boolean
+ *                           example: true
+ *                         phone:
+ *                           type: number
+ *                           example: 0
+ *                         role:
+ *                           type: string
+ *                           enum: [admin, trainer, affiliate]
+ *                           example: admin
+ *                         subscriptions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                         __v:
+ *                           type: number
+ *               example:
+ *                 {"message": "User delete successfully"}
+ */
 router.delete("/:id", deleteUser);
 
 module.exports = router;
