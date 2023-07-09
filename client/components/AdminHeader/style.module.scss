@@ -1,8 +1,124 @@
 @import "@/styles/_variables.scss";
 
 .header {
-  height: 170px;
-  border: 1px solid red;
+  display: flex;
+
+  // position: relative;
+  align-items: center;
+  justify-content: space-between;
+  height: 34px;
+  margin-bottom: 4rem;
+
+  // border: 1px solid red;
   width: 100%;
+  .search {
+    display: flex;
+    width: 15rem;
+    height: 2rem;
+  }
+  .burger {
+    display: flex;
+    align-items: center;
+    margin-left: 5rem;
+  }
+
+  @media screen and (min-width: 600px) {
+    display: none;
+  }
 }
 
+.container_image {
+  display: flex;
+  margin-left: 6px;
+
+  .miembros {
+    display: flex;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+  }
+  .sedes {
+    display: flex;
+    margin-bottom: 1rem;
+  }
+}
+
+.miembro_container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 6px;
+  margin-top: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  width: 22.7rem;
+  height: 16rem;
+  background-color: #ff8a00;
+  .h2_entrenadores {
+    display: flex;
+    margin-top: 10px;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+  .entrenadores_container {
+    display: flex;
+    width: 20rem;
+    margin: 0 0 1rem 0;
+    align-items: center;
+    justify-content: space-between;
+
+    .img {
+      background-color: white;
+      border: 3px solid #fff;
+      border-radius: 50%;
+    }
+  }
+  .btn {
+    background-color: white;
+    color: black;
+    width: 4rem;
+    height: 1.5rem;
+    margin-bottom: 6px;
+    border: none;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.adtividades_container {
+  display: flex;
+  flex-direction: column;
+  margin-left: 6px;
+  margin-top: 1rem;
+  align-items: center;
+  justify-content: center;
+  width: 22.7rem;
+  height: 16rem;
+  background-color: white;
+
+  .h2_adtividades {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(82, 81, 81);
+    margin-bottom: 1rem;
+  }
+  .adtividades_container_p {
+    display: flex;
+    width: 20rem;
+    margin: 0 0 1rem 0;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .btn_adtiv {
+    background-color: #ff8a00;
+    color: white;
+    width: 4rem;
+    height: 1.5rem;
+    margin-bottom: 6px;
+    border: none;
+    border-radius: 3px;
+    align-items: center;
+    justify-content: center;
+  }
+}
