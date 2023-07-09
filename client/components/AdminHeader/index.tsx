@@ -4,6 +4,7 @@ import Image from "next/image";
 import entrenadores from "../../public/entrenadores.png";
 import adtividades from "../../public/adtividades .png";
 import icon_florian from "../../public/icon_florian.png";
+import Foto from "../../public/Foto.png";
 import miembros from "../../public/miembros.png";
 import sedes from "../../public/sedes.png";
 
@@ -86,6 +87,54 @@ export function AdminHeader() {
           <p>Ver mas</p>
         </div>
         <button className={style.btn_adtiv}>Ver todos</button>
+      </section>
+      <section className={style.search_client}>
+        <h4>Todos los miembros</h4>
+        <p>Gestiona y añade nuevos miembros</p>
+        <div className={style.container_btn}>
+          <input type="search" placeholder="Buscar miembros" />
+          <button className={style.btn_buscar}>Filter</button>
+        </div>
+        <hr className={style.hr} />
+        <div className={style.container_img}>
+          <div className={style.img_span}>
+            <Image src={Foto} alt="" width={30} height={30} className="" />
+            <span className={style.span}>El pistolero</span>
+            <button>Al dia</button>
+          </div>
+          <div className={style.p_p}>
+            <span>Mensual</span>
+            <span>Florian</span>
+            <span>Detalles</span>
+          </div>
+          <hr className={style.hr} />
+        </div>
+        <div className={style.container_img}>
+          <div className={style.img_span}>
+            <Image src={Foto} alt="" width={30} height={30} className="" />
+            <span className={style.span}>El pistolero</span>
+            <button>Al dia</button>
+          </div>
+          <div className={style.p_p}>
+            <span>Mensual</span>
+            <span>Florian</span>
+            <span>Detalles</span>
+          </div>
+        </div>
+        <hr className={style.hr} />
+        <div className={style.container_img}>
+          <div className={style.img_span}>
+            <Image src={Foto} alt="" width={30} height={30} className="" />
+            <span className={style.span}>El pistolero</span>
+            <button>Al dia</button>
+          </div>
+          <div className={style.p_p}>
+            <span>Mensual</span>
+            <span>Florian</span>
+            <span>Detalles</span>
+          </div>
+        </div>
+        <hr className={style.hr} />
       </section>
     </>
   );

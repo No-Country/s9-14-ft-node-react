@@ -30,6 +30,7 @@
 .container_image {
   display: flex;
   margin-left: 6px;
+  position: relative;
 
   .miembros {
     display: flex;
@@ -39,6 +40,7 @@
   .sedes {
     display: flex;
     margin-bottom: 1rem;
+    // position: relative;
   }
 }
 
@@ -120,5 +122,58 @@
     border-radius: 3px;
     align-items: center;
     justify-content: center;
+  }
+}
+
+.search_client {
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
+  color: white;
+  align-items: center;
+  justify-content: space-between;
+
+  .container_btn {
+    display: flex;
+    margin-top: 1rem;
+    .btn_buscar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      color: whitesmoke;
+      border: 1px solid whitesmoke;
+      width: 4rem;
+      height: 2rem;
+      margin-left: 1rem;
+    }
+  }
+  .hr {
+    color: white;
+    margin-top: 1rem;
+    width: 100%;
+  }
+
+  .container_img {
+    width: 22rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .img_span {
+      display: flex;
+      width: 22rem;
+      margin-top: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .p_p {
+      display: flex;
+      width: 22rem;
+      margin-top: 1rem;
+      align-items: center;
+      justify-content: space-between;
+    }
   }
 }
