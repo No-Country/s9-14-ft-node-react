@@ -11,6 +11,7 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
+    lowercase: true,
     required: true,
     unique: true
   },
@@ -27,6 +28,7 @@ const UserSchema = new mongoose.Schema({
   },
   role: {
     type: String,
+    lowercase: true,
     enum: ["admin", "trainer", "affiliate"],
     required: true
   },
