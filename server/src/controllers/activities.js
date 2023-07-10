@@ -65,6 +65,46 @@ const updateActivity = async (req, res) => {
   }
 };
 
+const setVacancies = async (req, res) => {
+  const { id } = req.params;
+  const { day, limit } = req.body;
+
+  try {
+    const activity = await Activity.findById(id);
+    const dayExist = activity.days.includes(day);
+
+    if (dayExist) {
+      const affiliatesInActivity = activity.affiliates.filter(a => {
+        if (a.day === day) {
+          return a;
+        }
+      });
+
+      const numAffiliates = affiliatesInActivity.length;
+
+      if (limit < numAffiliates) {
+        return res.status(400).json({
+          msg: "The number of members currently enrolled exceeds the indicated quota."
+        });
+      }
+      const numFreeVacancies = limit - numAffiliates;
+      activity.vacancies.set(day, numFreeVacancies);
+      activity.save();
+      return res.json({ vacantLimitUpdate: true, activity });
+    }
+
+    activity.days.push(day);
+    activity.vacancies.set(day, limit);
+    activity.save();
+    res.json({ vacantLimitUpdate: true, activity });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server error"
+    });
+  }
+};
+
 const deleteActivity = async (req, res) => {
   const { id } = req.params;
 
@@ -214,5 +254,6 @@ module.exports = {
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
   getAffiliatesInActivity,
-  getVacanciesOfActivity
+  getVacanciesOfActivity,
+  setVacancies
 };

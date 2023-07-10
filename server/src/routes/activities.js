@@ -14,7 +14,8 @@ const {
   removeAffiliateOfActivity,
   getVacanciesOfActivity,
   addAffiliateInActivityFromBack,
-  removeAffiliateOfActivityFromBack
+  removeAffiliateOfActivityFromBack,
+  setVacancies
 } = require("../controllers/activities");
 const { activityExistById } = require("../helpers/db-validators");
 const {
@@ -272,7 +273,18 @@ router.get(
   getVacanciesOfActivity
 );
 
-// admins/trainers paths
+router.patch(
+  "/:id/setVacancies",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  setVacancies
+);
+
+// version admins/trainers path
 router.patch(
   "/:activityId/addAffiliate/:affiliateId",
   [
@@ -286,6 +298,7 @@ router.patch(
   addAffiliateInActivityFromBack
 );
 
+// version admins/trainers path
 router.patch(
   "/:activityId/removeAffiliate/:affiliateId",
   [
