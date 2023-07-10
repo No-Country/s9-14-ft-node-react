@@ -16,9 +16,9 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "Wrong password" });
     }
 
-    if (user.role === "affiliate" && user.subscription === null) {
-      return res.status(400).json({
-        msg: "No subscription"
+    if (!user.status) {
+      return res.status(401).json({
+        msg: "Disabled user"
       });
     }
 
