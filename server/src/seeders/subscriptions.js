@@ -9,7 +9,7 @@ const subscriptionsToSeed = [
       "Asesoramiento básico: Nuestro personal estará disponible para brindarte asesoramiento básico sobre el uso adecuado de los equipos y responder a tus preguntas relacionadas con el entrenamiento y la salud."
     ],
     price: 5000,
-    duration: "mensual"
+    duration: "Mensual"
   },
   {
     name: "Plan Básico",
@@ -21,7 +21,7 @@ const subscriptionsToSeed = [
       "Asesoramiento básico: Nuestro personal estará disponible para brindarte asesoramiento básico sobre el uso adecuado de los equipos y responder a tus preguntas relacionadas con el entrenamiento y la salud."
     ],
     price: 45000,
-    duration: "anual"
+    duration: "Anual"
   },
   {
     name: "Plan Premium",
@@ -33,7 +33,7 @@ const subscriptionsToSeed = [
       "Clases especializadas: Podrás participar en una amplia variedad de clases especializadas, como entrenamiento funcional avanzado, yoga, pilates, entrenamiento de alta intensidad (HIIT) y más, dirigidas por instructores especializados."
     ],
     price: 8000,
-    duration: "mensual"
+    duration: "Mensual"
   },
   {
     name: "Plan Premium",
@@ -45,7 +45,7 @@ const subscriptionsToSeed = [
       "Clases especializadas: Podrás participar en una amplia variedad de clases especializadas, como entrenamiento funcional, spinning, pilates, zumba, aerobics y más, dirigidas por instructores especializados."
     ],
     price: 78000,
-    duration: "anual"
+    duration: "Anual"
   }
 ];
 

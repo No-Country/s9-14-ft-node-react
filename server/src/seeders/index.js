@@ -1,9 +1,11 @@
 const User = require("../models/User");
 const Activity = require("../models/Activity");
 const Subscription = require("../models/Subscription");
+const TrainingPlan = require("../models/TrainingPlan");
 const usersToSeed = require("./users");
 const activitiesToSeed = require("./activities");
 const subscriptionsToSeed = require("./subscriptions");
+const trainingPlansToSeed = require("./trainingPlans");
 const bcrypt = require("bcrypt");
 
 const seedDb = async () => {
@@ -13,12 +15,12 @@ const seedDb = async () => {
       await Subscription.create(subscription);
     }
 
+    const subscriptions = await Subscription.find();
+    const subscriptionsIds = subscriptions.map(subscription => subscription._id);
+
     // users seeder
     for (const user of usersToSeed) {
-      const subscriptions = await Subscription.find();
-      const subscriptionsIds = subscriptions.map(subscription => subscription._id);
-
-      if (user.role === "affiliate") {
+      if (user.role === "Affiliate") {
         await User.create({
           ...user,
           password: await bcrypt.hash(user.password, 10),
@@ -32,15 +34,39 @@ const seedDb = async () => {
       }
     }
 
+    const trainers = await User.find({ role: "trainer" });
+    const trainersIds = trainers.map(trainer => trainer._id);
+
     // activities seeder
     for (const activity of activitiesToSeed) {
-      const trainers = await User.find({ role: "trainer" });
-      const trainersIds = trainers.map(trainer => trainer._id);
-
       await Activity.create({
         ...activity,
         trainer: trainersIds[Math.floor(Math.random() * trainersIds.length)]
       });
+    }
+
+    const affiliatesSubscriptions = await User.find({ role: "affiliate" }, { _id: 1 }).populate({
+      path: "subscriptions",
+      match: { name: "Plan Premium" },
+      select: "_id"
+    });
+
+    const premiumAffiliatesIds = [];
+    for (const affiliate of affiliatesSubscriptions) {
+      if (affiliate.subscriptions.length) {
+        premiumAffiliatesIds.push(affiliate._id);
+      }
+    }
+
+    // training plans seeder
+    for (const trainingPlan of trainingPlansToSeed) {
+      if (premiumAffiliatesIds.length) {
+        await TrainingPlan.create({
+          ...trainingPlan,
+          trainer: trainersIds[Math.floor(Math.random() * trainersIds.length)],
+          affiliate: premiumAffiliatesIds[Math.floor(Math.random() * premiumAffiliatesIds.length)]
+        });
+      }
     }
 
     console.log("Database populated successfully!");

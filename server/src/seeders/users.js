@@ -5,7 +5,7 @@ const usersToSeed = [
     email: "admin@email.com",
     password: "admin123",
     phone: 246939617,
-    role: "admin"
+    role: "Admin"
   },
   {
     name: "Usuario",
@@ -13,7 +13,7 @@ const usersToSeed = [
     email: "entrenador1@email.com",
     password: "entrenador123",
     phone: 342361346,
-    role: "trainer"
+    role: "Trainer"
   },
   {
     name: "Usuario",
@@ -21,7 +21,7 @@ const usersToSeed = [
     email: "entrenador2@email.com",
     password: "entrenador123",
     phone: 325325254,
-    role: "trainer"
+    role: "Trainer"
   },
   {
     name: "Usuario",
@@ -29,7 +29,7 @@ const usersToSeed = [
     email: "entrenador3@email.com",
     password: "entrenador123",
     phone: 353253243,
-    role: "trainer"
+    role: "Trainer"
   },
   {
     name: "Usuario",
@@ -37,7 +37,7 @@ const usersToSeed = [
     email: "entrenador4@email.com",
     password: "entrenador123",
     phone: 213124512,
-    role: "trainer"
+    role: "Trainer"
   },
   {
     name: "Usuario",
@@ -45,7 +45,7 @@ const usersToSeed = [
     email: "entrenador5@email.com",
     password: "entrenador123",
     phone: 576864361,
-    role: "trainer"
+    role: "Trainer"
   },
   {
     name: "Usuario",
@@ -53,8 +53,7 @@ const usersToSeed = [
     email: "afiliado1@email.com",
     password: "afiliado123",
     phone: 754655225,
-    role: "affiliate",
-    subscriptions: []
+    role: "Affiliate"
   },
   {
     name: "Usuario",
@@ -62,8 +61,7 @@ const usersToSeed = [
     email: "afiliado2@email.com",
     password: "afiliado123",
     phone: 353436468,
-    role: "affiliate",
-    subscriptions: []
+    role: "Affiliate"
   },
   {
     name: "Usuario",
@@ -71,8 +69,7 @@ const usersToSeed = [
     email: "afiliado3@email.com",
     password: "afiliado123",
     phone: 435475859,
-    role: "affiliate",
-    subscriptions: []
+    role: "Affiliate"
   }
 ];
 
