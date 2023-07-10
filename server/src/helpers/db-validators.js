@@ -17,4 +17,12 @@ const idIsNotAdmin = async id => {
   }
 };
 
-module.exports = { activityExistById, idIsNotAdmin };
+const idIsNotAffiliate = async id => {
+  const user = await User.findById(id);
+
+  if (user.role !== "affiliate") {
+    throw new Error(`User ID is not an affiliate`);
+  }
+};
+
+module.exports = { activityExistById, idIsNotAdmin, idIsNotAffiliate};
