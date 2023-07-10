@@ -15,7 +15,8 @@ const {
   getVacanciesOfActivity,
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
-  setVacancies
+  setVacancies,
+  removeDay
 } = require("../controllers/activities");
 const { activityExistById } = require("../helpers/db-validators");
 const {
@@ -174,11 +175,11 @@ router.post(
       .isString()
       .isLength({ min: 1, max: 600 }),
     body("image", "enter url").isString(),
-    body("days", "days must be an array").isArray(),
-    body("schedule", "must have between 1 and 50 characters")
+    //body("days", "days must be an array").isArray(),
+    /* body("schedule", "must have between 1 and 50 characters")
       .isString()
-      .isLength({ min: 1, max: 10 }),
-    body("limit", "limit must be an integer").isInt({ min: 1 }),
+      .isLength({ min: 1, max: 10 }),*/
+    //body("limit", "limit must be an integer").isInt({ min: 1 }),
     body("trainer", "trainer must have a valid MongoId").isMongoId(),
     validateFields
   ],
@@ -284,14 +285,25 @@ router.patch(
   setVacancies
 );
 
-// version admins/trainers path
 router.patch(
-  "/:activityId/addAffiliate/:affiliateId",
+  "/:id/removeDay",
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    param("activityId", "activityId is not a MongoId").isMongoId(),
-    param("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  removeDay
+);
+
+// version admins/trainers path
+router.patch(
+  "/:id/adminAddAffiliate",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
     affiliateNotEnrolledFromBack,
     validateFields
   ],
@@ -300,12 +312,12 @@ router.patch(
 
 // version admins/trainers path
 router.patch(
-  "/:activityId/removeAffiliate/:affiliateId",
+  "/:id/adminRemoveAffiliate",
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    param("activityId", "activityId is not a MongoId").isMongoId(),
-    param("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    param("id", "id is not a MongoId").isMongoId(),
+    body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
     affiliateEnrolledFromBack,
     validateFields
   ],

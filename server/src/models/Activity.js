@@ -16,15 +16,11 @@ const ActivitySchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  days: {
-    type: [String]
-  },
   schedule: {
-    type: String
+    type: Object
   },
   vacancies: {
-    type: Map,
-    of: Number
+    type: Object
   },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,

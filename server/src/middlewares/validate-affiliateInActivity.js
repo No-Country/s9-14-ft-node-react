@@ -22,11 +22,11 @@ const affiliateNotEnrolled = async (req, res, next) => {
 };
 
 const affiliateNotEnrolledFromBack = async (req, res, next) => {
-  const { affiliateId, activityId } = req.params;
-  const { day } = req.body;
+  const { id } = req.params;
+  const { day, affiliateId } = req.body;
 
   try {
-    const activity = await Activity.findById(activityId);
+    const activity = await Activity.findById(id);
     const affiliatesInActivity = activity.affiliates.some(
       a => a.day === day && a.affiliate.toString() === affiliateId
     );
@@ -63,11 +63,11 @@ const affiliateEnrolled = async (req, res, next) => {
 };
 
 const affiliateEnrolledFromBack = async (req, res, next) => {
-  const { affiliateId, activityId } = req.params;
-  const { day } = req.body;
+  const { id } = req.params;
+  const { day, affiliateId } = req.body;
 
   try {
-    const activity = await Activity.findById(activityId);
+    const activity = await Activity.findById(id);
     const affiliatesInActivity = activity.affiliates.some(
       a => a.day === day && a.affiliate.toString() === affiliateId
     );

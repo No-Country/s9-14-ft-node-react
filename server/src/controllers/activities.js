@@ -27,18 +27,15 @@ const getActivity = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
-  const { days, limit, ...data } = req.body;
+  const { body } = req;
 
   try {
-    const limitPerDay = new Map();
+    /* const limitPerDay = {};
     days.forEach(day => {
-      limitPerDay.set(day, limit);
-    });
+      limitPerDay[day] = limit;
+    }); */
 
-    const activity = new Activity({
-      ...data,
-      vacancies: limitPerDay
-    });
+    const activity = new Activity(body);
 
     await activity.save();
     res.status(201).json({ created: true, activity });
@@ -67,36 +64,55 @@ const updateActivity = async (req, res) => {
 
 const setVacancies = async (req, res) => {
   const { id } = req.params;
-  const { day, limit } = req.body;
+  const { day, limit, hour } = req.body;
 
   try {
-    const activity = await Activity.findById(id);
-    const dayExist = activity.days.includes(day);
+    let activity = await Activity.findById(id);
+    let dayExist = false;
+    for (let prop in activity.schedule) {
+      if (prop === day) {
+        dayExist = true;
+      }
+    }
 
     if (dayExist) {
-      const affiliatesInActivity = activity.affiliates.filter(a => {
-        if (a.day === day) {
-          return a;
-        }
-      });
+      const affiliatesInActivity = activity.affiliates.filter(a => a.day === day);
 
       const numAffiliates = affiliatesInActivity.length;
 
       if (limit < numAffiliates) {
         return res.status(400).json({
-          msg: "The number of members currently enrolled exceeds the indicated quota."
+          msg: "The number of members currently enrolled exceeds the indicated quota"
         });
       }
       const numFreeVacancies = limit - numAffiliates;
-      activity.vacancies.set(day, numFreeVacancies);
-      activity.save();
-      return res.json({ vacantLimitUpdate: true, activity });
-    }
 
-    activity.days.push(day);
-    activity.vacancies.set(day, limit);
-    activity.save();
-    res.json({ vacantLimitUpdate: true, activity });
+      activity = await Activity.updateOne(
+        { _id: id },
+        {
+          $set: { [`vacancies.${day}`]: numFreeVacancies }
+        }
+      );
+
+      res.json({ vacantLimitUpdate: true });
+    } else {
+      if (!hour) {
+        return res.status(400).json({ msg: "To add a new day you must include the schedule" });
+      }
+      activity = await Activity.updateOne(
+        { _id: id },
+        {
+          $set: { [`schedule.${day}`]: hour }
+        }
+      );
+      activity = await Activity.updateOne(
+        { _id: id },
+        {
+          $set: { [`vacancies.${day}`]: limit }
+        }
+      );
+      res.json({ vacantLimitUpdate: true, activity });
+    }
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -125,13 +141,17 @@ const addAffiliateInActivity = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const activity = await Activity.findById(id);
-    activity.affiliates.push({ affiliate, day });
-
-    const newVacancies = activity.vacancies.get(day) - 1;
-    activity.vacancies.set(day, newVacancies);
-
-    await activity.save();
+    await Activity.updateOne(
+      { _id: id },
+      {
+        $push: {
+          affiliates: { affiliate, day }
+        },
+        $inc: {
+          [`vacancies.${day}`]: -1
+        }
+      }
+    );
 
     res.json({ enrolledAffiliate: true });
   } catch (error) {
@@ -143,17 +163,21 @@ const addAffiliateInActivity = async (req, res) => {
 };
 
 const addAffiliateInActivityFromBack = async (req, res) => {
-  const { day } = req.body;
-  const { affiliateId, activityId } = req.params;
+  const { day, affiliateId } = req.body;
+  const { id } = req.params;
 
   try {
-    const activity = await Activity.findById(activityId);
-    activity.affiliates.push({ affiliate: affiliateId, day });
-
-    const newVacancies = activity.vacancies.get(day) - 1;
-    activity.vacancies.set(day, newVacancies);
-
-    await activity.save();
+    await Activity.updateOne(
+      { _id: id },
+      {
+        $push: {
+          affiliates: { affiliate: affiliateId, day }
+        },
+        $inc: {
+          [`vacancies.${day}`]: -1
+        }
+      }
+    );
 
     res.json({ enrolledAffiliate: true });
   } catch (error) {
@@ -170,13 +194,17 @@ const removeAffiliateOfActivity = async (req, res) => {
   const { day } = req.body;
 
   try {
-    const activity = await Activity.findById(id);
-    activity.affiliates.pull({ affiliate, day });
-
-    const newVacancies = activity.vacancies.get(day) + 1;
-    activity.vacancies.set(day, newVacancies);
-
-    await activity.save();
+    await Activity.updateOne(
+      { _id: id },
+      {
+        $pull: {
+          affiliates: { affiliate, day }
+        },
+        $inc: {
+          [`vacancies.${day}`]: 1
+        }
+      }
+    );
 
     res.json({ affiliateRemoved: true });
   } catch (error) {
@@ -188,17 +216,21 @@ const removeAffiliateOfActivity = async (req, res) => {
 };
 
 const removeAffiliateOfActivityFromBack = async (req, res) => {
-  const { day } = req.body;
-  const { affiliateId, activityId } = req.params;
+  const { day, affiliateId } = req.body;
+  const { id } = req.params;
 
   try {
-    const activity = await Activity.findById(activityId);
-    activity.affiliates.pull({ affiliate: affiliateId, day });
-
-    const newVacancies = activity.vacancies.get(day) + 1;
-    activity.vacancies.set(day, newVacancies);
-
-    await activity.save();
+    await Activity.updateOne(
+      { _id: id },
+      {
+        $pull: {
+          affiliates: { affiliate: affiliateId, day }
+        },
+        $inc: {
+          [`vacancies.${day}`]: 1
+        }
+      }
+    );
 
     res.json({ affiliateRemoved: true });
   } catch (error) {
@@ -243,6 +275,33 @@ const getVacanciesOfActivity = async (req, res) => {
   }
 };
 
+const removeDay = async (req, res) => {
+  const { id } = req.params;
+  const { day } = req.body;
+
+  try {
+    const activity = await Activity.updateOne(
+      { _id: id },
+      {
+        $pull: {
+          affiliates: { day }
+        },
+        $unset: {
+          [`vacancies.${day}`]: "",
+          [`schedule.${day}`]: ""
+        }
+      }
+    );
+
+    res.json({ dayRemoved: true });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server error"
+    });
+  }
+};
+
 module.exports = {
   addActivity,
   getActivity,
@@ -255,5 +314,6 @@ module.exports = {
   removeAffiliateOfActivityFromBack,
   getAffiliatesInActivity,
   getVacanciesOfActivity,
-  setVacancies
+  setVacancies,
+  removeDay
 };
