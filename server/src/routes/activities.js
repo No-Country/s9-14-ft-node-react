@@ -36,7 +36,7 @@ const router = Router();
  *       - Activities
  *     responses:
  *       200:
- *         description: OK
+ *         description: Lista de todas las actividades
  *         content:
  *           application/json:
  *             schema:
@@ -101,7 +101,7 @@ router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAl
  *         description: ID de la actividad
  *     responses:
  *       200:
- *         description: OK
+ *         description: Usuario con el ID especificado
  *         content:
  *           application/json:
  *             schema:
@@ -162,6 +162,97 @@ router.get(
   getActivity
 );
 
+/**
+ * @openapi
+ * /api/activities:
+ *   post:
+ *     tags:
+ *       - Activities
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Test
+ *               description:
+ *                 type: string
+ *                 example: String
+ *               image:
+ *                 type: string
+ *                 example: String
+ *               days:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["Lunes", "Martes"]
+ *               schedule:
+ *                 type: string
+ *                 example: String
+ *               limit:
+ *                 type: integer
+ *                 example: 20
+ *               trainer:
+ *                 type: string
+ *                 example: 64a57eddab21e16190e32ecc
+ *     responses:
+ *       200:
+ *         description: Response de actividad creada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     created:
+ *                       type: boolean
+ *                       example: true
+ *                     activity:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: Test
+ *                         description:
+ *                           type: string
+ *                           example: String
+ *                         image:
+ *                           type: string
+ *                           example: String
+ *                         days:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: ["Lunes", "Martes"]
+ *                         schedule:
+ *                           type: string
+ *                           example: String
+ *                         limit:
+ *                           type: integer
+ *                           example: 20
+ *                         trainer:
+ *                           type: string
+ *                           example: 64a57eddab21e16190e32ecc
+ *                         affiliates:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                           example: 64a82f71f8f93da6f7293944
+ *                         __v:
+ *                           type: integer
+ *                           example: 0
+ */
 router.post(
   "/",
   [
@@ -185,6 +276,103 @@ router.post(
   addActivity
 );
 
+/**
+ * @openapi
+ * /api/activities/{id}:
+ *   put:
+ *     tags:
+ *       - Activities
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID de la actividad
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Test
+ *               description:
+ *                 type: string
+ *                 example: String
+ *               image:
+ *                 type: string
+ *                 example: String
+ *               days:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["Lunes", "Martes"]
+ *               schedule:
+ *                 type: string
+ *                 example: String
+ *               limit:
+ *                 type: integer
+ *                 example: 20
+ *               trainer:
+ *                 type: string
+ *                 example: 64a57eddab21e16190e32ecc
+ *     responses:
+ *       200:
+ *         description: Response de actividad actualizada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     created:
+ *                       type: boolean
+ *                       example: true
+ *                     activity:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: Test
+ *                         description:
+ *                           type: string
+ *                           example: String
+ *                         image:
+ *                           type: string
+ *                           example: String
+ *                         days:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: ["Lunes", "Martes"]
+ *                         schedule:
+ *                           type: string
+ *                           example: String
+ *                         limit:
+ *                           type: integer
+ *                           example: 20
+ *                         trainer:
+ *                           type: string
+ *                           example: 64a57eddab21e16190e32ecc
+ *                         affiliates:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                           example: 64a82f71f8f93da6f7293944
+ *                         __v:
+ *                           type: integer
+ *                           example: 0
+ */
 router.put(
   "/:id",
   [
@@ -213,6 +401,73 @@ router.put(
   updateActivity
 );
 
+/**
+ * @openapi
+ * /api/activities/{id}:
+ *   delete:
+ *     tags:
+ *       - Activities
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID de la actividad
+ *     responses:
+ *       200:
+ *         description: Response de actividad eliminada
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: OK
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     created:
+ *                       type: boolean
+ *                       example: true
+ *                     activity:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: Test
+ *                         description:
+ *                           type: string
+ *                           example: String
+ *                         image:
+ *                           type: string
+ *                           example: String
+ *                         days:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: ["Lunes", "Martes"]
+ *                         schedule:
+ *                           type: string
+ *                           example: String
+ *                         limit:
+ *                           type: integer
+ *                           example: 20
+ *                         trainer:
+ *                           type: string
+ *                           example: 64a57eddab21e16190e32ecc
+ *                         affiliates:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                           example: 64a82f71f8f93da6f7293944
+ *                         __v:
+ *                           type: integer
+ *                           example: 0
+ */
 router.delete(
   "/:id",
   [

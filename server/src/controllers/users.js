@@ -1,5 +1,6 @@
 const updateUserStatus = require("../helpers/updateUserStatus");
 const { User } = require("../models");
+const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
   try {
@@ -36,7 +37,19 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    const newUser = new User(user);
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(user.password, salt);
+
+    const newUser = new User({
+      name: user.name,
+      surname: user.surname,
+      email: user.email,
+      password: passwordHash,
+      active: user.active,
+      phone: user.phone,
+      role: user.role,
+      subscriptions: user.subscriptions
+    });
     await newUser.save();
 
     return res.status(201).json({ newUser });
