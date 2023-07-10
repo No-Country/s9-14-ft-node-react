@@ -16,16 +16,11 @@ const ActivitySchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  days: {
-    type: [String],
-    enum: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
-  },
   schedule: {
-    type: String
+    type: Object
   },
   vacancies: {
-    type: Map,
-    of: Number
+    type: Object
   },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,

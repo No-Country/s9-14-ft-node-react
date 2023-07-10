@@ -14,7 +14,8 @@ const {
   getVacanciesOfActivity,
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
-  setVacancies
+  setVacancies,
+  removeDay
 } = require("../controllers/activities");
 const { activityExistById } = require("../helpers/db-validators");
 const {
@@ -33,6 +34,26 @@ const router = Router();
  *   get:
  *     tags:
  *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *     responses:
  *       200:
  *         description: Lista de todas las actividades
@@ -47,49 +68,68 @@ const router = Router();
  *                 data:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       _id:
- *                         type: string
- *                         example: "64a57eddab21e16190e32ed9"
- *                       name:
- *                         type: string
- *                         example: "Body Pump"
- *                       description:
- *                         type: string
- *                         example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
- *                       image:
- *                         type: string
- *                         example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
- *                       days:
- *                         type: array
- *                         items:
- *                           type: string
- *                         example:
- *                           - "Jueves"
- *                           - "Viernes"
- *                       limit:
- *                         type: number
- *                         example: 20
- *                       trainer:
- *                         type: object
- *                         properties:
- *                           _id:
- *                             type: string
- *                             example: "64a57edcab21e16190e32eca"
- *                           name:
- *                             type: string
- *                             example: "Usuario"
- *                           surname:
- *                             type: string
- *                             example: "Entrenador 2"
+ *                     $ref: "#/components/schemas/Activity"
+ */
+
+/**
+ * @openapi
+ * components:
+ *   schemas:
+ *     Activity:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "64a57eddab21e16190e32ed9"
+ *         name:
+ *           type: string
+ *           example: "Body Pump"
+ *         description:
+ *           type: string
+ *           example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *         image:
+ *           type: string
+ *           example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *         days:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example:
+ *             - "Jueves"
+ *             - "Viernes"
+ *         limit:
+ *           type: number
+ *           example: 20
+ *         trainer:
+ *           $ref: "#/components/schemas/Trainer"
+ *         __v:
+ *           type: number
+ *           example: 0
+ *         affiliates:
+ *           type: array
+ *           items:
+ *             type: string
+ *           example: []
+ *
+ *     Trainer:
+ *       type: object
+ *       properties:
+ *         _id:
+ *           type: string
+ *           example: "64a57edcab21e16190e32eca"
+ *         name:
+ *           type: string
+ *           example: "Usuario"
+ *         surname:
+ *           type: string
+ *           example: "Entrenador 2"
  */
 router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAllActivities);
 
 /**
  * @openapi
  * /api/activities/{aid}:
- *   get:
+ *    get:
  *     tags:
  *       - Activities
  *     parameters:
@@ -110,44 +150,42 @@ router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAl
  *                   type: string
  *                   example: OK
  *                 data:
- *                   type: array
- *                   items:
- *                     type: object
- *                     properties:
- *                       _id:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
  *                         type: string
- *                         example: "64a57eddab21e16190e32ed9"
- *                       name:
- *                         type: string
- *                         example: "Body Pump"
- *                       description:
- *                         type: string
- *                         example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
- *                       image:
- *                         type: string
- *                         example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
- *                       days:
- *                         type: array
- *                         items:
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
  *                           type: string
- *                         example:
- *                           - "Jueves"
- *                           - "Viernes"
- *                       limit:
- *                         type: number
- *                         example: 20
- *                       trainer:
- *                         type: object
- *                         properties:
- *                           _id:
- *                             type: string
- *                             example: "64a57edcab21e16190e32eca"
- *                           name:
- *                             type: string
- *                             example: "Usuario"
- *                           surname:
- *                             type: string
- *                             example: "Entrenador 2"
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
  */
 router.get(
   "/:id",
@@ -264,11 +302,11 @@ router.post(
       .isString()
       .isLength({ min: 1, max: 600 }),
     body("image", "enter url").isString(),
-    body("days", "days must be an array").isArray(),
-    body("schedule", "must have between 1 and 50 characters")
+    //body("days", "days must be an array").isArray(),
+    /* body("schedule", "must have between 1 and 50 characters")
       .isString()
-      .isLength({ min: 1, max: 10 }),
-    body("limit", "limit must be an integer").isInt({ min: 1 }),
+      .isLength({ min: 1, max: 10 }),*/
+    //body("limit", "limit must be an integer").isInt({ min: 1 }),
     body("trainer", "trainer must have a valid MongoId").isMongoId(),
     validateFields
   ],
@@ -538,14 +576,25 @@ router.patch(
   setVacancies
 );
 
-// version admins/trainers path
 router.patch(
-  "/:activityId/addAffiliate/:affiliateId",
+  "/:id/removeDay",
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    param("activityId", "activityId is not a MongoId").isMongoId(),
-    param("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  removeDay
+);
+
+// version admins/trainers path
+router.patch(
+  "/:id/adminAddAffiliate",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
     affiliateNotEnrolledFromBack,
     validateFields
   ],
@@ -554,12 +603,12 @@ router.patch(
 
 // version admins/trainers path
 router.patch(
-  "/:activityId/removeAffiliate/:affiliateId",
+  "/:id/adminRemoveAffiliate",
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    param("activityId", "activityId is not a MongoId").isMongoId(),
-    param("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    param("id", "id is not a MongoId").isMongoId(),
+    body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
     affiliateEnrolledFromBack,
     validateFields
   ],
