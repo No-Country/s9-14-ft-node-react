@@ -2,7 +2,6 @@ const { Router } = require("express");
 const { body, param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
 const { validateJWT } = require("../middlewares/validate-jwt");
-
 const {
   addActivity,
   getActivity,
@@ -25,7 +24,7 @@ const {
   affiliateEnrolled,
   affiliateEnrolledFromBack
 } = require("../middlewares/validate-affiliateInActivity");
-const hasRole = require("../middlewares/validate-rol");
+const hasRole = require("../middlewares/validate-role");
 
 const router = Router();
 

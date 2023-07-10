@@ -8,7 +8,7 @@ const {
   setUserStatus
 } = require("../controllers/users");
 const { validateJWT } = require("../middlewares/validate-jwt");
-const hasRole = require("../middlewares/validate-rol");
+const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
 const { body, param } = require("express-validator");
 const { idIsNotAdmin } = require("../helpers/db-validators");

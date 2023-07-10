@@ -20,6 +20,7 @@ const SubscriptionSchema = new mongoose.Schema({
   },
   duration: {
     type: String,
+    lowercase: true,
     enum: ["mensual", "anual"],
     required: true
   },

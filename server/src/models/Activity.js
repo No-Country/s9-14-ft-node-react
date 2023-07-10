@@ -34,6 +34,8 @@ const ActivitySchema = new mongoose.Schema({
       },
       day: {
         type: String,
+        lowercase: true,
+        enum: ["lunes", "martes", "miércoles", "jueves", "viernes"],
         required: true
       }
     }
