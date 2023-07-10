@@ -1,3 +1,4 @@
+const updateUserStatus = require("../helpers/updateUserStatus");
 const { User } = require("../models");
 
 const getUsers = async (req, res) => {
@@ -84,4 +85,20 @@ const deleteUser = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, registerUser, updateUser, deleteUser };
+const setUserStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const user = await updateUserStatus({ id, status });
+
+    res.status(200).json(user);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server error"
+    });
+  }
+};
+
+module.exports = { getUsers, getUser, registerUser, updateUser, deleteUser, setUserStatus };

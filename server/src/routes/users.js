@@ -1,5 +1,17 @@
 const { Router } = require("express");
-const { getUsers, getUser, registerUser, updateUser, deleteUser } = require("../controllers/users");
+const {
+  getUsers,
+  getUser,
+  registerUser,
+  updateUser,
+  deleteUser,
+  setUserStatus
+} = require("../controllers/users");
+const { validateJWT } = require("../middlewares/validate-jwt");
+const hasRole = require("../middlewares/validate-rol");
+const { validateFields } = require("../middlewares/validate-fields");
+const { body, param } = require("express-validator");
+const { idIsNotAdmin } = require("../helpers/db-validators");
 
 const router = Router();
 
@@ -378,5 +390,17 @@ router.put("/:id", updateUser);
  *                 {"message": "User delete successfully"}
  */
 router.delete("/:id", deleteUser);
+
+router.patch(
+  "/:id/setStatus",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(idIsNotAdmin),
+    validateFields
+  ],
+  setUserStatus
+);
 
 module.exports = router;
