@@ -29,15 +29,12 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
  *                 data:
  *                   type: array
  *                   items:
  *                     type: object
  *                     properties:
- *                       active:
+ *                       status:
  *                         type: boolean
  *                       subscription:
  *                         nullable: array
@@ -61,7 +58,7 @@ const router = Router();
  *                       __v:
  *                         type: number
  *                     example:
- *                       - active: true
+ *                       - status: true
  *                         subscription: []
  *                         _id: "64a44c888fe089bcbfb5fa9b"
  *                         name: "Test"
@@ -72,7 +69,7 @@ const router = Router();
  *                         role_id: "000000018fe089bcbfb5fa99"
  *                         subscription_id: "000000018fe089bcbfb5fa9a"
  *                         __v: 0
- *                       - active: true
+ *                       - status: true
  *                         _id: "64a57edcab21e16190e32ec6"
  *                         name: "Usuario"
  *                         surname: "Admin"
@@ -107,7 +104,7 @@ router.get("/", getUsers);
  *                 user:
  *                   type: object
  *                   properties:
- *                     active:
+ *                     status:
  *                       type: boolean
  *                     subscriptions:
  *                       nullable: true
@@ -133,7 +130,7 @@ router.get("/", getUsers);
  *                     __v:
  *                       type: number
  *                   example:
- *                     active: true
+ *                     status: true
  *                     subscriptions: []
  *                     _id: "64a44c888fe089bcbfb5fa9b"
  *                     name: "Test"

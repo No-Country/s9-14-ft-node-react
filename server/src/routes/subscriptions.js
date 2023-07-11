@@ -9,6 +9,50 @@ const { idIsNotAdmin, idIsNotAffiliate } = require("../helpers/db-validators");
 
 const router = Router();
 
+/**
+ * @openapi
+ * /api/activities/{id}/editSubscription:
+ *    put:
+ *     tags:
+ *       - Subscription
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *
+ */
 router.put(
   "/:id/editSubscription",
   [
@@ -21,6 +65,50 @@ router.put(
   addUserNewSubscription
 );
 
+/**
+ * @openapi
+ * /api/activities/{id}/editSubscription:
+ *    delete:
+ *     tags:
+ *       - Subscription
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *
+ */
 router.delete(
   "/:id/editSubscription",
   [
