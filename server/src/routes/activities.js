@@ -63,9 +63,6 @@ const router = Router();
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
  *                 data:
  *                   type: array
  *                   items:
@@ -129,16 +126,35 @@ router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAl
 
 /**
  * @openapi
- * /api/activities/{aid}:
+ * /api/activities/{id}:
  *    get:
  *     tags:
  *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
- *       - in: path
- *         name: aid
+ *       - in: header
+ *         name: x-token
  *         schema:
  *           type: string
- *         description: ID de la actividad
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
  *     responses:
  *       200:
  *         description: Usuario con el ID especificado
@@ -147,9 +163,6 @@ router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAl
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
  *                 data:
  *                   type: object
  *                   properties:
@@ -206,6 +219,26 @@ router.get(
  *   post:
  *     tags:
  *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *     requestBody:
  *       required: true
  *       content:
@@ -317,99 +350,79 @@ router.post(
 /**
  * @openapi
  * /api/activities/{id}:
- *   put:
+ *    put:
  *     tags:
  *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID de la actividad
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               name:
- *                 type: string
- *                 example: Test
- *               description:
- *                 type: string
- *                 example: String
- *               image:
- *                 type: string
- *                 example: String
- *               days:
- *                 type: array
- *                 items:
- *                   type: string
- *                 example: ["Lunes", "Martes"]
- *               schedule:
- *                 type: string
- *                 example: String
- *               limit:
- *                 type: integer
- *                 example: 20
- *               trainer:
- *                 type: string
- *                 example: 64a57eddab21e16190e32ecc
+ *         description: ID del usuario
  *     responses:
  *       200:
- *         description: Response de actividad actualizada
+ *         description: Usuario con el ID especificado
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
  *                 data:
  *                   type: object
  *                   properties:
- *                     created:
- *                       type: boolean
- *                       example: true
- *                     activity:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
  *                       type: object
  *                       properties:
- *                         name:
- *                           type: string
- *                           example: Test
- *                         description:
- *                           type: string
- *                           example: String
- *                         image:
- *                           type: string
- *                           example: String
- *                         days:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: ["Lunes", "Martes"]
- *                         schedule:
- *                           type: string
- *                           example: String
- *                         limit:
- *                           type: integer
- *                           example: 20
- *                         trainer:
- *                           type: string
- *                           example: 64a57eddab21e16190e32ecc
- *                         affiliates:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: []
  *                         _id:
  *                           type: string
- *                           example: 64a82f71f8f93da6f7293944
- *                         __v:
- *                           type: integer
- *                           example: 0
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
  */
 router.put(
   "/:id",
@@ -442,69 +455,46 @@ router.put(
 /**
  * @openapi
  * /api/activities/{id}:
- *   delete:
+ *    delete:
  *     tags:
  *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID de la actividad
+ *         description: ID del usuario
  *     responses:
  *       200:
- *         description: Response de actividad eliminada
+ *         description: Usuario con el ID especificado
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
  *                 data:
  *                   type: object
  *                   properties:
- *                     created:
- *                       type: boolean
- *                       example: true
- *                     activity:
- *                       type: object
- *                       properties:
- *                         name:
- *                           type: string
- *                           example: Test
- *                         description:
- *                           type: string
- *                           example: String
- *                         image:
- *                           type: string
- *                           example: String
- *                         days:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: ["Lunes", "Martes"]
- *                         schedule:
- *                           type: string
- *                           example: String
- *                         limit:
- *                           type: integer
- *                           example: 20
- *                         trainer:
- *                           type: string
- *                           example: 64a57eddab21e16190e32ecc
- *                         affiliates:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: []
- *                         _id:
- *                           type: string
- *                           example: 64a82f71f8f93da6f7293944
- *                         __v:
- *                           type: integer
- *                           example: 0
+ *                      {"message":"Activity delete successfully"}
  */
 router.delete(
   "/:id",
@@ -517,7 +507,83 @@ router.delete(
   ],
   deleteActivity
 );
-
+/**
+ * @openapi
+ * /api/activities/{id}/addAffiliate:
+ *    patch:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.patch(
   "/:id/addAffiliate",
   [
@@ -535,7 +601,83 @@ router.patch(
   ],
   addAffiliateInActivity
 );
-
+/**
+ * @openapi
+ * /api/activities/{id}/removeAffiliate:
+ *    patch:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.patch(
   "/:id/removeAffiliate",
   [
@@ -552,7 +694,83 @@ router.patch(
   ],
   removeAffiliateOfActivity
 );
-
+/**
+ * @openapi
+ * /api/activities/{id}/affiliates:
+ *    get:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.get(
   "/:id/affiliates",
   [
@@ -568,7 +786,83 @@ router.get(
   ],
   getAffiliatesInActivity
 );
-
+/**
+ * @openapi
+ * /api/activities/{id}/vacancies:
+ *    get:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.get(
   "/:id/vacancies",
   [
@@ -580,7 +874,83 @@ router.get(
   ],
   getVacanciesOfActivity
 );
-
+/**
+ * @openapi
+ * /api/activities/{id}/setVacancies:
+ *    patch:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.patch(
   "/:id/setVacancies",
   [
@@ -596,7 +966,83 @@ router.patch(
   ],
   setVacancies
 );
-
+/**
+ * @openapi
+ * /api/activities/{id}/removeDay:
+ *    patch:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.patch(
   "/:id/removeDay",
   [
@@ -614,6 +1060,84 @@ router.patch(
 );
 
 // version admins/trainers path
+
+/**
+ * @openapi
+ * /api/activities/{id}/adminAddAffiliate:
+ *    patch:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.patch(
   "/:id/adminAddAffiliate",
   [
@@ -635,6 +1159,83 @@ router.patch(
 );
 
 // version admins/trainers path
+/**
+ * @openapi
+ * /api/activities/{id}/adminRemoveAffiliate:
+ *    patch:
+ *     tags:
+ *       - Activities
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     responses:
+ *       200:
+ *         description: Usuario con el ID especificado
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     _id:
+ *                       type: string
+ *                       example: "64a57eddab21e16190e32ed9"
+ *                     name:
+ *                       type: string
+ *                       example: "Body Pump"
+ *                     description:
+ *                       type: string
+ *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
+ *                     image:
+ *                       type: string
+ *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
+ *                     days:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example:
+ *                         - "Jueves"
+ *                         - "Viernes"
+ *                     limit:
+ *                       type: number
+ *                       example: 20
+ *                     trainer:
+ *                       type: object
+ *                       properties:
+ *                         _id:
+ *                           type: string
+ *                           example: "64a57edcab21e16190e32eca"
+ *                         name:
+ *                           type: string
+ *                           example: "Usuario"
+ *                         surname:
+ *                           type: string
+ *                           example: "Entrenador 2"
+ */
 router.patch(
   "/:id/adminRemoveAffiliate",
   [

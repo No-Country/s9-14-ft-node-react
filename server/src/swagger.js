@@ -12,6 +12,7 @@ const options = {
     "src/routes/auth.js",
     "src/routes/activities.js",
     "src/routes/users.js",
+    "src/routes/subscriptions.js",
     "src/database/index.js"
   ]
 };
