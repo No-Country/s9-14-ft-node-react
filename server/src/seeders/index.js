@@ -59,14 +59,12 @@ const seedDb = async () => {
     }
 
     // training plans seeder
-    for (const trainingPlan of trainingPlansToSeed) {
-      if (premiumAffiliatesIds.length) {
-        await TrainingPlan.create({
-          ...trainingPlan,
-          trainer: trainersIds[Math.floor(Math.random() * trainersIds.length)],
-          affiliate: premiumAffiliatesIds[Math.floor(Math.random() * premiumAffiliatesIds.length)]
-        });
-      }
+    for (const premiumAffiliateId of premiumAffiliatesIds) {
+      await TrainingPlan.create({
+        ...trainingPlansToSeed[Math.floor(Math.random() * trainingPlansToSeed.length)],
+        trainer: trainersIds[Math.floor(Math.random() * trainersIds.length)],
+        affiliate: premiumAffiliateId
+      });
     }
 
     console.log("Database populated successfully!");

@@ -6,38 +6,38 @@ const trainingPlansToSeed = [
       {
         name: "Bíceps",
         sets: 3,
-        repetitions: 15,
-        days: ["Lunes", "Miércoles", "Viernes"]
+        repetitionsOrDuration: 15,
+        days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Tríceps",
         sets: 4,
-        repetitions: 20,
-        days: ["Lunes", "Miércoles", "Viernes"]
+        repetitionsOrDuration: 20,
+        days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Abdominales",
         sets: 5,
-        repetitions: 10,
-        days: ["Lunes", "Miércoles", "Viernes"]
+        repetitionsOrDuration: 10,
+        days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Cuádriceps",
         sets: 5,
-        repetitions: 20,
-        days: ["Martes", "Jueves"]
+        repetitionsOrDuration: 20,
+        days: ["martes", "jueves"]
       },
       {
         name: "Press de pecho",
         sets: 3,
-        repetitions: 10,
-        days: ["Martes", "Jueves"]
+        repetitionsOrDuration: 10,
+        days: ["martes", "jueves"]
       },
       {
         name: "Estocadas búlgaras",
         sets: 4,
-        repetitions: 15,
-        days: ["Martes", "Jueves"]
+        repetitionsOrDuration: 15,
+        days: ["martes", "jueves"]
       }
     ]
   },
@@ -48,38 +48,39 @@ const trainingPlansToSeed = [
       {
         name: "Sentadillas",
         sets: 3,
-        repetitions: 15,
-        days: ["Lunes", "Miércoles", "Viernes"]
+        repetitionsOrDuration: 15,
+        days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Plancha",
         sets: 4,
-        repetitions: 20,
-        days: ["Lunes", "Miércoles", "Viernes"]
+        repetitionsOrDuration: 20,
+        isRepetitions: false,
+        days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Push-up",
         sets: 5,
-        repetitions: 10,
-        days: ["Lunes", "Miércoles", "Viernes"]
+        repetitionsOrDuration: 10,
+        days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Remo cruzado",
         sets: 5,
-        repetitions: 20,
-        days: ["Martes", "Jueves"]
+        repetitionsOrDuration: 20,
+        days: ["martes", "jueves"]
       },
       {
         name: "Pull-over",
         sets: 3,
-        repetitions: 10,
-        days: ["Martes", "Jueves"]
+        repetitionsOrDuration: 10,
+        days: ["martes", "jueves"]
       },
       {
         name: "Press de hombros",
         sets: 4,
-        repetitions: 15,
-        days: ["Martes", "Jueves"]
+        repetitionsOrDuration: 15,
+        days: ["martes", "jueves"]
       }
     ]
   }
