@@ -13,20 +13,24 @@ const TrainingPlanSchema = new mongoose.Schema({
     {
       name: {
         type: String,
-        required: true,
-        unique: true
+        required: true
       },
       sets: {
         type: Number,
         required: true
       },
-      repetitions: {
+      repetitionsOrDuration: {
         type: Number,
         required: true
       },
+      isRepetitions: {
+        type: Boolean,
+        required: true,
+        default: true
+      },
       days: {
         type: [String],
-        enum: ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"],
+        enum: ["lunes", "martes", "miércoles", "jueves", "viernes"],
         required: true
       }
     }
