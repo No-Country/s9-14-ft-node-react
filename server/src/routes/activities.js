@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { body, param } = require("express-validator");
+const { body, param, query } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const {
@@ -17,12 +17,13 @@ const {
   setVacancies,
   removeDay
 } = require("../controllers/activities");
-const { activityExistById } = require("../helpers/db-validators");
+const { activityExistById, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 const {
   affiliateNotEnrolled,
   affiliateNotEnrolledFromBack,
   affiliateEnrolled,
-  affiliateEnrolledFromBack
+  affiliateEnrolledFromBack,
+  dayExistInActivity
 } = require("../middlewares/validate-affiliateInActivity");
 const hasRole = require("../middlewares/validate-role");
 
@@ -523,6 +524,12 @@ router.patch(
     validateJWT,
     hasRole(["affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
+    body(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
+    dayExistInActivity,
     affiliateNotEnrolled,
     validateFields
   ],
@@ -535,7 +542,12 @@ router.patch(
     validateJWT,
     hasRole(["affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
     affiliateEnrolled,
+    body(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
     validateFields
   ],
   removeAffiliateOfActivity
@@ -548,6 +560,10 @@ router.get(
     hasRole(["admin", "trainer"]),
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(activityExistById),
+    query(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
     validateFields
   ],
   getAffiliatesInActivity
@@ -571,6 +587,11 @@ router.patch(
     validateJWT,
     hasRole(["admin", "trainer"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
+    body(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
     validateFields
   ],
   setVacancies
@@ -582,6 +603,11 @@ router.patch(
     validateJWT,
     hasRole(["admin", "trainer"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
+    body(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
     validateFields
   ],
   removeDay
@@ -594,8 +620,15 @@ router.patch(
     validateJWT,
     hasRole(["admin", "trainer"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
     body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    body("affiliateId").custom(idIsNotAdminOrTrainer),
     affiliateNotEnrolledFromBack,
+    body(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
+    dayExistInActivity,
     validateFields
   ],
   addAffiliateInActivityFromBack
@@ -608,8 +641,13 @@ router.patch(
     validateJWT,
     hasRole(["admin", "trainer"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
     body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
     affiliateEnrolledFromBack,
+    body(
+      "day",
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
     validateFields
   ],
   removeAffiliateOfActivityFromBack
