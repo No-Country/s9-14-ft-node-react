@@ -30,14 +30,7 @@ const addActivity = async (req, res) => {
   const { body } = req;
 
   try {
-    /* const limitPerDay = {};
-    days.forEach(day => {
-      limitPerDay[day] = limit;
-    }); */
-
-    const activity = new Activity(body);
-
-    await activity.save();
+    const activity = await Activity.create(body);
     res.status(201).json({ created: true, activity });
   } catch (error) {
     console.log(error);
@@ -165,7 +158,7 @@ const addAffiliateInActivity = async (req, res) => {
 const addAffiliateInActivityFromBack = async (req, res) => {
   const { day, affiliateId } = req.body;
   const { id } = req.params;
-
+  console.log(id);
   try {
     await Activity.updateOne(
       { _id: id },
@@ -265,8 +258,8 @@ const getVacanciesOfActivity = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const activity = await Activity.findById(id);
-    res.json({ activityName: activity.name, vacancies: activity.vacancies });
+    const activity = await Activity.findById(id).select("name vacancies");
+    res.json(activity);
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -280,7 +273,7 @@ const removeDay = async (req, res) => {
   const { day } = req.body;
 
   try {
-    const activity = await Activity.updateOne(
+    await Activity.updateOne(
       { _id: id },
       {
         $pull: {
