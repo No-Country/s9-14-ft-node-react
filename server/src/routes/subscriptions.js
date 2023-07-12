@@ -1,6 +1,5 @@
 const { Router } = require("express");
-const { addUserNewSubscription, deleteUserSubscription } = require("../controllers/subscription");
-
+const { addUserNewSubscription, deleteUserSubscription } = require("../controllers/subscriptions");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
