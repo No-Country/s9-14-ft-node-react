@@ -13,7 +13,7 @@ const router = Router();
  * /api/activities/{id}/editSubscription:
  *    put:
  *     tags:
- *       - Subscription
+ *       - Subscriptions
  *     components:
  *       securitySchemes:
  *         bearerAuth:
@@ -69,7 +69,7 @@ router.put(
  * /api/activities/{id}/editSubscription:
  *    delete:
  *     tags:
- *       - Subscription
+ *       - Subscriptions
  *     components:
  *       securitySchemes:
  *         bearerAuth:
