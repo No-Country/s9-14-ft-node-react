@@ -13,7 +13,8 @@ const options = {
     "src/routes/activities.js",
     "src/routes/users.js",
     "src/routes/subscriptions.js",
-    "src/database/index.js"
+    "src/routes/trainingPlans.js",
+    "src/models/TrainingPlan.js"
   ]
 };
 
