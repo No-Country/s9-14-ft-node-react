@@ -1,6 +1,5 @@
 const { Router } = require("express");
-const { addUserNewSubscription, deleteUserSubscription } = require("../controllers/subscription");
-
+const { addUserNewSubscription, deleteUserSubscription } = require("../controllers/subscriptions");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
@@ -14,7 +13,7 @@ const router = Router();
  * /api/activities/{id}/editSubscription:
  *    put:
  *     tags:
- *       - Subscription
+ *       - Subscriptions
  *     components:
  *       securitySchemes:
  *         bearerAuth:
@@ -70,7 +69,7 @@ router.put(
  * /api/activities/{id}/editSubscription:
  *    delete:
  *     tags:
- *       - Subscription
+ *       - Subscriptions
  *     components:
  *       securitySchemes:
  *         bearerAuth:
