@@ -160,46 +160,32 @@ router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAl
  *         description: Usuario con el ID especificado
  *         content:
  *           application/json:
- *             schema:
+ *              schema:
  *               type: object
  *               properties:
- *                 data:
+ *                 created:
+ *                   type: boolean
+ *                 activity:
  *                   type: object
  *                   properties:
- *                     _id:
- *                       type: string
- *                       example: "64a57eddab21e16190e32ed9"
  *                     name:
  *                       type: string
- *                       example: "Body Pump"
  *                     description:
  *                       type: string
- *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
  *                     image:
  *                       type: string
- *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
- *                     days:
+ *                     schedule:
+ *                       type: string
+ *                     trainer:
+ *                       type: string
+ *                     _id:
+ *                       type: string
+ *                     affiliates:
  *                       type: array
  *                       items:
  *                         type: string
- *                       example:
- *                         - "Jueves"
- *                         - "Viernes"
- *                     limit:
+ *                     __v:
  *                       type: number
- *                       example: 20
- *                     trainer:
- *                       type: object
- *                       properties:
- *                         _id:
- *                           type: string
- *                           example: "64a57edcab21e16190e32eca"
- *                         name:
- *                           type: string
- *                           example: "Usuario"
- *                         surname:
- *                           type: string
- *                           example: "Entrenador 2"
  */
 router.get(
   "/:id",
@@ -277,53 +263,31 @@ router.get(
  *             schema:
  *               type: object
  *               properties:
- *                 status:
- *                   type: string
- *                   example: OK
- *                 data:
+ *                 created:
+ *                   type: boolean
+ *                 activity:
  *                   type: object
  *                   properties:
- *                     created:
- *                       type: boolean
- *                       example: true
- *                     activity:
- *                       type: object
- *                       properties:
- *                         name:
- *                           type: string
- *                           example: Test
- *                         description:
- *                           type: string
- *                           example: String
- *                         image:
- *                           type: string
- *                           example: String
- *                         days:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: ["Lunes", "Martes"]
- *                         schedule:
- *                           type: string
- *                           example: String
- *                         limit:
- *                           type: integer
- *                           example: 20
- *                         trainer:
- *                           type: string
- *                           example: 64a57eddab21e16190e32ecc
- *                         affiliates:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: []
- *                         _id:
- *                           type: string
- *                           example: 64a82f71f8f93da6f7293944
- *                         __v:
- *                           type: integer
- *                           example: 0
+ *                     name:
+ *                       type: string
+ *                     description:
+ *                       type: string
+ *                     image:
+ *                       type: string
+ *                     schedule:
+ *                       type: string
+ *                     trainer:
+ *                       type: string
+ *                     _id:
+ *                       type: string
+ *                     affiliates:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                     __v:
+ *                       type: number
  */
+
 router.post(
   "/",
   [
@@ -350,7 +314,7 @@ router.post(
 /**
  * @openapi
  * /api/activities/{id}:
- *    put:
+ *   put:
  *     tags:
  *       - Activities
  *     components:
@@ -378,51 +342,67 @@ router.post(
  *         schema:
  *           type: string
  *         description: ID del usuario
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 example: Test
+ *               description:
+ *                 type: string
+ *                 example: String
+ *               image:
+ *                 type: string
+ *                 example: String
+ *               days:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: ["Lunes", "Martes"]
+ *               schedule:
+ *                 type: string
+ *                 example: String
+ *               limit:
+ *                 type: integer
+ *                 example: 20
+ *               trainer:
+ *                 type: string
+ *                 example: 64a57eddab21e16190e32ecc
  *     responses:
  *       200:
- *         description: Usuario con el ID especificado
+ *         description: Response de actividad creada
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 data:
+ *                 created:
+ *                   type: boolean
+ *                 activity:
  *                   type: object
  *                   properties:
- *                     _id:
- *                       type: string
- *                       example: "64a57eddab21e16190e32ed9"
  *                     name:
  *                       type: string
- *                       example: "Body Pump"
  *                     description:
  *                       type: string
- *                       example: "Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia..."
  *                     image:
  *                       type: string
- *                       example: "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg"
- *                     days:
+ *                     schedule:
+ *                       type: string
+ *                     trainer:
+ *                       type: string
+ *                     _id:
+ *                       type: string
+ *                     affiliates:
  *                       type: array
  *                       items:
  *                         type: string
- *                       example:
- *                         - "Jueves"
- *                         - "Viernes"
- *                     limit:
+ *                     __v:
  *                       type: number
- *                       example: 20
- *                     trainer:
- *                       type: object
- *                       properties:
- *                         _id:
- *                           type: string
- *                           example: "64a57edcab21e16190e32eca"
- *                         name:
- *                           type: string
- *                           example: "Usuario"
- *                         surname:
- *                           type: string
- *                           example: "Entrenador 2"
  */
 router.put(
   "/:id",
@@ -601,6 +581,7 @@ router.patch(
   ],
   addAffiliateInActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/removeAffiliate:
