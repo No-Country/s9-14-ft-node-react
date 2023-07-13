@@ -5,7 +5,9 @@ const {
   registerUser,
   updateUser,
   deleteUser,
-  setUserStatus
+  setUserStatus,
+  updateUserByToken,
+  updateUserById
 } = require("../controllers/users");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
@@ -325,7 +327,7 @@ router.post("/", registerUser);
  *               example:
  *                 {"message": "User updated successfully"}
  */
-router.put("/:id", updateUser);
+router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
 /**
  * @openapi
  * /api/users/{id}:
@@ -399,5 +401,7 @@ router.patch(
   ],
   setUserStatus
 );
+
+router.patch("/profile", [validateJWT, hasRole(["affiliate"])], updateUserByToken);
 
 module.exports = router;

@@ -1,3 +1,4 @@
+const { Timestamp } = require("mongodb");
 const mongoose = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
@@ -26,6 +27,9 @@ const UserSchema = new mongoose.Schema({
   phone: {
     type: Number
   },
+  phoneEmergency: {
+    type: Number
+  },
   role: {
     type: String,
     lowercase: true,
@@ -35,6 +39,18 @@ const UserSchema = new mongoose.Schema({
   subscriptions: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Subscription"
+  },
+  birthday: {
+    type: Date,
+    required: true
+  },
+  fitMedical: {
+    valid: {
+      type: Boolean
+    },
+    expire: {
+      type: Date
+    }
   }
 });
 
