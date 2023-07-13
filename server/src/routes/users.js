@@ -241,8 +241,8 @@ router.get("/:id", getUser);
 router.post("/", registerUser);
 /**
  * @openapi
- * /api/users/{id}:
- *   put:
+ * /api/users/{id}/profile:
+ *   patch:
  *     tags:
  *       - Users
  *     parameters:
@@ -389,7 +389,94 @@ router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
  *                 {"message": "User delete successfully"}
  */
 router.delete("/:id", deleteUser);
-
+/**
+ * @openapi
+ * /api/users/{id}/setStatus:
+ *   patch:
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     requestBody:
+ *       description: Actualizacion del usuario
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               active:
+ *                 type: boolean
+ *               phone:
+ *                 type: number
+ *               role:
+ *                 type: string
+ *                 enum: [admin, trainer, affiliate]
+ *               subscriptions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: []
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newUser:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: string
+ *                         surname:
+ *                           type: string
+ *                           example: string
+ *                         email:
+ *                           type: string
+ *                           example: string
+ *                         password:
+ *                           type: string
+ *                           example: string
+ *                         active:
+ *                           type: boolean
+ *                           example: true
+ *                         phone:
+ *                           type: number
+ *                           example: 0
+ *                         role:
+ *                           type: string
+ *                           enum: [admin, trainer, affiliate]
+ *                           example: admin
+ *                         subscriptions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                         __v:
+ *                           type: number
+ *               example:
+ *                 {"message": "User updated successfully"}
+ */
 router.patch(
   "/:id/setStatus",
   [
@@ -401,7 +488,94 @@ router.patch(
   ],
   setUserStatus
 );
-
+/**
+ * @openapi
+ * /api/users/profile:
+ *   patch:
+ *     tags:
+ *       - Users
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
+ *     requestBody:
+ *       description: Actualizacion del usuario
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               active:
+ *                 type: boolean
+ *               phone:
+ *                 type: number
+ *               role:
+ *                 type: string
+ *                 enum: [admin, trainer, affiliate]
+ *               subscriptions:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                 example: []
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newUser:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: string
+ *                         surname:
+ *                           type: string
+ *                           example: string
+ *                         email:
+ *                           type: string
+ *                           example: string
+ *                         password:
+ *                           type: string
+ *                           example: string
+ *                         active:
+ *                           type: boolean
+ *                           example: true
+ *                         phone:
+ *                           type: number
+ *                           example: 0
+ *                         role:
+ *                           type: string
+ *                           enum: [admin, trainer, affiliate]
+ *                           example: admin
+ *                         subscriptions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                         __v:
+ *                           type: number
+ *               example:
+ *                 {"message": "User updated successfully"}
+ */
 router.patch("/profile", [validateJWT, hasRole(["affiliate"])], updateUserByToken);
 
 module.exports = router;
