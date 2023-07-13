@@ -59,10 +59,13 @@ const registerUser = async (req, res) => {
   }
 };
 
-const updateUser = async (req, res) => {
+const updateUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const updates = req.body;
+    const { password, ...updates } = req.body;
+    delete updates._id;
+    delete updates.__v;
+    delete updates.status;
 
     const user = await User.findById(id);
 
@@ -70,9 +73,14 @@ const updateUser = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
+    if (password) {
+      const salt = await bcrypt.genSalt();
+      updates.password = await bcrypt.hash(password, salt);
+    }
 
-    res.status(200).json({ message: "User updated successfully" });
+    const userUpdated = await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
+
+    res.status(200).json({ message: "User updated successfully", userUpdated });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -114,4 +122,42 @@ const setUserStatus = async (req, res) => {
   }
 };
 
-module.exports = { getUsers, getUser, registerUser, updateUser, deleteUser, setUserStatus };
+const updateUserByToken = async (req, res) => {
+  const { id } = req.user;
+  const { password, ...updates } = req.body;
+  delete updates._id;
+  delete updates.__v;
+  delete updates.subscriptions;
+  delete updates.role;
+  delete updates.status;
+  delete updates.fitMedical;
+
+  try {
+    const user = await User.findById(id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (password) {
+      const salt = await bcrypt.genSalt();
+      updates.password = await bcrypt.hash(password, salt);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(id, updates, { new: true });
+
+    res.status(200).json({ message: "User updated successfully", updatedUser });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = {
+  getUsers,
+  getUser,
+  registerUser,
+  updateUserById,
+  deleteUser,
+  setUserStatus,
+  updateUserByToken
+};
