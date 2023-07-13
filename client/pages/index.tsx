@@ -35,7 +35,7 @@ export default function Home() {
               <Link href="/actividades" className={style.a}>Actividades</Link>
               <Link href="/sedes" className={style.a}>Sedes</Link>
             </nav>
-            <button className={style.heading_button}>Iniciar Sesion</button>
+            <Link href="/login" className={style.heading_button}>Iniciar Sesion</Link>
             <button className={style.burger_button} onClick={handleToggleMenu}> 
             {!isOpen ? <Image src={button_burger}/> : <Image src={button_burger_close}/>}
             </button>
