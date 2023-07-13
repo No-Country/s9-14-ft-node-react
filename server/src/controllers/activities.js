@@ -134,6 +134,12 @@ const addAffiliateInActivity = async (req, res) => {
   const { id } = req.params;
 
   try {
+    const activity = await Activity.findById(id);
+    const quota = activity.vacancies[day];
+    if (quota < 1) {
+      return res.status(400).json({ msg: "sold out" });
+    }
+
     await Activity.updateOne(
       { _id: id },
       {
@@ -158,8 +164,15 @@ const addAffiliateInActivity = async (req, res) => {
 const addAffiliateInActivityFromBack = async (req, res) => {
   const { day, affiliateId } = req.body;
   const { id } = req.params;
-  console.log(id);
+
   try {
+    const activity = await Activity.findById(id);
+    const quota = activity.vacancies[day];
+
+    if (quota < 1) {
+      return res.status(400).json({ msg: "sold out" });
+    }
+
     await Activity.updateOne(
       { _id: id },
       {
