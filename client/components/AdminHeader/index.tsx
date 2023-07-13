@@ -1,148 +1,72 @@
 import style from "./style.module.scss";
 import { Icons } from "../Icons";
+import { Search } from "../Search";
+import { UserPhoto } from "../UserPhoto";
+import burgerSvg from '@/public/menuburger.svg'
+import closeSvg from '@/public/close.svg'
+import alertSvg from '@/public/alert.svg'
 import Image from "next/image";
-import entrenadores from "../../public/entrenadores.png";
-import adtividades from "../../public/adtividades .png";
-import icon_florian from "../../public/icon_florian.png";
-import Foto from "../../public/Foto.png";
-import miembros from "../../public/miembros.png";
-import sedes from "../../public/sedes.png";
+import { useState } from "react";
+import { AdminNav } from "../AdminNav";
 
-const { Burger } = Icons;
 
-export function AdminHeader() {
+const { Logo, Exit } = Icons;
+
+export function AdminHeader({placeholder}: {placeholder: string}) {
+  const [isActive, setIsActive] = useState(false)
+
   return (
     <>
       <header className={style.header}>
-        <div>
-          <input type="search" placeholder="buscar" className={style.search} />
+        <div className={style.user}>
+          <div className={style.icons}>
+            <Logo className={style.logo} />
+            <div className={style.picture}>
+            <span className={style.data}>
+              <UserPhoto src="/user.png" />
+              <span>
+                <h4>Luka Gonzales</h4>
+                <small>Admin</small>
+              </span>
+            </span>
+            <Image src={alertSvg} alt="alert" className={style.alert} />
+          </div>
+          </div>
         </div>
-        <div>
-          <Burger className={style.burger} />
+
+        <div className={style.menu}>
+          <Search placeholder={placeholder} />
+          <Image src={burgerSvg} className={style.burger} onClick={()=> setIsActive(!isActive)} alt="burgermenu" />
         </div>
       </header>
-      <section className={style.container_image}>
-        <div>
-          <Image src={miembros} alt="" width={174} height={100} className={style.miembros} />
 
-          <Image src={entrenadores} alt="" width={174} height={100} className="" />
-        </div>
-        <div>
-          <Image src={sedes} alt="" width={174} height={100} className={style.sedes} />
+    {
+      isActive ? 
+      <div className={style.active_menu}>
+        <span>
+          <h2>Menu</h2>
+          <Image src={closeSvg} className={style.icon} onClick={()=> setIsActive(!isActive)} alt="close" />
+        </span>
+        <div className={style.active_items}>
+          <AdminNav />
+          <div className={style.others}>
+            <ul className={style.list}>
+              <li className={style.item}>
+                <div className={style.exit} onClick={()=> {}}>
+                <Exit className={style.icons} />
+                <p>
+                  Salir
+                </p>
+                </div>
+              </li>
+            </ul>
+          </div>
+      </div>
+      </div>
+      : null
+    }
 
-          <Image src={sedes} alt="" width={174} height={100} className="" />
-        </div>
-      </section>
-      <section className={style.miembro_container}>
-        <div>
-          <h2 className={style.h2_entrenadores}>Entrenadores</h2>
-        </div>
-        <div className={style.entrenadores_container}>
-          <Image src={icon_florian} alt="" width={40} height={40} className={style.img} />
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <div className={style.entrenadores_container}>
-          <Image src={icon_florian} alt="" width={40} height={40} className={style.img} />
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <div className={style.entrenadores_container}>
-          <Image src={icon_florian} alt="" width={40} height={40} className={style.img} />
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <button className={style.btn}>Ver todos</button>
-      </section>
-      <section className={style.adtividades_container}>
-        <div>
-          <h2 className={style.h2_adtividades}>Adtividades</h2>
-        </div>
-        <div className={style.adtividades_container_p}>
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <div className={style.adtividades_container_p}>
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <div className={style.adtividades_container_p}>
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <div className={style.adtividades_container_p}>
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <div className={style.adtividades_container_p}>
-          <h5>Florian B</h5>
-          <span>activo</span>
-          <p>Ver mas</p>
-        </div>
-        <button className={style.btn_adtiv}>Ver todos</button>
-      </section>
-      <section className={style.search_client}>
-        <h4>Todos los miembros</h4>
-        <p>Gestiona y añade nuevos miembros</p>
-        <div className={style.container_btn}>
-          <input type="search" placeholder="Buscar miembros" />
-          <button className={style.btn_buscar}>Filter</button>
-        </div>
-        <hr className={style.hr} />
-        <div className={style.container_img}>
-          <div className={style.img_span}>
-            <Image src={Foto} alt="" width={30} height={30} className="" />
-            <span className={style.span}>El pistolero</span>
-            <button>Al dia</button>
-          </div>
-          <div className={style.p_p}>
-            <span>Mensual</span>
-            <span>Florian</span>
-            <span>Detalles</span>
-          </div>
-          <hr className={style.hr} />
-        </div>
-        <div className={style.container_img}>
-          <div className={style.img_span}>
-            <Image src={Foto} alt="" width={30} height={30} className="" />
-            <span className={style.span}>El pistolero</span>
-            <button>Al dia</button>
-          </div>
-          <div className={style.p_p}>
-            <span>Mensual</span>
-            <span>Florian</span>
-            <span>Detalles</span>
-          </div>
-        </div>
-        <hr className={style.hr} />
-        <div className={style.container_img}>
-          <div className={style.img_span}>
-            <Image src={Foto} alt="" width={30} height={30} className="" />
-            <span className={style.span}>El pistolero</span>
-            <button>Al dia</button>
-          </div>
-          <div className={style.p_p}>
-            <span>Mensual</span>
-            <span>Florian</span>
-            <span>Detalles</span>
-          </div>
-        </div>
-        <hr className={style.hr} />
-      </section>
-      <section className={style.pagination}>
-        <h3 className={style.pagination_h3_l}>Previous Page</h3>
-        <span className={style.pagination_p}>1</span>
-        <span className={style.pagination_p}>2</span>
-        <span className={style.pagination_p}>3</span>
-        <h3 className={style.pagination_h3_r}>Next Page</h3>
-      </section>
+      
     </>
   );
 }
