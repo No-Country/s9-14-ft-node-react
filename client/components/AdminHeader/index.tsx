@@ -12,7 +12,7 @@ import { AdminNav } from "../AdminNav";
 
 const { Logo, Exit } = Icons;
 
-export function AdminHeader({placeholder}: {placeholder: string}) {
+export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSearch: ()=> void}) {
   const [isActive, setIsActive] = useState(false)
 
   return (
@@ -35,7 +35,7 @@ export function AdminHeader({placeholder}: {placeholder: string}) {
         </div>
 
         <div className={style.menu}>
-          <Search placeholder={placeholder} />
+          <Search onSearch={onSearch} placeholder={placeholder} />
           <Image src={burgerSvg} className={style.burger} onClick={()=> setIsActive(!isActive)} alt="burgermenu" />
         </div>
       </header>
@@ -44,11 +44,11 @@ export function AdminHeader({placeholder}: {placeholder: string}) {
       isActive ? 
       <div className={style.active_menu}>
         <span>
-          <h2>Menu</h2>
+          <h2>MENU</h2>
           <Image src={closeSvg} className={style.icon} onClick={()=> setIsActive(!isActive)} alt="close" />
         </span>
         <div className={style.active_items}>
-          <AdminNav />
+          <AdminNav invert={true} />
           <div className={style.others}>
             <ul className={style.list}>
               <li className={style.item}>
