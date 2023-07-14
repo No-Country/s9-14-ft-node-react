@@ -26,6 +26,23 @@ const getActivity = async (req, res) => {
   }
 };
 
+const getTrainerActivities = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const trainerActivities = await Activity.find({ trainer: id }).populate(
+      "trainer",
+      "-password -subscriptions -__v"
+    );
+
+    !trainerActivities.length
+      ? res.status(404).json({ message: "The trainer is not in charge of any activity yet." })
+      : res.status(200).json(trainerActivities);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
+
 const addActivity = async (req, res) => {
   const { body } = req;
 
@@ -321,5 +338,6 @@ module.exports = {
   getAffiliatesInActivity,
   getVacanciesOfActivity,
   setVacancies,
-  removeDay
+  removeDay,
+  getTrainerActivities
 };
