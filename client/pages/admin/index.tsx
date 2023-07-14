@@ -1,13 +1,14 @@
-import { AdminNav } from "@/components/AdminNav";
 import { AdminHeader } from "@/components/AdminHeader";
 import styles from '@/styles/pages/admin.module.scss'
+import { AsideBar } from "@/components/AsideBar";
 
 export default function AdminDashboard () {
   return (
     <main className={styles.main}>
-      <AdminNav />
+      <AsideBar />
       <section className={styles.content}>
-        <AdminHeader />
+        <AdminHeader placeholder="Buscar usuarios, miembros, actividades..." />
+  
       </section>
     </main>
   )

@@ -1,205 +1,216 @@
-@import "@/styles/_variables.scss";
+@import "@/styles/variables.scss";
 
 .header {
-  display: flex;
-
-  // position: relative;
-  align-items: center;
-  justify-content: space-between;
-  height: 34px;
-  margin-bottom: 4rem;
-
-  // border: 1px solid red;
   width: 100%;
-  .search {
-    display: flex;
-    width: 15rem;
-    height: 2rem;
-  }
-  .burger {
-    display: flex;
-    align-items: center;
-    margin-left: 5rem;
-  }
+  font-family: 'Montserrat';
 
-  @media screen and (min-width: 600px) {
-    display: none;
-  }
-}
-
-.container_image {
-  display: flex;
-  margin-left: 6px;
-  position: relative;
-
-  .miembros {
-    display: flex;
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-  }
-  .sedes {
-    display: flex;
-    margin-bottom: 1rem;
-    // position: relative;
-  }
-}
-
-.miembro_container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 6px;
-  margin-top: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  width: 22.7rem;
-  height: 16rem;
-  background-color: #ff8a00;
-  .h2_entrenadores {
-    display: flex;
-    margin-top: 10px;
-    align-items: center;
-    justify-content: center;
-    color: white;
-  }
-  .entrenadores_container {
-    display: flex;
-    width: 20rem;
-    margin: 0 0 1rem 0;
-    align-items: center;
-    justify-content: space-between;
-
-    .img {
-      background-color: white;
-      border: 3px solid #fff;
-      border-radius: 50%;
-    }
-  }
-  .btn {
-    background-color: white;
-    color: black;
-    width: 4rem;
-    height: 1.5rem;
-    margin-bottom: 6px;
-    border: none;
-    border-radius: 3px;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.adtividades_container {
-  display: flex;
-  flex-direction: column;
-  margin-left: 6px;
-  margin-top: 1rem;
-  align-items: center;
-  justify-content: center;
-  width: 22.7rem;
-  height: 16rem;
-  background-color: white;
-
-  .h2_adtividades {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgb(82, 81, 81);
-    margin-bottom: 1rem;
-  }
-  .adtividades_container_p {
-    display: flex;
-    width: 20rem;
-    margin: 0 0 1rem 0;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .btn_adtiv {
-    background-color: #ff8a00;
-    color: white;
-    width: 4rem;
-    height: 1.5rem;
-    margin-bottom: 6px;
-    border: none;
-    border-radius: 3px;
-    align-items: center;
-    justify-content: center;
-  }
-}
-
-.search_client {
-  display: flex;
-  flex-direction: column;
-  margin-top: 1rem;
-  color: white;
-  align-items: center;
-  justify-content: space-between;
-
-  .container_btn {
-    display: flex;
-    margin-top: 1rem;
-    .btn_buscar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background-color: transparent;
-      color: whitesmoke;
-      border: 1px solid whitesmoke;
-      width: 4rem;
-      height: 2rem;
-      margin-left: 1rem;
-    }
-  }
-  .hr {
-    color: white;
-    margin-top: 1rem;
+  .user {
     width: 100%;
+    height: fit-content;
+    
+    .icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      
+      .logo {
+        scale: .3;
+        color: white;
+      }
+
+    }
+
+    .burger {
+      color: white;
+    }
+
+    .data {
+      color: $white;
+      display: flex;
+
+      h4 {
+        font-family: 'Manrope';
+        display: none;
+      }
+
+      small {
+        opacity: .5;
+        display: none;
+      }
+
+      span {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .alert {
+      color: $white;
+      display: none;
+    }
+
+    .picture {
+      display: flex;
+    }
+
   }
 
-  .container_img {
-    width: 22rem;
+  .menu {
+    display: flex; 
+    gap: 10px;
+
+    .burger {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
+
+@media (min-width: $lg) {
+  .header {
+    display: flex;
+    padding: 30px;
+    width: 100%;
+    justify-content: space-around;
+    .burger, .logo {
+      display: none;
+    }
+  
+    .user {
+      order: 2;
+      width: fit-content;
+      white-space: nowrap;
+      
+      .icons {
+        width: fit-content;
+
+        .alert {
+          display: inline-block;
+          margin-left: 20px;
+        }
+      }
+
+      .data {
+        h4, small {
+          display: inline-block;
+        }
+      }
+    }
+
+    .menu {
+      order: 1;
+      width: 650px;
+    }
+  }
+}
+.active_menu {
+  opacity: 0;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.active_menu {
+  width: 100vw;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  background-color: $black;
+  height: 100%;
+  animation: fade-in 0.5s ease-in-out forwards;
+
+
+  .list {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    width: 200px;
+    padding: 5px;
+    list-style-type: none;
+    margin: 0 auto;
+    gap: 1rem;
 
-    .img_span {
-      display: flex;
-      width: 22rem;
-      margin-top: 1rem;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .p_p {
-      display: flex;
-      width: 22rem;
-      margin-top: 1rem;
-      align-items: center;
-      justify-content: space-between;
-    }
-  }
-}
-.pagination {
-  display: flex;
-  margin-top: 1rem;
-  margin-left: 0.5rem;
-  width: 22rem;
-  height: 2.75rem;
-  align-items: center;
-  justify-content: space-evenly;
+    .item {
+      color: $white;
+      border-radius: 5px;
+      
+      .icons {
+        width: 30px;
+        height: fit;
+        margin-right: 15px;
+        color: $white;
+      }
+      
+      .exit, .link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $white;
+        line-height: 1.5;
 
-  background-color: whitesmoke;
-  color: white;
-  .pagination_h3_l {
-    color: rgb(190, 187, 187);
-    font-size: 1rem;
+        p {
+          margin: 0;
+          display: inline-block;
+          
+        }
+      }
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+        cursor: pointer;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+
+      &.active {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+    }
   }
-  .pagination_h3_r {
-    color: rgb(58, 57, 57);
-    font-size: 1rem;
+
+  span {
+    font-weight: 600;
+    font-family: 'Montserrat';
+    color: $white;
+    padding: 20px;
+    text-align: center;
+
+    .icon {
+      border: 1px solid $orange; 
+      padding: 3px;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      width: 48px;
+      height: 48px;     
+    }
   }
-  .pagination_p {
-    color: rgb(58, 57, 57);
-    padding: 0 3px;
-    border: 1px solid rgb(190, 187, 187);
-    border-radius: 50%;
+
+  @media (min-width: $lg) {
+    display: none;
   }
 }

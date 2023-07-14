@@ -1,26 +1,77 @@
-@import "@/styles/_variables.scss";
-
-.aside {
-  display: inline-block;
-}
+@import "@/styles/variables.scss";
 
 .nav {
-  width: 277px;
-  background-color: $white;
-  height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  display: none;
-  border-radius: 10px;
+  margin-top: 10rem;
 
-  @media screen and (min-width: 1024px) {
-    display: flex
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 5px;
+    list-style-type: none;
+    margin: 0 auto;
+    gap: 1rem;
+
+    .item {
+      color: $white;
+      border-radius: 5px;
+
+      .icons {
+        width: 30px;
+        height: fit;
+        margin-right: 15px;
+        color: $white;
+      }
+      
+      .exit, .link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $white;
+        line-height: 1.5;
+
+        p {
+          margin: 0;
+          display: inline-block;
+        }
+
+      }
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+
+      &.active {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+    }
   }
 
-  .logo {
-    background-color: transparent;
-  }
+}
+
+@media (min-width: $lg) {
+.nav {
+  margin-top: 0;
 
   .list {
     display: flex;
@@ -34,11 +85,12 @@
     .item {
       color: $opaque-gray;
       border-radius: 5px;
-      
+
       .icons {
         width: 30px;
         height: fit;
         margin-right: 15px;
+        color: black;
       }
       
       .exit, .link {
@@ -61,7 +113,7 @@
         color: $white;
 
         .icons {
-          mix-blend-mode: screen;
+          color: white;
         }
 
         .link {
@@ -74,7 +126,7 @@
         color: $white;
 
         .icons {
-          mix-blend-mode: screen;
+          color: white;
         }
 
         .link {
@@ -85,8 +137,4 @@
   }
 
 }
-
-.exit {
-  cursor: pointer;
 }
-
