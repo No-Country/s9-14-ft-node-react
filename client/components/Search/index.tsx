@@ -4,10 +4,11 @@ import { useEffect, useState } from "react"
 
 const { Search: Icon } = Icons
 
-export function Search ({className, placeholder} : {className?: string, placeholder: string}) { //Should receive a prop to filter the search and extra styles
+export function Search ({className, placeholder, onSearch} : {className?: string, placeholder: string, onSearch: ()=> void}) { //Should receive a prop to filter the search and extra styles
   const [value, setValue] = useState('')
 
   useEffect(()=> {
+    // onSearch(value)
     console.log(value)
   }, [value])
 
