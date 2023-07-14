@@ -44,7 +44,7 @@ const mongoose = require("mongoose");
  *                 type: array
  *                 items:
  *                   type: string
- *                   enum: [lunes, martes, miércoles, jueves, viernes]
+ *                   enum: [lunes, martes, miércoles, jueves, viernes, sábado]
  *                 description: Un arreglo con los días asignados para realizar el ejercicio.
  *       example:
  *         _id: '64ad746f054ad30dc0fd2104'
@@ -94,7 +94,7 @@ const TrainingPlanSchema = new mongoose.Schema({
       },
       days: {
         type: [String],
-        enum: ["lunes", "martes", "miércoles", "jueves", "viernes"],
+        enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
         required: true
       }
     }
