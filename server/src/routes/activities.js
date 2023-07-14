@@ -201,7 +201,7 @@ router.get(
 );
 
 router.get(
-  "/user/:id",
+  "/trainer/:id",
   [
     validateJWT,
     hasRole(["trainer", "affiliate"]),
