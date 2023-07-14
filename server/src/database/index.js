@@ -6,12 +6,13 @@ const seedDb = require("../seeders");
 require("dotenv").config();
 
 const MONGO_URI = process.env.MONGO_URI;
+const CLUSTER_URI = process.env.CLUSTER_URI;
 
 const connectAndPopulateDb = async () => {
   // connect to the db
   try {
     await mongoose
-      .connect(MONGO_URI)
+      .connect(CLUSTER_URI)
       .then(() => console.log("Database connected successfully!"))
       .catch(error => console.error(`Database connection error: ${error}`));
 
