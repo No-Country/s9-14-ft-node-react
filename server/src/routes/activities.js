@@ -15,7 +15,8 @@ const {
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
   setVacancies,
-  removeDay
+  removeDay,
+  getTrainerActivities
 } = require("../controllers/activities");
 const { activityExistById, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 const {
@@ -197,6 +198,17 @@ router.get(
     validateFields
   ],
   getActivity
+);
+
+router.get(
+  "/user/:id",
+  [
+    validateJWT,
+    hasRole(["trainer", "affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  getTrainerActivities
 );
 
 /**
