@@ -1131,8 +1131,8 @@ router.patch(
     affiliateNotEnrolledFromBack,
     body(
       "day",
-      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
-    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]),
     dayExistInActivity,
     validateFields
   ],

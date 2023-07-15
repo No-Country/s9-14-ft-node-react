@@ -19,7 +19,10 @@ const ActivitySchema = new mongoose.Schema({
   schedule: {
     type: Object
   },
-  vacancies: {
+  freeVacancies: {
+    type: Object
+  },
+  totalVacancies: {
     type: Object
   },
   trainer: {

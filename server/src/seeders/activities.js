@@ -9,7 +9,11 @@ const activitiesToSeed = [
       lunes: "08:00-10:00",
       martes: "11:00-12:00"
     },
-    vacancies: {
+    freeVacancies: {
+      lunes: 10,
+      martes: 20
+    },
+    totalVacancies: {
       lunes: 10,
       martes: 20
     },
@@ -24,7 +28,10 @@ const activitiesToSeed = [
     schedule: {
       martes: "08:00-09:00"
     },
-    vacancies: {
+    freeVacancies: {
+      martes: 20
+    },
+    totalVacancies: {
       martes: 20
     },
     trainer: {}
@@ -37,7 +44,10 @@ const activitiesToSeed = [
     schedule: {
       miércoles: "08:00-09:00"
     },
-    vacancies: {
+    freeVacancies: {
+      miercoles: 20
+    },
+    totalVacancies: {
       miercoles: 20
     },
     trainer: {}
@@ -50,7 +60,10 @@ const activitiesToSeed = [
     schedule: {
       jueves: "08:00-09:00"
     },
-    vacancies: {
+    freeVacancies: {
+      jueves: 20
+    },
+    totalVacancies: {
       jueves: 20
     },
     trainer: {}
@@ -64,7 +77,10 @@ const activitiesToSeed = [
     schedule: {
       viernes: "08:00-09:00"
     },
-    vacancies: {
+    freeVacancies: {
+      viernes: 20
+    },
+    totalVacancies: {
       viernes: 20
     },
     trainer: {}
@@ -78,7 +94,10 @@ const activitiesToSeed = [
     schedule: {
       lunes: "11:00-12:00"
     },
-    vacancies: {
+    freeVacancies: {
+      lunes: 20
+    },
+    totalVacancies: {
       lunes: 20
     },
     trainer: {}
@@ -91,8 +110,11 @@ const activitiesToSeed = [
     schedule: {
       martes: "13:00-14:00"
     },
-    vacancies: {
+    freeVacancies: {
       martes: 20
+    },
+    totalVacancies: {
+      lunes: 20
     },
     trainer: {}
   },
@@ -105,8 +127,11 @@ const activitiesToSeed = [
     schedule: {
       miércoles: "10:00-11:00"
     },
-    vacancies: {
+    freeVacancies: {
       miércoles: 20
+    },
+    totalVacancies: {
+      lunes: 20
     },
     trainer: {}
   },
@@ -118,7 +143,10 @@ const activitiesToSeed = [
     schedule: {
       jueves: "15:00-16:00"
     },
-    vacancies: {
+    freeVacancies: {
+      jueves: 20
+    },
+    totalVacancies: {
       jueves: 20
     },
     trainer: {}
@@ -131,7 +159,10 @@ const activitiesToSeed = [
     schedule: {
       viernes: "16:00-17:00"
     },
-    vacancies: {
+    freeVacancies: {
+      viernes: 20
+    },
+    totalVacancies: {
       viernes: 20
     },
     trainer: {}
