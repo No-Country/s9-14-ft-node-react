@@ -9,9 +9,13 @@ const activitiesToSeed = [
       lunes: "08:00-10:00",
       martes: "11:00-12:00"
     },
-    vacancies: {
+    freeVacancies: {
       lunes: 20,
-      martes: 10
+      martes: 20
+    },
+    totalVacancies: {
+      lunes: 20,
+      martes: 20
     },
     trainer: {}
   },
@@ -24,8 +28,11 @@ const activitiesToSeed = [
     schedule: {
       martes: "08:00-10:00"
     },
-    vacancies: {
-      martes: 15
+    freeVacancies: {
+      martes: 20
+    },
+    totalVacancies: {
+      martes: 20
     },
     trainer: {}
   },
@@ -38,8 +45,12 @@ const activitiesToSeed = [
       miércoles: "08:00-09:00",
       jueves: "10:00-12:00"
     },
-    vacancies: {
-      miércoles: 10,
+    freeVacancies: {
+      miércoles: 20,
+      jueves: 20
+    },
+    totalVacancies: {
+      miércoles: 20,
       jueves: 20
     },
     trainer: {}
@@ -53,8 +64,12 @@ const activitiesToSeed = [
       jueves: "08:00-09:00",
       viernes: "11:00-13:00"
     },
-    vacancies: {
-      jueves: 10,
+    freeVacancies: {
+      jueves: 20,
+      viernes: 20
+    },
+    totalVacancies: {
+      jueves: 20,
       viernes: 20
     },
     trainer: {}
@@ -68,8 +83,11 @@ const activitiesToSeed = [
     schedule: {
       viernes: "08:00-10:00"
     },
-    vacancies: {
-      viernes: 15
+    freeVacancies: {
+      viernes: 20
+    },
+    totalVacancies: {
+      viernes: 20
     },
     trainer: {}
   },
@@ -82,7 +100,10 @@ const activitiesToSeed = [
     schedule: {
       sábado: "11:00-13:00"
     },
-    vacancies: {
+    freeVacancies: {
+      sábado: 20
+    },
+    totalVacancies: {
       sábado: 20
     },
     trainer: {}
@@ -94,11 +115,15 @@ const activitiesToSeed = [
     image: "https://www.ispo.com/sites/default/files/2020-02/TRX%20%28Lucky%20Business%29.jpg",
     schedule: {
       lunes: "13:00-14:00",
-      miércoles: "16:00-18:00"
+      martes: "16:00-18:00"
     },
-    vacancies: {
-      lunes: 10,
-      miércoles: 20
+    freeVacancies: {
+      lunes: 20,
+      martes: 20
+    },
+    totalVacancies: {
+      lunes: 20,
+      martes: 20
     },
     trainer: {}
   },
@@ -109,12 +134,13 @@ const activitiesToSeed = [
     image:
       "https://www.sinburpeesenmiwod.com/wp-content/uploads/2021/08/Competir-crossfit-SBEMW.jpg",
     schedule: {
-      miércoles: "10:00-12:00",
-      sábado: "15:00-16:00"
+      miércoles: "10:00-12:00"
     },
-    vacancies: {
-      miércoles: 20,
-      sábado: 10
+    freeVacancies: {
+      miércoles: 20
+    },
+    totalVacancies: {
+      miércoles: 20
     },
     trainer: {}
   },
@@ -124,11 +150,12 @@ const activitiesToSeed = [
       "Es una actividad que se basa en realizar ejercicios que imitan los movimientos o trabajos físicos de la vida cotidiana, se utiliza el peso corporal y accesorios tales como poleas, mancuernas, pelotas medicinales, trampolines, conos, colchonetas, bandas elásticas y steps, ente otros. Sus practicantes mejoran la postura, el control del cuerpo, la fuerza y dan tono a su cuerpo.",
     image: "https://ftsalud.com/wp-content/uploads/2022/06/GettyImages-840886788.jpg",
     schedule: {
-      martes: "18:00-20:00",
       jueves: "15:00-17:00"
     },
-    vacancies: {
-      martes: 20,
+    freeVacancies: {
+      jueves: 20
+    },
+    totalVacancies: {
       jueves: 20
     },
     trainer: {}
@@ -142,9 +169,13 @@ const activitiesToSeed = [
       viernes: "18:00-20:00",
       sábado: "09:00-10:00"
     },
-    vacancies: {
+    freeVacancies: {
       viernes: 20,
-      sábado: 10
+      sábado: "09:00-10:00"
+    },
+    totalVacancies: {
+      viernes: 20,
+      sábado: "09:00-10:00"
     },
     trainer: {}
   }

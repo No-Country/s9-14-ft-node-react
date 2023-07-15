@@ -4,6 +4,7 @@ const cors = require("cors");
 const rootRouter = require("./routes");
 const swaggerDocs = require("./swagger");
 const connectAndPopulateDb = require("./database");
+const refreshVacancies = require("./tasks/refreshVacancies");
 require("dotenv").config();
 
 const app = express();
@@ -22,6 +23,7 @@ app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
   swaggerDocs(app, PORT);
   connectAndPopulateDb();
+  refreshVacancies();
 });
 
 module.exports = app;

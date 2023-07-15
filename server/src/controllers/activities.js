@@ -44,10 +44,13 @@ const getTrainerActivities = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
-  const { body } = req;
+  const { vacancies, ...data } = req.body;
 
   try {
-    const activity = await Activity.create(body);
+    data.totalVacancies = vacancies;
+    data.freeVacancies = vacancies;
+
+    const activity = await Activity.create(data);
     res.status(201).json({ created: true, activity });
   } catch (error) {
     console.log(error);
@@ -152,7 +155,7 @@ const addAffiliateInActivity = async (req, res) => {
 
   try {
     const activity = await Activity.findById(id);
-    const quota = activity.vacancies[day];
+    const quota = activity.freeVacancies[day];
     if (quota < 1) {
       return res.status(400).json({ msg: "sold out" });
     }
@@ -164,7 +167,7 @@ const addAffiliateInActivity = async (req, res) => {
           affiliates: { affiliate, day }
         },
         $inc: {
-          [`vacancies.${day}`]: -1
+          [`freeVacancies.${day}`]: -1
         }
       }
     );
@@ -184,7 +187,8 @@ const addAffiliateInActivityFromBack = async (req, res) => {
 
   try {
     const activity = await Activity.findById(id);
-    const quota = activity.vacancies[day];
+
+    const quota = activity.freeVacancies[day];
 
     if (quota < 1) {
       return res.status(400).json({ msg: "sold out" });
@@ -197,7 +201,7 @@ const addAffiliateInActivityFromBack = async (req, res) => {
           affiliates: { affiliate: affiliateId, day }
         },
         $inc: {
-          [`vacancies.${day}`]: -1
+          [`freeVacancies.${day}`]: -1
         }
       }
     );
@@ -224,7 +228,7 @@ const removeAffiliateOfActivity = async (req, res) => {
           affiliates: { affiliate, day }
         },
         $inc: {
-          [`vacancies.${day}`]: 1
+          [`freeVacancies.${day}`]: 1
         }
       }
     );
@@ -250,7 +254,7 @@ const removeAffiliateOfActivityFromBack = async (req, res) => {
           affiliates: { affiliate: affiliateId, day }
         },
         $inc: {
-          [`vacancies.${day}`]: 1
+          [`freeVacancies.${day}`]: 1
         }
       }
     );
@@ -288,7 +292,7 @@ const getVacanciesOfActivity = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const activity = await Activity.findById(id).select("name vacancies");
+    const activity = await Activity.findById(id).select("name freeVacancies");
     res.json(activity);
   } catch (error) {
     console.log(error);
