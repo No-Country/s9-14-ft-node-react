@@ -42,6 +42,8 @@ export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSea
 
     {
       isActive ? 
+      <div>
+
       <div className={style.active_menu}>
         <span>
           <h2>MENU</h2>
@@ -61,6 +63,7 @@ export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSea
               </li>
             </ul>
           </div>
+      </div>
       </div>
       </div>
       : null

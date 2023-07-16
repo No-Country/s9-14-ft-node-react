@@ -123,7 +123,7 @@
   top: 100px;
   left: 0;
   background-color: $black;
-  height: 100%;
+  height: calc(100% - 100px);
   animation: fade-in 0.5s ease-in-out forwards;
 
 
@@ -140,6 +140,48 @@
       color: $white;
       border-radius: 5px;
       
+      .exit {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $white;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        border-radius: 5px;
+
+        &::before {
+          content: '';
+          width: 200vw;
+          height: 1px;
+          background-color: $white;
+          position: absolute;
+          right: -50%;
+          transform: translateX(50%);
+          bottom: 100%;
+        }
+
+        &:hover {
+        background-color: $orange;
+        color: $white;
+        cursor: pointer;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+      }
+
       .icons {
         width: 30px;
         height: fit;
@@ -147,7 +189,7 @@
         color: $white;
       }
       
-      .exit, .link {
+      .link {
         display: flex;
         align-items: center;
         padding: 10px;
