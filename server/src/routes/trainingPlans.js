@@ -1,9 +1,16 @@
 const { Router } = require("express");
-const { getUserTrainingPlan } = require("../controllers/trainingPlans");
+const {
+  getUserTrainingPlan,
+  getAllUserTrainingPlan,
+  createUserTrainingPlan,
+  deleteTrainingPlan,
+  updateTrainingPlan
+} = require("../controllers/trainingPlans");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
-const { param } = require("express-validator");
+const { body, param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
+const { idIsNotAdmin,idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 
 const router = Router();
 
@@ -57,5 +64,46 @@ router.get(
   ],
   getUserTrainingPlan
 );
+
+router.get("/",
+[
+  validateJWT,
+  hasRole(["admin", "trainer"]),
+  validateFields
+],
+  getAllUserTrainingPlan);
+
+router.post("/", 
+[
+  validateJWT,
+  hasRole(["admin", "trainer"]),
+  param("id", "id is not a MongoId").isMongoId(),
+  param("id").custom(idIsNotAdminOrTrainer),
+  validateFields
+],
+createUserTrainingPlan);
+
+router.put(
+  "/:id",
+  [
+    validateJWT,
+    hasRole(["admin" , "trainer"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(idIsNotAdmin),
+    validateFields
+  ],
+  updateTrainingPlan
+);
+
+router.delete("/:id",
+[
+  validateJWT,
+  hasRole(["admin", "trainer", "affiliate"]),
+  param("id", "id is not a MongoId").isMongoId(),
+  param("id").custom(idIsNotAdmin),
+  validateFields
+],
+deleteTrainingPlan);
+
 
 module.exports = router;
