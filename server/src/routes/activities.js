@@ -15,7 +15,8 @@ const {
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
   setVacancies,
-  removeDay
+  removeDay,
+  getTrainerActivities
 } = require("../controllers/activities");
 const { activityExistById, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 const {
@@ -197,6 +198,17 @@ router.get(
     validateFields
   ],
   getActivity
+);
+
+router.get(
+  "/trainer/:id",
+  [
+    validateJWT,
+    hasRole(["trainer", "affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  getTrainerActivities
 );
 
 /**
@@ -1131,8 +1143,8 @@ router.patch(
     affiliateNotEnrolledFromBack,
     body(
       "day",
-      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
-    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
+      " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado"
+    ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]),
     dayExistInActivity,
     validateFields
   ],

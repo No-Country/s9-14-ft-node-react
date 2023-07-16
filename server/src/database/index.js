@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const User = require("../models/User");
 const Activity = require("../models/Activity");
 const Subscription = require("../models/Subscription");
+const TrainingPlan = require("../models/TrainingPlan");
 const seedDb = require("../seeders");
 require("dotenv").config();
 
@@ -19,8 +20,9 @@ const connectAndPopulateDb = async () => {
     const users = await User.find();
     const activities = await Activity.find();
     const subscriptions = await Subscription.find();
+    const trainingPlans = await TrainingPlan.find();
 
-    if (!users.length && !activities.length && !subscriptions.length) {
+    if (!users.length && !activities.length && !subscriptions.length && !trainingPlans.length) {
       // create some sample data for the database to work with in case it's empty
       seedDb();
     }
