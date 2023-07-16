@@ -12,7 +12,7 @@ const {
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
-const { body, param } = require("express-validator");
+const { body, param, query } = require("express-validator");
 const { idIsNotAdmin } = require("../helpers/db-validators");
 
 const router = Router();
@@ -82,7 +82,16 @@ const router = Router();
  *                         subscription: []
  *                         __v: 0
  */
-router.get("/", getUsers);
+router.get(
+  "/",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer"]),
+    query("role", "The valid roles are 'trainer', 'affiliate'").isIn(["trainer", "affiliate"]),
+    validateFields
+  ],
+  getUsers
+);
 /**
  * @openapi
  * /api/users/{id}:
