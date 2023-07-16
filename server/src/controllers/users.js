@@ -3,8 +3,10 @@ const { User } = require("../models");
 const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
+  const { role } = req.query;
+  const query = role ? { role } : {};
   try {
-    const users = await User.find();
+    const users = await User.find(query);
     res.status(200).json({ users });
   } catch (error) {
     console.log(error);
