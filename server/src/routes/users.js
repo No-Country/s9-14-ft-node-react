@@ -153,7 +153,14 @@ router.get(
  *                     subscription_id: "000000018fe089bcbfb5fa9a"
  *                     __v: 0
  */
-router.get("/:id", getUser);
+router.get("/:id",
+[
+  validateJWT,
+  hasRole(["admin", "trainer", "affiliate"]),
+  param("id", "id is not a MongoId").isMongoId(),
+  validateFields
+],
+  getUser);
 /**
  * @openapi
  * /api/users:
@@ -247,7 +254,28 @@ router.get("/:id", getUser);
  *                     _id: "64ab394bbd43f7dcfcc3ccaa"
  *                     __v: 0
  */
-router.post("/", registerUser);
+router.post("/",
+[
+  validateJWT,
+  hasRole(["admin", "trainer"]),
+  body("name", "Name must have between 1 and 50 characters")
+    .isString()
+    .isLength({ min: 1, max: 50 }),
+  body("surname", "Name must have between 1 and 50 characters")
+    .isString()
+    .isLength({ min: 1, max: 50 }),
+  body("email", "Incorrect email format")
+    .isEmail()
+    .isLength({ min: 1, max: 50 }),
+  body("password", "Password must have between 6 and 16 characters")
+    .isString()
+    .isLength({ min: 6, max: 16 }),
+  body("phone", "Phone must have have between 9 and 13 characters")
+    .isString()
+    .isLength({ min: 9, max: 13 }),
+  validateFields
+],
+  registerUser);
 /**
  * @openapi
  * /api/users/{id}/profile:
@@ -397,7 +425,15 @@ router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
  *               example:
  *                 {"message": "User delete successfully"}
  */
-router.delete("/:id", deleteUser);
+router.delete("/:id", 
+[
+  validateJWT,
+  hasRole(["admin", "trainer"]),
+  param("id", "id is not a MongoId").isMongoId(),
+  param("id").custom(idIsNotAdmin),
+  validateFields
+],
+  deleteUser);
 /**
  * @openapi
  * /api/users/{id}/setStatus:
