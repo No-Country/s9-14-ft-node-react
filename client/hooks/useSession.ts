@@ -42,16 +42,20 @@ export function useSessionActions () {
 export function useSession () {
   const session = useSessionStore((state) => state.data)
   const { getData } = useSessionActions()
-  const {push} = useRouter()
+  const {push, pathname} = useRouter()
 
   useEffect(()=> {
     if (!session?.token) {
       const data = getData()
-
-      if (!data?.token) {
+      if (!data?.token || !pathname.includes(`/${data?.role}}`)) {
         push('/login')
       }
+    } else {
+      if (!session?.token || !pathname.includes(`/${session?.role}}`)) {
+          push('/login')
+        }
     }
+
   }, [session?.token])
 
   return { session }
