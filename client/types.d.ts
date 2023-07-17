@@ -18,12 +18,17 @@ export interface User {
   subscription_id: string;
 }
 export interface Activity {
-  _id: string
-  name: string
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  schedule: {
+    [day: string]: string;
+  };
+  vacancies: {
+    [day: string]: number;
+  };
   trainer: Trainer
-  description: string
-  image: string
-  days: string
-  affiliates: unknown // TODO: define affiliates type
+  affiliates: User[];
 }
 
