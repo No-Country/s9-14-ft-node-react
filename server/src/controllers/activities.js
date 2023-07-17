@@ -1,3 +1,4 @@
+const uploadToCloudinary = require("../helpers/upload-image");
 const { Activity } = require("../models");
 
 const getAllActivities = async (req, res) => {
@@ -44,11 +45,13 @@ const getTrainerActivities = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
-  const { vacancies, ...data } = req.body;
+  const { vacancies, schedule, ...data } = req.body;
 
   try {
-    data.totalVacancies = vacancies;
-    data.freeVacancies = vacancies;
+    const urlImage = await uploadToCloudinary(req.files);
+    data.totalVacancies = JSON.parse(vacancies);
+    data.freeVacancies = JSON.parse(vacancies);
+    data.image = urlImage;
 
     const activity = await Activity.create(data);
     res.status(201).json({ created: true, activity });

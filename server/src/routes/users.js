@@ -14,6 +14,7 @@ const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
 const { body, param, query } = require("express-validator");
 const { idIsNotAdmin } = require("../helpers/db-validators");
+const { uploadImage } = require("../controllers/activities");
 
 const router = Router();
 
