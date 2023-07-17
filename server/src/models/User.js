@@ -41,8 +41,7 @@ const UserSchema = new mongoose.Schema({
     ref: "Subscription"
   },
   birthday: {
-    type: Date,
-    required: true
+    type: Date
   },
   fitMedical: {
     valid: {

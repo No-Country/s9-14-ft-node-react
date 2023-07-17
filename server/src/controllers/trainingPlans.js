@@ -25,11 +25,12 @@ const getAllUserTrainingPlan = async (req, res) => {
 
 const createUserTrainingPlan = async (req, res) => {
   try {
+    console.log("aca");
     const trainingPlan = req.body;
-
+    console.log(trainingPlan);
     const newTrainingPlan = new TrainingPlan(trainingPlan);
 
-    await newTrainingPlan.save(); 
+    await newTrainingPlan.save();
 
     return res.status(201).json({ trainingPlan });
   } catch (error) {
@@ -43,13 +44,17 @@ const updateTrainingPlan = async (req, res) => {
     const { id } = req.params;
     const { trainingPlan } = req.body;
 
-    const trainingPlanExist = await TrainingPlan.findById(id); 
+    const trainingPlanExist = await TrainingPlan.findById(id);
 
     if (!trainingPlanExist) {
       return res.status(404).json({ message: "Training plan not found" });
     }
 
-    const updatedTrainingPlan = await TrainingPlan.findByIdAndUpdate(id, { $set: trainingPlan }, { new: true });
+    const updatedTrainingPlan = await TrainingPlan.findByIdAndUpdate(
+      id,
+      { $set: trainingPlan },
+      { new: true }
+    );
 
     res.status(200).json({ message: "Training plan updated successfully", updatedTrainingPlan });
   } catch (error) {
@@ -77,6 +82,10 @@ const deleteTrainingPlan = async (req, res) => {
   }
 };
 
-
-
-module.exports = { getUserTrainingPlan, getAllUserTrainingPlan, createUserTrainingPlan, deleteTrainingPlan, updateTrainingPlan };
+module.exports = {
+  getUserTrainingPlan,
+  getAllUserTrainingPlan,
+  createUserTrainingPlan,
+  deleteTrainingPlan,
+  updateTrainingPlan
+};
