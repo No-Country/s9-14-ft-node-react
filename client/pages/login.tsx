@@ -1,19 +1,22 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import styles from "../styles/pages/login.module.scss";
-import { Icons } from "../components/Icons";
 import logoSvg from "../public/Logo.svg";
 import burgerSvg from "../public/menuburger.svg";
 import Image from "next/image";
 import Link from "next/link";
-
-const { Logo, Menu, Runner, Affiliate, Dumbell, User, Exit } = Icons;
-
+import { useSessionActions } from "@/hooks/useSession";
+import { useUserActions } from "@/hooks/useUser";
+import { useRouter } from "next/router";
 interface FormData {
   email: string;
   password: string;
 }
 
 export default function LogIn() {
+  const { setData } = useSessionActions()
+  const { setUser } = useUserActions()
+  const {push} = useRouter()
+
   const [formData, setFormData] = useState<FormData>({
     email: "",
     password: ""
@@ -27,10 +30,34 @@ export default function LogIn() {
     }));
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(formData); // Log the form data to the console
 
+    if (formData.email &&  formData.password) {
+      const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formData)
+      })
+
+      if (request.ok) {
+        const response = await request.json()
+        console.log(response)
+        setData({token: response.token, role: response.user.role})
+        setUser(response.user)
+
+        // Se deberia redirigir a la pagina de inicio de su correspondiente rol
+        push(`${response.user.role}`)
+
+        
+      } else {
+        const error = await request.json()
+        console.log(error)
+      }
+    } 
+  
     // Reset form fields
     setFormData({
       email: "",
