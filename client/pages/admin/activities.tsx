@@ -1,22 +1,19 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import { useActivities} from "@/hooks/useActivities";
-import { useEffect } from "react";
+import { Slider } from "@/components/Slider";
+import { ActivityCard } from "@/components/ActivityCard";
 
 export default function AdminActivities () {
-  const {activities} = useActivities()
-
- 
+  const activities = useActivities()
+  console.log(activities)
 
   return (
     <AdminLayout placeholder="Buscar actividades..." onSearch={()=> null}>
-      {
-        activities.map((activity)=> (
-          <div key={activity._id}>
-            <h1>{activity.name}</h1>
-            <p>{activity.description}</p>
-          </div>
-        ))
-      }
+      <Slider>
+        {
+          activities.map((activity)=> <ActivityCard key={activity._id} {...activity} /> )     
+        }
+      </Slider>
     </AdminLayout>
   )
 }

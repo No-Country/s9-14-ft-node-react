@@ -1,7 +1,7 @@
 import { useSession } from "@/hooks/useSession"
 
 export default function TrainerDashboard() {
-  const {session} = useSession()
+  const session = useSession()
   
   return (
         <div>

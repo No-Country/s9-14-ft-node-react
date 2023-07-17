@@ -26,8 +26,8 @@ const useSessionStore = create<Store>((set)=> ({
       const data: Data | null = JSON.parse(localStorage.getItem('data') || '{}')
       if (data?.token && data?.role) {
         set({data: {token: data.token, role: data.role}})
-        return data
-      } else return null
+      }
+      return data
     }
   }
 }))
@@ -47,16 +47,14 @@ export function useSession () {
   useEffect(()=> {
     if (!session?.token) {
       const data = getData()
-      if (!data?.token || !pathname.includes(`/${data?.role}}`)) {
-        push('/login')
+
+      if (!data?.token || !(pathname.includes(`/${data?.role}`))) {
+        push('/login')  
       }
-    } else {
-      if (!session?.token || !pathname.includes(`/${session?.role}}`)) {
-          push('/login')
-        }
+    } else if (session.token && !pathname.includes(`/${session?.role}`)) {
+      push('/login')
     }
+  }, [])
 
-  }, [session?.token])
-
-  return { session }
+  return session
 }
