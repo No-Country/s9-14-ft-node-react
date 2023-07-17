@@ -125,6 +125,7 @@
   background-color: $black;
   height: calc(100% - 100px);
   animation: fade-in 0.5s ease-in-out forwards;
+  overflow-x: hidden;
 
 
   .list {
@@ -135,7 +136,7 @@
     list-style-type: none;
     margin: 0 auto;
     gap: 1rem;
-
+    
     .item {
       color: $white;
       border-radius: 5px;
@@ -163,8 +164,8 @@
           background-color: $white;
           position: absolute;
           right: -50%;
-          transform: translateX(50%);
-          bottom: 100%;
+          transform: translateX(20%);
+          bottom: 130%;
         }
 
         &:hover {
