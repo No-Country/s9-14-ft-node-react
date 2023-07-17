@@ -14,7 +14,7 @@ const getUsers = async (req, res) => {
   }
 };
 
-const getUser = async (req, res) => {
+const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -27,6 +27,10 @@ const getUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+};
+
+const getUserByToken = async (req, res) => {
+  res.status(200).json(req.user);
 };
 
 const registerUser = async (req, res) => {
@@ -156,7 +160,8 @@ const updateUserByToken = async (req, res) => {
 
 module.exports = {
   getUsers,
-  getUser,
+  getUserById,
+  getUserByToken,
   registerUser,
   updateUserById,
   deleteUser,
