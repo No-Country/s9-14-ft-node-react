@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Manrope:wght@600&family=Montserrat:wght@400;600&display=swap');
+@import "@/styles/variables.scss";
 
 .App {
  background: url('../../public/bglogin.png');
@@ -42,7 +42,6 @@
  gap: 20px;
  align-items: center;
 
-
  input {
   box-sizing: border-box;
   width: 320px;
@@ -50,8 +49,10 @@
   padding: 10px;
   border: 0px;
   border-bottom: 1px solid white;
+  color: $white;
   background: transparent;
   font-family: 'Montserrat';
+  outline: none;
  }
 
  h2 {

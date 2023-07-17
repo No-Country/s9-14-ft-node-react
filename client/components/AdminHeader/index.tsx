@@ -8,12 +8,14 @@ import alertSvg from '@/public/alert.svg'
 import Image from "next/image";
 import { useState } from "react";
 import { AdminNav } from "../AdminNav";
+import { useUser } from "@/hooks/useUser";
 
 
 const { Logo, Exit } = Icons;
 
 export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSearch: ()=> void}) {
   const [isActive, setIsActive] = useState(false)
+  const user = useUser() // En useUser se hace la peticion a la api para obtener el usuario con el token guardado en el localStorage
 
   return (
     <>
@@ -25,7 +27,7 @@ export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSea
             <span className={style.data}>
               <UserPhoto src="/user.png" />
               <span>
-                <h4>Luka Gonzales</h4>
+                <h4>{user?.name}</h4>
                 <small>Admin</small>
               </span>
             </span>
@@ -42,6 +44,8 @@ export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSea
 
     {
       isActive ? 
+      <div>
+
       <div className={style.active_menu}>
         <span>
           <h2>MENU</h2>
@@ -61,6 +65,7 @@ export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSea
               </li>
             </ul>
           </div>
+      </div>
       </div>
       </div>
       : null

@@ -10,7 +10,7 @@ const login = async (req, res) => {
     if (!user) {
       return res.status(400).json({ msg: "The email is not registered" });
     }
-    
+
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
       return res.status(400).json({ msg: "Wrong password" });
@@ -24,7 +24,7 @@ const login = async (req, res) => {
 
     const token = await generateJWT(user);
 
-    return res.status(200).json({ user, token });
+    return res.status(200).json({ token: token });
   } catch (error) {
     return res.status(500).json({ msg: `Login error: ${error}` });
   }
