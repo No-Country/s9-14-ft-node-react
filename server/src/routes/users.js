@@ -88,7 +88,9 @@ router.get(
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    query("role", "The valid roles are 'trainer', 'affiliate'").isIn(["trainer", "affiliate"]),
+    query("role", "The valid roles are 'trainer', 'affiliate'")
+      .optional()
+      .isIn(["trainer", "affiliate"]),
     validateFields
   ],
   getUsers
