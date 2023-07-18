@@ -1,0 +1,29 @@
+@import "@/styles/variables.scss";
+
+.title {
+  width: 100%;
+  color: $white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 11px;
+  margin-bottom: 30px;
+  margin-top: 50px
+}
+
+.heading {
+  width: 100%;
+  border: solid $orange;
+  padding: 13px 33px;
+  color: $white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 11px;
+  margin-bottom: 30px;
+}
+
+.section {
+  margin-bottom: 20px;
+
+}
