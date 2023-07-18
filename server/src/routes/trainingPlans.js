@@ -3,7 +3,9 @@ const {
   getUserTrainingPlan,
   getAllUserTrainingPlan,
   createUserTrainingPlan,
+  addTrainingPlanToAffiliate,
   deleteTrainingPlan,
+  removeTrainingPlanToAffiliate,
   updateTrainingPlan
 } = require("../controllers/trainingPlans");
 const { validateJWT } = require("../middlewares/validate-jwt");
@@ -212,6 +214,14 @@ router.post(
   createUserTrainingPlan
 );
 
+router.patch("/addtoaffiliate", 
+[
+  validateJWT,
+  hasRole(["admin", "trainer", "affiliate"]),
+  validateFields
+],
+addTrainingPlanToAffiliate);
+
 /**
  * @openapi
  * /api/trainingPlans/{id}:
@@ -262,6 +272,25 @@ router.put(
   ],
   updateTrainingPlan
 );
+
+
+router.delete("/:id",
+[
+  validateJWT,
+  hasRole(["admin", "trainer", "affiliate"]),
+  param("id", "id is not a MongoId").isMongoId(),
+  param("id").custom(idIsNotAdmin),
+  validateFields
+],
+deleteTrainingPlan);
+
+router.patch("/removeaffiliate",
+[
+  validateJWT,
+  hasRole(["admin", "trainer"]),
+  validateFields
+],
+removeTrainingPlanToAffiliate);
 
 /**
  * @openapi
