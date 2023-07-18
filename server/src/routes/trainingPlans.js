@@ -3,7 +3,9 @@ const {
   getUserTrainingPlan,
   getAllUserTrainingPlan,
   createUserTrainingPlan,
+  addTrainingPlanToAffiliate,
   deleteTrainingPlan,
+  removeTrainingPlanToAffiliate,
   updateTrainingPlan
 } = require("../controllers/trainingPlans");
 const { validateJWT } = require("../middlewares/validate-jwt");
@@ -83,6 +85,14 @@ router.post("/",
 ],
 createUserTrainingPlan);
 
+router.patch("/addtoaffiliate", 
+[
+  validateJWT,
+  hasRole(["admin", "trainer", "affiliate"]),
+  validateFields
+],
+addTrainingPlanToAffiliate);
+
 router.put(
   "/:id",
   [
@@ -104,6 +114,14 @@ router.delete("/:id",
   validateFields
 ],
 deleteTrainingPlan);
+
+router.patch("/removeaffiliate",
+[
+  validateJWT,
+  hasRole(["admin", "trainer"]),
+  validateFields
+],
+removeTrainingPlanToAffiliate);
 
 
 module.exports = router;

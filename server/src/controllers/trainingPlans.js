@@ -38,6 +38,36 @@ const createUserTrainingPlan = async (req, res) => {
   }
 };
 
+const addTrainingPlanToAffiliate = async (req, res) => {
+  const { trainingPlanId, affiliateId } = req.body;
+
+  try {
+    const existingTrainingPlan = await TrainingPlan.findById(trainingPlanId);
+
+    if (!existingTrainingPlan) {
+      return res.status(404).json({ error: "Training plan not found" });
+    }
+
+    existingTrainingPlan.affiliate.push(affiliateId);
+
+    const updatedTrainingPlan = await TrainingPlan.findByIdAndUpdate(
+      trainingPlanId,
+      { affiliate: existingTrainingPlan.affiliate },
+      { omitUndefined: true }
+    );
+
+    res.json(updatedTrainingPlan);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error adding training plan to affiliate" });
+  }
+};
+
+module.exports = {
+  addTrainingPlanToAffiliate,
+};
+
+
 const updateTrainingPlan = async (req, res) => {
   try {
     const { id } = req.params;
@@ -54,6 +84,37 @@ const updateTrainingPlan = async (req, res) => {
     res.status(200).json({ message: "Training plan updated successfully", updatedTrainingPlan });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+const removeTrainingPlanToAffiliate = async (req, res) => {
+  const { trainingPlanId, affiliateId } = req.body;
+
+  try {
+    const existingTrainingPlan = await TrainingPlan.findById(trainingPlanId);
+
+    if (!existingTrainingPlan) {
+      return res.status(404).json({ error: "Training plan not found" });
+    }
+
+    if (!affiliateId) {
+      return res.status(404).json({ error: "Training plan not found" });
+    }
+
+    const updatedAffiliate = existingTrainingPlan.affiliate.filter(id => id.toString() !== affiliateId.toString());
+    existingTrainingPlan.affiliate = updatedAffiliate;
+
+    const updatedTrainingPlan = await TrainingPlan.findByIdAndUpdate(
+      trainingPlanId,
+      { affiliate: existingTrainingPlan.affiliate },
+      { omitUndefined: true }
+    );
+
+    res.json(updatedTrainingPlan);
+
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Error removing training plan from affiliate" });
   }
 };
 
@@ -78,5 +139,4 @@ const deleteTrainingPlan = async (req, res) => {
 };
 
 
-
-module.exports = { getUserTrainingPlan, getAllUserTrainingPlan, createUserTrainingPlan, deleteTrainingPlan, updateTrainingPlan };
+module.exports = { getUserTrainingPlan, getAllUserTrainingPlan, createUserTrainingPlan, addTrainingPlanToAffiliate, deleteTrainingPlan, updateTrainingPlan, removeTrainingPlanToAffiliate };
