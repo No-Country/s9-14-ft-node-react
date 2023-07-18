@@ -1,85 +1,85 @@
 const trainingPlansToSeed = [
   {
+    name: "Plan 1",
     trainer: {},
     affiliate: {},
     exercises: [
       {
         name: "Bíceps",
-        sets: 3,
-        repetitionsOrDuration: 15,
+        setsAndRepetitions: "3x15",
+        weight: 15,
         days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Tríceps",
-        sets: 4,
-        repetitionsOrDuration: 20,
+        setsAndRepetitions: "4x20",
+        weight: 10,
         days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Abdominales",
-        sets: 5,
-        repetitionsOrDuration: 10,
+        setsAndRepetitions: "5x10",
         days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Cuádriceps",
-        sets: 5,
-        repetitionsOrDuration: 20,
+        setsAndRepetitions: "5x20",
+        weight: 25,
         days: ["martes", "jueves"]
       },
       {
         name: "Press de pecho",
-        sets: 3,
-        repetitionsOrDuration: 10,
+        setsAndRepetitions: "3x10",
+        weight: 10,
         days: ["martes", "jueves"]
       },
       {
         name: "Estocadas búlgaras",
-        sets: 4,
-        repetitionsOrDuration: 15,
+        setsAndRepetitions: "4x15",
+        weight: 15,
         days: ["martes", "jueves"]
       }
     ]
   },
   {
+    name: "Plan 2",
     trainer: {},
     affiliate: {},
     exercises: [
       {
         name: "Sentadillas",
-        sets: 3,
-        repetitionsOrDuration: 15,
+        setsAndRepetitions: "3x15",
+        weight: 25,
         days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Plancha",
-        sets: 4,
-        repetitionsOrDuration: 20,
-        isRepetitions: false,
+        setsAndRepetitions: "4x20",
+        duration: 15,
         days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Push-up",
-        sets: 5,
-        repetitionsOrDuration: 10,
+        setsAndRepetitions: "5x10",
+        weight: 10,
         days: ["lunes", "miércoles", "viernes"]
       },
       {
         name: "Remo cruzado",
-        sets: 5,
-        repetitionsOrDuration: 20,
+        setsAndRepetitions: "5x20",
+        weight: 20,
         days: ["martes", "jueves"]
       },
       {
         name: "Pull-over",
-        sets: 3,
-        repetitionsOrDuration: 10,
+        setsAndRepetitions: "3x10",
+        weight: 10,
         days: ["martes", "jueves"]
       },
       {
         name: "Press de hombros",
-        sets: 4,
-        repetitionsOrDuration: 15,
+        setsAndRepetitions: "4x15",
+        weight: 15,
         days: ["martes", "jueves"]
       }
     ]
