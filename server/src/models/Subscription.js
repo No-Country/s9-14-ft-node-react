@@ -8,58 +8,47 @@ const mongoose = require("mongoose");
  *       type: object
  *       required:
  *         - _id
- *         - trainer
- *         - affiliate
+ *         - name
+ *         - description
+ *         - benefits
+ *         - price
+ *         - duration
  *       properties:
  *         _id:
  *           type: string
- *           description: El id del plan de entrenamiento.
- *         trainer:
+ *           description: El id de la suscripción.
+ *         name:
  *           type: string
- *           description: El id del entrenador asociado al plan de entrenamiento.
- *         affiliate:
+ *           description: El nombre de la suscripción.
+ *         description:
  *           type: string
- *           description: El id del afiliado asociado al plan de entrenamiento.
- *         exercises:
+ *           description: La descrición de la suscripción.
+ *         benefits:
  *           type: array
- *           items:
- *             type: object
- *             properties:
- *               _id:
- *                 type: string
- *                 description: El id del ejercicio.
- *               name:
- *                 type: string
- *                 description: El nombre del ejercicio.
- *               sets:
- *                 type: number
- *                 description: Las series del ejercicio.
- *               repetitionsOrDuration:
- *                 type: number
- *                 description: El número de repeticiones o la duración del ejercicio.
- *               isRepetitions:
- *                 type: boolean
- *                 description: Indica si el ejercicio necesita un número de repeticiones o una duración determinada en segundos.
- *               days:
- *                 type: array
- *                 items:
- *                   type: string
- *                   enum: [lunes, martes, miércoles, jueves, viernes, sábado]
- *                 description: Un arreglo con los días asignados para realizar el ejercicio.
+ *           description: Un arreglo de strings que representarán los diferentes beneficios de la suscripción.
+ *         price:
+ *           type: number
+ *           description: El precio que tendrá la suscripción.
+ *         duration:
+ *           type: string
+ *           enum: [mensual, anual]
+ *           description: La duración que tendrá la suscripción.
+ *         startDate:
+ *           type: string
+ *           description: El día de comienzo de la suscripción.
+ *         endDate:
+ *           type: string
+ *           description: El día de vencimiento de la suscripción.
  *       example:
- *         _id: '64ad746f054ad30dc0fd2104'
- *         trainer: '64ad746f054ad30dc0fd20e5'
- *         affiliate: '64ad746f054ad30dc0fd20e7'
- *         exercises:
- *           - _id: '64ad746f054ad30dc0fd2105'
- *             name: 'Sentadillas'
- *             sets: 3
- *             repetitionsOrDuration: 15
- *             isRepetitions: true
- *             days:
- *               - 'lunes'
- *               - 'miércoles'
- *               - 'viernes'
+ *         _id: '64b1c7053f6378c5f32c3af6'
+ *         name: 'Plan Básico'
+ *         description: 'El Plan de Membresía Básico es perfecto para aquellos que buscan mantenerse activos y disfrutar de los beneficios de un gimnasio bien equipado. Con esta suscripción, tendrás acceso a nuestras instalaciones y servicios básicos, permitiéndote trabajar en tu estado físico y alcanzar tus objetivos de salud.'
+ *         benefits:
+ *           - 'Acceso limitado al gimnasio: Podrás acceder a nuestras instalaciones durante los horarios de apertura establecidos, permitiéndote entrenar en un ambiente cómodo y seguro.'
+ *           - 'Uso de equipos de entrenamiento: Tendrás acceso a una amplia gama de equipos de última generación, que incluyen pesas libres, mancuernas, bicicletas fijas, máquinas de musculación y más, para ayudarte a trabajar en diferentes áreas de tu cuerpo.'
+ *           - 'Asesoramiento básico: Nuestro personal estará disponible para brindarte asesoramiento básico sobre el uso adecuado de los equipos y responder a tus preguntas relacionadas con el entrenamiento y la salud.'
+ *         price: 5000
+ *         duration: 'mensual'
  */
 
 const SubscriptionSchema = new mongoose.Schema({
