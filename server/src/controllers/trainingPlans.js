@@ -25,7 +25,6 @@ const getAllUserTrainingPlan = async (req, res) => {
 
 const createUserTrainingPlan = async (req, res) => {
   try {
-    console.log("aca");
     const trainingPlan = req.body;
     console.log(trainingPlan);
     const newTrainingPlan = new TrainingPlan(trainingPlan);
