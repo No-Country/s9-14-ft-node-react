@@ -311,12 +311,6 @@ router.post(
     body("description", "description must have between 1 and 600 characters")
       .isString()
       .isLength({ min: 1, max: 600 }),
-    body("image", "enter url").isString(),
-    //body("days", "days must be an array").isArray(),
-    /* body("schedule", "must have between 1 and 50 characters")
-      .isString()
-      .isLength({ min: 1, max: 10 }),*/
-    //body("limit", "limit must be an integer").isInt({ min: 1 }),
     body("trainer", "trainer must have a valid MongoId").isMongoId(),
     validateFields
   ],

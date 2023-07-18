@@ -2,18 +2,30 @@ import { AdminLayout } from "@/components/AdminLayout";
 import { useActivities} from "@/hooks/useActivities";
 import { Slider } from "@/components/Slider";
 import { ActivityCard } from "@/components/ActivityCard";
+import style from '@/styles/pages/activities.module.scss'
 
 export default function AdminActivities () {
   const activities = useActivities()
-  console.log(activities)
 
   return (
     <AdminLayout placeholder="Buscar actividades..." onSearch={()=> null}>
-      <Slider>
-        {
-          activities.map((activity)=> <ActivityCard key={activity._id} {...activity} /> )     
-        }
-      </Slider>
+      <h1 className={style.title}>ACTIVIDADES</h1>
+      <section className={style.section}>
+        <h2 className={style.heading}>ACTIVAS</h2>
+        <Slider>
+          {
+            activities.map((activity)=> activity.trainer.status ? <ActivityCard key={activity._id} {...activity} /> : null )     
+          }
+        </Slider>
+        </section>
+        <section className={style.section}>
+          <h2 className={style.heading}>INACTIVAS</h2>
+          <Slider>
+            {
+              activities.map((activity)=> !activity.trainer.status ? <ActivityCard key={activity._id} {...activity} /> : null )     
+            }
+          </Slider>
+        </section>
     </AdminLayout>
   )
 }

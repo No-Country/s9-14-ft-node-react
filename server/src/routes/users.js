@@ -14,6 +14,7 @@ const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
 const { body, param, query } = require("express-validator");
 const { idIsNotAdmin } = require("../helpers/db-validators");
+const { uploadImage } = require("../controllers/activities");
 
 const router = Router();
 
@@ -111,7 +112,9 @@ router.get(
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    query("role", "The valid roles are 'trainer', 'affiliate'").isIn(["trainer", "affiliate"]),
+    query("role", "The valid roles are 'trainer', 'affiliate'")
+      .optional()
+      .isIn(["trainer", "affiliate"]),
     validateFields
   ],
   getUsers
