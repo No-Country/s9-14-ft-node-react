@@ -47,6 +47,7 @@ const mongoose = require("mongoose");
  *                 description: El id del afiliado que se inscribió a la actividad.
  *               day:
  *                 type: string
+ *                 enum: [lunes, martes, miércoles, jueves, viernes, sábado]
  *                 description: El día en concreto al que el afiliado se inscribió para realizar la actividad.
  *       example:
  *         _id: '64b1c7063f6378c5f32c3b17'
