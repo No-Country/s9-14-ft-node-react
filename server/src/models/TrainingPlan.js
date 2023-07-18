@@ -95,7 +95,7 @@ const TrainingPlanSchema = new mongoose.Schema({
       },
       weight: {
         type: Number,
-        required: true
+        default: 0
       },
       duration: {
         type: Number,

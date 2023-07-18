@@ -63,7 +63,7 @@ const seedDb = async () => {
       await TrainingPlan.create({
         ...trainingPlansToSeed[Math.floor(Math.random() * trainingPlansToSeed.length)],
         trainer: trainersIds[Math.floor(Math.random() * trainersIds.length)],
-        affiliate: premiumAffiliateId
+        affiliates: [premiumAffiliateId]
       });
     }
 
