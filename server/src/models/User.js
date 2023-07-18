@@ -41,6 +41,7 @@ const mongoose = require("mongoose");
  *           description: El número de teléfono de emergencia del usuario.
  *         role:
  *           type: string
+ *           enum: [admin, trainer, affiliate]
  *           description: El rol del usuario.
  *         subscriptions:
  *           type: array
