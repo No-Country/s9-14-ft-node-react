@@ -63,6 +63,10 @@ const mongoose = require("mongoose");
  */
 
 const TrainingPlanSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -79,18 +83,17 @@ const TrainingPlanSchema = new mongoose.Schema({
         type: String,
         required: true
       },
-      sets: {
+      setsAndRepetitions: {
+        type: String,
+        required: true
+      },
+      weight: {
         type: Number,
         required: true
       },
-      repetitionsOrDuration: {
+      duration: {
         type: Number,
-        required: true
-      },
-      isRepetitions: {
-        type: Boolean,
-        required: true,
-        default: true
+        default: 0
       },
       days: {
         type: [String],
