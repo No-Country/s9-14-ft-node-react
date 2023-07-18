@@ -43,15 +43,23 @@ export default function LogIn() {
       })
 
       if (request.ok) {
-        const response = await request.json()
-        console.log(response)
-        setData({token: response.token, role: response.user.role})
-        setUser(response.user)
-
-        // Se deberia redirigir a la pagina de inicio de su correspondiente rol
-        push(`${response.user.role}`)
-
+        const response = await request.json() 
         
+        fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users/profile`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-token': response.token
+          }
+        })
+        .then(res => res.ok ? res.json() : res)
+        // Se deberia redirigir a la pagina de inicio de su correspondiente rol
+        .then (res => {
+          setUser(res.user)
+          setData({token: response.token, role: res.role})
+          push(`${res.role}`)
+        })
+        .catch(console.error)
+
       } else {
         const error = await request.json()
         console.log(error)
