@@ -15,7 +15,8 @@ const options = {
     "src/routes/subscriptions.js",
     "src/routes/trainingPlans.js",
     "src/models/TrainingPlan.js",
-    "src/models/User.js"
+    "src/models/User.js",
+    "src/models/Activity.js"
   ]
 };
 

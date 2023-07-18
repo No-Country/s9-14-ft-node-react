@@ -8,58 +8,61 @@ const mongoose = require("mongoose");
  *       type: object
  *       required:
  *         - _id
+ *         - name
+ *         - description
+ *         - image
  *         - trainer
- *         - affiliate
  *       properties:
  *         _id:
  *           type: string
- *           description: El id del plan de entrenamiento.
+ *           description: El id de la actividad.
+ *         name:
+ *           type: string
+ *           description: El nombre de la actividad.
+ *         description:
+ *           type: string
+ *           description: La descrición de la actividad.
+ *         image:
+ *           type: string
+ *           description: La imagen de la actividad.
+ *         schedule:
+ *           type: object
+ *           description: Un objeto para representar días y horarios en los que se dará la actividad.
+ *         freeVacancies:
+ *           type: object
+ *           description: Un objeto para representar los cupos disponibles en un día en concreto en el que se dará la actividad.
+ *         totalVacancies:
+ *           type: object
+ *           description: Un objeto para representar los cupos totales en un día en concreto en el que se dará la actividad.
  *         trainer:
  *           type: string
- *           description: El id del entrenador asociado al plan de entrenamiento.
- *         affiliate:
- *           type: string
- *           description: El id del afiliado asociado al plan de entrenamiento.
- *         exercises:
+ *           description: El id del entrenador que dictará la actividad.
+ *         affiliates:
  *           type: array
  *           items:
  *             type: object
  *             properties:
- *               _id:
+ *               affiliate:
  *                 type: string
- *                 description: El id del ejercicio.
- *               name:
+ *                 description: El id del afiliado que se inscribió a la actividad.
+ *               day:
  *                 type: string
- *                 description: El nombre del ejercicio.
- *               sets:
- *                 type: number
- *                 description: Las series del ejercicio.
- *               repetitionsOrDuration:
- *                 type: number
- *                 description: El número de repeticiones o la duración del ejercicio.
- *               isRepetitions:
- *                 type: boolean
- *                 description: Indica si el ejercicio necesita un número de repeticiones o una duración determinada en segundos.
- *               days:
- *                 type: array
- *                 items:
- *                   type: string
- *                   enum: [lunes, martes, miércoles, jueves, viernes, sábado]
- *                 description: Un arreglo con los días asignados para realizar el ejercicio.
+ *                 description: El día en concreto al que el afiliado se inscribió para realizar la actividad.
  *       example:
- *         _id: '64ad746f054ad30dc0fd2104'
- *         trainer: '64ad746f054ad30dc0fd20e5'
- *         affiliate: '64ad746f054ad30dc0fd20e7'
- *         exercises:
- *           - _id: '64ad746f054ad30dc0fd2105'
- *             name: 'Sentadillas'
- *             sets: 3
- *             repetitionsOrDuration: 15
- *             isRepetitions: true
- *             days:
- *               - 'lunes'
- *               - 'miércoles'
- *               - 'viernes'
+ *         _id: '64b1c7063f6378c5f32c3b17'
+ *         name: 'Body Pump'
+ *         description: 'Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia y da tono muscular, pero también está diseñada para incrementar el gasto calórico de tal forma que ayuda también a mejorar la composición corporal y por tanto a perder grasa. Se ejecutan los ejercicios más básicos del gimnasio pero con la gran diferencia de ir al ritmo de la música y con pre-coreografías.'
+ *         image: 'https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg'
+ *         schedule:
+ *           miércoles: "10:00-12:00"
+ *         freeVacancies:
+ *           miércoles: 19
+ *         totalVacancies:
+ *           miércoles: 20
+ *         trainer: '64b1c7063f6378c5f32c3b0c'
+ *         affiliates:
+ *           - affiliate: '64b1c7063f6378c5f32c3b10'
+ *             day: 'miércoles'
  */
 
 const ActivitySchema = new mongoose.Schema({
@@ -89,7 +92,8 @@ const ActivitySchema = new mongoose.Schema({
   },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
+    ref: "User",
+    required: true
   },
   affiliates: [
     {
