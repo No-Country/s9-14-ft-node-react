@@ -7,6 +7,7 @@ interface Store {
   activities: Activity[]
   actions: {
     getActivities: (token?: string) => Promise<void>
+    deleteActivity: (id: string, token: string) => Promise<void>
   }
 }
 
@@ -40,18 +41,34 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
       const trainers = await Promise.all(trainerStatus)
 
       await (async () => {
-        for (let i = 0; i < data.length; i++) data[i].trainer.status = trainers[i].user.status
+        for (let i = 0; i < data.length; i++) {
+          console.log(trainers[i].status)
+          data[i].trainer.status = trainers[i].user.status
+        }
       })()
 
       set({activities: data})
+    },
+    deleteActivity: async (id: string, token: string) => {
+      const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/activities/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'x-token': token,
+          'Content-Type': 'application/json'
+        }})
+
+        if (request.ok) {
+          set((state) => ({activities: state.activities.filter((activity) => activity._id !== id)}))
+        }
     }
   }
 }))
 
 export function useActivitiesActions () {
   const getActivities = useActivityStore(state => state.actions.getActivities)
+  const deleteActivity = useActivityStore(state => state.actions.deleteActivity)
 
-  return {getActivities}
+  return {getActivities, deleteActivity}
 }
 
 export function useActivities () { // Returns activities

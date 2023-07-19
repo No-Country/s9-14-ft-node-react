@@ -1,6 +1,6 @@
 import {create} from 'zustand'
 import type { User } from '@/types'
-import { useSession } from './useSession'
+import { useSession, useSessionActions } from './useSession'
 import { useEffect } from 'react'
 
 interface Store {
@@ -27,6 +27,7 @@ export function useUser () {
   const user = useUserStore((state) => state.user)
   const session = useSession()
   const {setUser} = useUserActions()
+  const {removeData} = useSessionActions()
 
   useEffect(()=> {
     if (!user?._id && session?.token) {
@@ -36,7 +37,14 @@ export function useUser () {
           'x-token': session?.token
         }
       })
-      .then(res => res.ok ? res.json() : res)
+      .then(res => {
+        if (!res.ok) {
+          removeData()
+          throw new Error('Not authorized')
+        } else {
+          return res.json()
+        }
+      })
       .then (res => setUser(res))
       .catch(console.error)
     }

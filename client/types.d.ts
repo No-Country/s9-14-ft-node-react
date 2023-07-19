@@ -1,8 +1,14 @@
 export interface Trainer {
-  _id: string
-  name: string
-  surname: string
-  status: boolean
+   _id: string;
+  name: string;
+  surname: string;
+  email: string;
+  status: boolean;
+  phone: number;
+  phoneEmergency: number;
+  role: string;
+  subscriptions: any[];
+  birthday: string; 
 }
 
 export interface User {
@@ -19,17 +25,14 @@ export interface User {
   subscription_id: string;
 }
 export interface Activity {
-  _id: string;
   name: string;
-  description: string;
-  image: string;
-  schedule: {
-    [day: string]: string;
-  };
-  vacancies: {
-    [day: string]: number;
-  };
   trainer: Trainer
-  affiliates: User[];
+  image: string;
+  totalVacancies: any //definir
+  _id: string;
+  description: string;
+  schedule: any //definir
+  freeVacancies: any // definir
+  affiliates: any[]; // Puedes cambiar 'any[]' por un tipo específico si conoces la estructura de affiliates.
 }
 
