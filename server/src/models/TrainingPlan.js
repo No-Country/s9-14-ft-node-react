@@ -8,18 +8,22 @@ const mongoose = require("mongoose");
  *       type: object
  *       required:
  *         - _id
+ *         - name
  *         - trainer
- *         - affiliate
+ *         - affiliates
  *       properties:
  *         _id:
  *           type: string
  *           description: El id del plan de entrenamiento.
+ *         name:
+ *           type: string
+ *           description: El nombre del plan de entrenamiento.
  *         trainer:
  *           type: string
  *           description: El id del entrenador asociado al plan de entrenamiento.
- *         affiliate:
- *           type: string
- *           description: El id del afiliado asociado al plan de entrenamiento.
+ *         affiliates:
+ *           type: array
+ *           description: Los afiliados asociados al plan de entrenamiento.
  *         exercises:
  *           type: array
  *           items:
@@ -31,15 +35,15 @@ const mongoose = require("mongoose");
  *               name:
  *                 type: string
  *                 description: El nombre del ejercicio.
- *               sets:
+ *               setsAndRepetitions:
+ *                 type: string
+ *                 description: Las series y las repeticiones del ejercicio.
+ *               weight:
  *                 type: number
- *                 description: Las series del ejercicio.
- *               repetitionsOrDuration:
+ *                 description: El peso a levantar que tendrá el ejercicio.
+ *               duration:
  *                 type: number
- *                 description: El número de repeticiones o la duración del ejercicio.
- *               isRepetitions:
- *                 type: boolean
- *                 description: Indica si el ejercicio necesita un número de repeticiones o una duración determinada en segundos.
+ *                 description: La duración en segundos que tendrá el ejericio.
  *               days:
  *                 type: array
  *                 items:
@@ -48,14 +52,16 @@ const mongoose = require("mongoose");
  *                 description: Un arreglo con los días asignados para realizar el ejercicio.
  *       example:
  *         _id: '64ad746f054ad30dc0fd2104'
+ *         name: 'Plan 1'
  *         trainer: '64ad746f054ad30dc0fd20e5'
- *         affiliate: '64ad746f054ad30dc0fd20e7'
+ *         affiliates:
+ *           - '64ad746f054ad30dc0fd20e7'
  *         exercises:
  *           - _id: '64ad746f054ad30dc0fd2105'
  *             name: 'Sentadillas'
- *             sets: 3
- *             repetitionsOrDuration: 15
- *             isRepetitions: true
+ *             setsAndRepetitions: '3x15'
+ *             weight: 15
+ *             duration: 0
  *             days:
  *               - 'lunes'
  *               - 'miércoles'
@@ -63,34 +69,39 @@ const mongoose = require("mongoose");
  */
 
 const TrainingPlanSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true
   },
-  affiliate: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true
-  },
+  affiliate: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true
+    }
+  ],
   exercises: [
     {
       name: {
         type: String,
         required: true
       },
-      sets: {
-        type: Number,
+      setsAndRepetitions: {
+        type: String,
         required: true
       },
-      repetitionsOrDuration: {
+      weight: {
         type: Number,
-        required: true
+        default: 0
       },
-      isRepetitions: {
-        type: Boolean,
-        required: true,
-        default: true
+      duration: {
+        type: Number,
+        default: 0
       },
       days: {
         type: [String],
