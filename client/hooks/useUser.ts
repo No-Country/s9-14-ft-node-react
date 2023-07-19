@@ -2,6 +2,7 @@ import {create} from 'zustand'
 import type { User } from '@/types'
 import { useSession, useSessionActions } from './useSession'
 import { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 interface Store {
   user?: User
@@ -28,6 +29,7 @@ export function useUser () {
   const session = useSession()
   const {setUser} = useUserActions()
   const {removeData} = useSessionActions()
+  const router = useRouter()
 
   useEffect(()=> {
     if (!user?._id && session?.token) {
@@ -40,7 +42,9 @@ export function useUser () {
       .then(res => {
         if (!res.ok) {
           removeData()
+          router.push('/login')
           throw new Error('Not authorized')
+
         } else {
           return res.json()
         }
