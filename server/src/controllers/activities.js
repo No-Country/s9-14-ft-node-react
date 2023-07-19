@@ -1,5 +1,6 @@
 const uploadToCloudinary = require("../helpers/upload-image");
 const { Activity } = require("../models");
+const { mongoose } = require("mongoose");
 
 const getAllActivities = async (req, res) => {
   try {
@@ -45,12 +46,12 @@ const getTrainerActivities = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
-  const { vacancies, schedule, ...data } = req.body;
+  const { affiliates, schedule, days, ...data } = req.body;
 
   try {
     const urlImage = await uploadToCloudinary(req.files);
-    data.totalVacancies = JSON.parse(vacancies);
-    data.freeVacancies = JSON.parse(vacancies);
+    data.schedule = JSON.parse(schedule);
+    data.days = JSON.parse(days);
     data.image = urlImage;
 
     const activity = await Activity.create(data);
@@ -158,8 +159,26 @@ const addAffiliateInActivity = async (req, res) => {
 
   try {
     const activity = await Activity.findById(id);
-    const quota = activity.freeVacancies[day];
-    if (quota < 1) {
+
+    const quota = activity.quota;
+
+    const affiliates = await Activity.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id)
+        }
+      },
+      {
+        $unwind: "$affiliates"
+      },
+      {
+        $match: {
+          "affiliates.day": day
+        }
+      }
+    ]);
+
+    if (affiliates.length >= quota) {
       return res.status(400).json({ msg: "sold out" });
     }
 
@@ -168,9 +187,6 @@ const addAffiliateInActivity = async (req, res) => {
       {
         $push: {
           affiliates: { affiliate, day }
-        },
-        $inc: {
-          [`freeVacancies.${day}`]: -1
         }
       }
     );
@@ -191,9 +207,25 @@ const addAffiliateInActivityFromBack = async (req, res) => {
   try {
     const activity = await Activity.findById(id);
 
-    const quota = activity.freeVacancies[day];
+    const quota = activity.quota;
 
-    if (quota < 1) {
+    const affiliates = await Activity.aggregate([
+      {
+        $match: {
+          _id: new mongoose.Types.ObjectId(id)
+        }
+      },
+      {
+        $unwind: "$affiliates"
+      },
+      {
+        $match: {
+          "affiliates.day": day
+        }
+      }
+    ]);
+
+    if (affiliates.length >= quota) {
       return res.status(400).json({ msg: "sold out" });
     }
 
@@ -202,9 +234,6 @@ const addAffiliateInActivityFromBack = async (req, res) => {
       {
         $push: {
           affiliates: { affiliate: affiliateId, day }
-        },
-        $inc: {
-          [`freeVacancies.${day}`]: -1
         }
       }
     );
@@ -229,9 +258,6 @@ const removeAffiliateOfActivity = async (req, res) => {
       {
         $pull: {
           affiliates: { affiliate, day }
-        },
-        $inc: {
-          [`freeVacancies.${day}`]: 1
         }
       }
     );
@@ -255,9 +281,6 @@ const removeAffiliateOfActivityFromBack = async (req, res) => {
       {
         $pull: {
           affiliates: { affiliate: affiliateId, day }
-        },
-        $inc: {
-          [`freeVacancies.${day}`]: 1
         }
       }
     );
