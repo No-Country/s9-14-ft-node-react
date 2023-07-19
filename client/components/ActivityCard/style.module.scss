@@ -1,7 +1,23 @@
 @import '@/styles/variables.scss';
 
 .card {
-  min-width: 200px;
-  min-height: 300px;
-  border: 1px solid red;  
+  min-width: 250px;
+  min-height: 360px;
+  border: 1px solid $orange; 
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 4px;
+  padding: 14px;
+  color: $white;
+  font-family: 'Montserrat', sans-serif;
+
+  .image {
+    border-radius: 11px;
+    width: 187px;
+    height: 128px;
+    object-fit: cover;
+    object-position: center;
+  }
 }
