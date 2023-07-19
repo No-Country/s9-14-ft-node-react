@@ -2,7 +2,7 @@ const trainingPlansToSeed = [
   {
     name: "Plan 1",
     trainer: {},
-    affiliate: {},
+    affiliate: [],
     exercises: [
       {
         name: "Bíceps",
@@ -44,7 +44,7 @@ const trainingPlansToSeed = [
   {
     name: "Plan 2",
     trainer: {},
-    affiliate: {},
+    affiliate: [],
     exercises: [
       {
         name: "Sentadillas",
