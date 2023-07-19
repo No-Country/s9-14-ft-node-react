@@ -61,8 +61,8 @@ const mongoose = require("mongoose");
  *           - 'martes'
  *           - 'jueves'
  *         schedule:
- *           - "14:00"
- *           - "16:00"
+ *           - '14:00'
+ *           - '16:00'
  *         quota: 20
  *         trainer: '64b1c7063f6378c5f32c3b0c'
  *         affiliates:
