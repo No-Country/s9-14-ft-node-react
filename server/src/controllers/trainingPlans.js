@@ -1,13 +1,28 @@
-const { TrainingPlan } = require("../models");
+const { TrainingPlan, User } = require("../models");
 
 const getUserTrainingPlan = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    const userTrainingPlan = await TrainingPlan.findOne({ affiliate: userId });
-    !userTrainingPlan
-      ? res.status(200).json({ message: "The affiliate does not have a training plan yet." })
-      : res.status(200).json(userTrainingPlan);
+    const user = await User.findById(userId);
+    if (!user || user.role === "admin") return res.status(404).json({ message: "User not found" });
+
+    if (user.role === "affiliate") {
+      const affiliateTrainingPlan = await TrainingPlan.find(
+        { affiliates: { $in: [userId] } },
+        "-__v"
+      );
+
+      !affiliateTrainingPlan.length
+        ? res.status(200).json({ message: "The affiliate does not have a training plan yet." })
+        : res.status(200).json(affiliateTrainingPlan);
+    } else {
+      const trainerTrainingPlans = await TrainingPlan.find({ trainer: userId }, "-__v");
+
+      !trainerTrainingPlans.length
+        ? res.status(200).json({ message: "The trainer has not set training plans yet." })
+        : res.status(200).json(trainerTrainingPlans);
+    }
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
@@ -18,8 +33,7 @@ const getAllUserTrainingPlan = async (req, res) => {
     const userTrainingPlans = await TrainingPlan.find();
     res.status(200).json({ userTrainingPlans });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ errorMessage: error.message });
   }
 };
 
@@ -33,8 +47,7 @@ const createUserTrainingPlan = async (req, res) => {
 
     return res.status(201).json({ trainingPlan });
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ errorMessage: error.message });
   }
 };
 
@@ -48,25 +61,23 @@ const addTrainingPlanToAffiliate = async (req, res) => {
       return res.status(404).json({ error: "Training plan not found" });
     }
 
-    existingTrainingPlan.affiliate.push(affiliateId);
+    existingTrainingPlan.affiliates.push(affiliateId);
 
     const updatedTrainingPlan = await TrainingPlan.findByIdAndUpdate(
       trainingPlanId,
-      { affiliate: existingTrainingPlan.affiliate },
+      { affiliates: existingTrainingPlan.affiliates },
       { omitUndefined: true }
     );
 
     res.json(updatedTrainingPlan);
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Error adding training plan to affiliate" });
   }
 };
 
 module.exports = {
-  addTrainingPlanToAffiliate,
+  addTrainingPlanToAffiliate
 };
-
 
 const updateTrainingPlan = async (req, res) => {
   try {
@@ -87,7 +98,7 @@ const updateTrainingPlan = async (req, res) => {
 
     res.status(200).json({ message: "Training plan updated successfully", updatedTrainingPlan });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ errorMessage: error.message });
   }
 };
 
@@ -105,19 +116,19 @@ const removeTrainingPlanToAffiliate = async (req, res) => {
       return res.status(404).json({ error: "Training plan not found" });
     }
 
-    const updatedAffiliate = existingTrainingPlan.affiliate.filter(id => id.toString() !== affiliateId.toString());
-    existingTrainingPlan.affiliate = updatedAffiliate;
+    const updatedAffiliate = existingTrainingPlan.affiliates.filter(
+      id => id.toString() !== affiliateId.toString()
+    );
+    existingTrainingPlan.affiliates = updatedAffiliate;
 
     const updatedTrainingPlan = await TrainingPlan.findByIdAndUpdate(
       trainingPlanId,
-      { affiliate: existingTrainingPlan.affiliate },
+      { affiliates: existingTrainingPlan.affiliates },
       { omitUndefined: true }
     );
 
     res.json(updatedTrainingPlan);
-
   } catch (error) {
-    console.log(error);
     res.status(500).json({ error: "Error removing training plan from affiliate" });
   }
 };
@@ -137,10 +148,16 @@ const deleteTrainingPlan = async (req, res) => {
 
     res.status(200).json({ message: "Training  deleted successfully" });
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ errorMessage: error.message });
   }
 };
 
-module.exports = { getUserTrainingPlan, getAllUserTrainingPlan, createUserTrainingPlan, addTrainingPlanToAffiliate, deleteTrainingPlan, updateTrainingPlan, removeTrainingPlanToAffiliate };
-
+module.exports = {
+  getUserTrainingPlan,
+  getAllUserTrainingPlan,
+  createUserTrainingPlan,
+  addTrainingPlanToAffiliate,
+  deleteTrainingPlan,
+  updateTrainingPlan,
+  removeTrainingPlanToAffiliate
+};
