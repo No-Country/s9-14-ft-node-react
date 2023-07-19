@@ -24,6 +24,31 @@ const router = Router();
  *   get:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *         description: Rol del usuario
  *     responses:
  *       200:
  *         description: OK
@@ -40,7 +65,7 @@ const router = Router();
  *                       status:
  *                         type: boolean
  *                       subscription:
- *                         nullable: array
+ *                         nullable: true
  *                         type: object
  *                       _id:
  *                         type: string
@@ -60,28 +85,27 @@ const router = Router();
  *                         type: string
  *                       __v:
  *                         type: number
- *                     example:
- *                       - status: true
- *                         subscription: []
- *                         _id: "64a44c888fe089bcbfb5fa9b"
- *                         name: "Test"
- *                         surname: "Test"
- *                         password: "123123"
- *                         email: "test@example.com"
- *                         phone: 246939613
- *                         role_id: "000000018fe089bcbfb5fa99"
- *                         subscription_id: "000000018fe089bcbfb5fa9a"
- *                         __v: 0
- *                       - status: true
- *                         _id: "64a57edcab21e16190e32ec6"
- *                         name: "Usuario"
- *                         surname: "Admin"
- *                         email: "admin@example.com"
- *                         password: "$2b$10$YPlQ..UhJi0LyX53KT66t.K7wZnXnkZP2yXLAHRLUT/EZHasH45cu"
- *                         phone: 246939617
- *                         role: "admin"
- *                         subscription: []
- *                         __v: 0
+ *             example:
+ *               - status: true
+ *                 _id: "64a57edcab21e16190e32ec6"
+ *                 name: "Usuario"
+ *                 surname: "Admin"
+ *                 email: "admin@example.com"
+ *                 password: "$2b$10$YPlQ..UhJi0LyX53KT66t.K7wZnXnkZP2yXLAHRLUT/EZHasH45cu"
+ *                 phone: 246939617
+ *                 role: "trainer"
+ *                 subscription: []
+ *                 __v: 0
+ *               - status: true
+ *                 _id: "64a57edcab21e16190e32ec6"
+ *                 name: "Usuario"
+ *                 surname: "Admin"
+ *                 email: "admin@example.com"
+ *                 password: "$2b$10$YPlQ..UhJi0LyX53KT66t.K7wZnXnkZP2yXLAHRLUT/EZHasH45cu"
+ *                 phone: 246939617
+ *                 role: "trainer"
+ *                 subscription: []
+ *                 __v: 0
  */
 router.get(
   "/",
@@ -97,11 +121,30 @@ router.get(
 );
 /**
  * @openapi
- * /api/users/{id}:
+ * /api/users/{id}/profile:
  *   get:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *       - in: path
  *         name: id
  *         schema:
@@ -172,6 +215,31 @@ router.get(
  *   post:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: ID del usuario
  *     requestBody:
  *       description: Información del nuevo usuario
  *       required: true
@@ -287,7 +355,26 @@ router.post(
  *   patch:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *       - in: path
  *         name: id
  *         schema:
@@ -366,8 +453,52 @@ router.post(
  *                           type: string
  *                         __v:
  *                           type: number
- *               example:
- *                 {"message": "User updated successfully"}
+ *                 example:
+ *                   message: "User updated successfully"
+ *                   userUpdated:
+ *                     type: object
+ *                     properties:
+ *                       status:
+ *                         type: boolean
+ *                       _id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                       surname:
+ *                         type: string
+ *                       email:
+ *                         type: string
+ *                       password:
+ *                         type: string
+ *                       phone:
+ *                         type: number
+ *                       role:
+ *                         type: string
+ *                         enum: [admin, trainer, affiliate]
+ *                       subscription:
+ *                         nullable: true
+ *                         type: object
+ *                       __v:
+ *                         type: number
+ *                       subscriptions:
+ *                         type: array
+ *                         items:
+ *                           type: string
+ *                         example: []
+ *                     example:
+ *                       message: "User updated successfully"
+ *                       userUpdated:
+ *                         status: true
+ *                         _id: "64a57edcab21e16190e32ec8"
+ *                         name: "Entrenador testing ruta patch"
+ *                         surname: "string"
+ *                         email: "string"
+ *                         password: "$2b$10$IugABrGshHLhOX/nmLLpJ.irm4fC6dZPcIqBvq3d2BN9rrwir.nLu"
+ *                         phone: 0
+ *                         role: "admin"
+ *                         subscription: null
+ *                         __v: 0
+ *                         subscriptions: []
  */
 router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
 /**
@@ -376,12 +507,31 @@ router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
  *   delete:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID de la actividad
+ *         description: ID del usuario
  *     responses:
  *       200:
  *         description: OK
@@ -447,7 +597,26 @@ router.delete(
  *   patch:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
  *       - in: path
  *         name: id
  *         schema:
@@ -546,12 +715,26 @@ router.patch(
  *   patch:
  *     tags:
  *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
- *       - in: path
- *         name: id
+ *       - in: header
+ *         name: x-token
  *         schema:
  *           type: string
- *         description: ID del usuario
+ *         required: true
+ *         description: Token de autenticación
  *     requestBody:
  *       description: Actualizacion del usuario
  *       required: true
@@ -626,10 +809,93 @@ router.patch(
  *                         __v:
  *                           type: number
  *               example:
- *                 {"message": "User updated successfully"}
+ *                 {"message": "User patch successfully"}
  */
 router.patch("/profile", [validateJWT, hasRole(["affiliate"])], updateUserByToken);
 
+/**
+ * @openapi
+ * /api/users/profile:
+ *   get:
+ *     tags:
+ *       - Users
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación
+ *     responses:
+ *       200:
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     newUser:
+ *                       type: object
+ *                       properties:
+ *                         name:
+ *                           type: string
+ *                           example: string
+ *                         surname:
+ *                           type: string
+ *                           example: string
+ *                         email:
+ *                           type: string
+ *                           example: string
+ *                         password:
+ *                           type: string
+ *                           example: string
+ *                         active:
+ *                           type: boolean
+ *                           example: true
+ *                         phone:
+ *                           type: number
+ *                           example: 0
+ *                         role:
+ *                           type: string
+ *                           enum: [admin, trainer, affiliate]
+ *                           example: admin
+ *                         subscriptions:
+ *                           type: array
+ *                           items:
+ *                             type: string
+ *                           example: []
+ *                         _id:
+ *                           type: string
+ *                         __v:
+ *                           type: number
+ *               example:
+ *               - status: true
+ *                 _id: "64a57edcab21e16190e32ec6"
+ *                 name: "Usuario"
+ *                 surname: "Admin"
+ *                 email: "admin@example.com"
+ *                 password: "$2b$10$YPlQ..UhJi0LyX53KT66t.K7wZnXnkZP2yXLAHRLUT/EZHasH45cu"
+ *                 phone: 246939617
+ *                 role: "trainer"
+ *                 subscription: []
+ *                 __v: 0
+ */
 router.get(
   "/profile",
   [validateJWT, hasRole(["admin", "trainer", "affiliate"]), validateFields],
