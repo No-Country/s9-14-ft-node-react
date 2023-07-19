@@ -23,7 +23,7 @@ const router = Router();
  *     security:
  *       - bearerAuth: []
  *       - apiKeyAuth: []
- *     summary: Obtén el plan de entramiento de un afiliado en concreto a través de su id.
+ *     summary: Obtén el plan de entrenamiento de un afiliado o los planes de entrenamiento armados por un entrenador a través de su id.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -46,16 +46,15 @@ const router = Router();
  *         name: userId
  *         schema:
  *           type: string
- *         description: Id del afiliado.
+ *         description: Id del afiliado o del entrenador.
  *     responses:
  *       200:
- *         description: Plan de entrenamiento del afiliado.
+ *         description: Plan de entrenamiento del afiliado o planes de entrenamiento armados por el entrenador.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TrainingPlan'
  */
-
 router.get(
   "/:userId",
   [
@@ -214,13 +213,11 @@ router.post(
   createUserTrainingPlan
 );
 
-router.patch("/addtoaffiliate", 
-[
-  validateJWT,
-  hasRole(["admin", "trainer", "affiliate"]),
-  validateFields
-],
-addTrainingPlanToAffiliate);
+router.patch(
+  "/addtoaffiliate",
+  [validateJWT, hasRole(["admin", "trainer", "affiliate"]), validateFields],
+  addTrainingPlanToAffiliate
+);
 
 /**
  * @openapi
@@ -273,24 +270,23 @@ router.put(
   updateTrainingPlan
 );
 
+router.delete(
+  "/:id",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer", "affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(idIsNotAdmin),
+    validateFields
+  ],
+  deleteTrainingPlan
+);
 
-router.delete("/:id",
-[
-  validateJWT,
-  hasRole(["admin", "trainer", "affiliate"]),
-  param("id", "id is not a MongoId").isMongoId(),
-  param("id").custom(idIsNotAdmin),
-  validateFields
-],
-deleteTrainingPlan);
-
-router.patch("/removeaffiliate",
-[
-  validateJWT,
-  hasRole(["admin", "trainer"]),
-  validateFields
-],
-removeTrainingPlanToAffiliate);
+router.patch(
+  "/removeaffiliate",
+  [validateJWT, hasRole(["admin", "trainer"]), validateFields],
+  removeTrainingPlanToAffiliate
+);
 
 /**
  * @openapi
