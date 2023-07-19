@@ -2,11 +2,28 @@ import type { Activity } from "@/types";
 import style from './style.module.scss'
 import Image from "next/image";
 import { Icons } from "../Icons";
+import { useActivitiesActions } from "@/hooks/useActivities";
 
-const { Trash, Person } = Icons
+const { Trash, Person, Clock, Calendar } = Icons
 
-export function ActivityCard ({name, trainer, image, totalVacancies, ...img}: Activity) {
-  console.log(img)
+interface Props extends Activity {
+  token: string
+}
+
+export function ActivityCard ({name, trainer, image, totalVacancies, token, _id, ...img}: Props) {
+  const { deleteActivity } = useActivitiesActions()
+
+  // const getSpanishDay = (nextDay?: boolean) => {
+  //   const date = new Date()
+  //   const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado']
+  
+  //   if (nextDay) {
+  //     date.setDate(date.getDate() + 1)
+  //   }
+    
+  //   return days[date.getDay()]
+  // }
+
   return (
     <div className={style.card}> 
       <section>
@@ -15,19 +32,26 @@ export function ActivityCard ({name, trainer, image, totalVacancies, ...img}: Ac
       <section className={style.data}>
         <div className={style.name}>
           <h2>{name}</h2>
-          <Trash />
+          <Trash className={style.trash} onClick={()=> deleteActivity(_id, token)} />
         </div>
-        <div>
+        <div className={style.trainer}>
           <b>Profesor:</b> {trainer.name}
         </div>
-        <div>
+        <div className={style.metadata}>
           <span>
-            <Person />
-            <p>Cupo: </p>
+            <Person className={style.icon} />
+            {/* <p>Cupo: {totalVacancies[getSpanishDay()]}</p> */}
+            <p>Cupo: 20</p>
+          </span>
+          <span>
+            <Calendar className={style.icon} />
+            <p>Días: Lunes, Miércoles y Viernes.</p>
+          </span>
+          <span>
+            <Clock className={style.icon} />
+            <p>Horario: 09:00 - 18:00</p>
           </span>
         </div>
-
-        
       </section>
     </div>
   )

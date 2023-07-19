@@ -53,7 +53,7 @@ export function useSession () {
   useEffect(()=> {
     if (!session?.token) {
       const data = getData()
-
+      console.log(data)
       if (!data?.token || !(pathname.includes(`/${data?.role}`))) {
         push('/login')  
       }
