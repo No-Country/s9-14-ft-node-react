@@ -14,6 +14,7 @@ const options = {
     "src/routes/users.js",
     "src/routes/subscriptions.js",
     "src/routes/trainingPlans.js",
+    "src/routes/search.js",
     "src/models/TrainingPlan.js",
     "src/models/User.js",
     "src/models/Activity.js",
