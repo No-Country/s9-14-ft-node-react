@@ -28,6 +28,8 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
       const data = await res.json()
 
       const trainerStatus = data.map((activity: Activity) => {
+        if (!activity.trainer) return Promise.resolve({user: {status: null, name: 'No hay'}})
+
         return fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/users/${activity.trainer._id}/profile`, {
           headers: {
             'x-token': token || '',
@@ -42,7 +44,10 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
 
       await (async () => {
         for (let i = 0; i < data.length; i++) {
-          console.log(trainers[i].status)
+          if (!data[i].trainer) {
+            data[i].trainer = trainers[i].user
+            continue
+          }
           data[i].trainer.status = trainers[i].user.status
         }
       })()
