@@ -78,7 +78,7 @@ const TrainingPlanSchema = new mongoose.Schema({
     ref: "User",
     required: true
   },
-  affiliate: [
+  affiliates: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",

@@ -25,15 +25,18 @@ const mongoose = require("mongoose");
  *         image:
  *           type: string
  *           description: La imagen de la actividad.
+ *         days:
+ *           type: array
+ *           items:
+ *             type: string
+ *             enum: [lunes, martes, miércoles, jueves, viernes, sábado]
+ *           description: Un arreglo con los días en los que se dará la actividad.
  *         schedule:
- *           type: object
- *           description: Un objeto para representar días y horarios en los que se dará la actividad.
- *         freeVacancies:
- *           type: object
- *           description: Un objeto para representar los cupos disponibles en un día en concreto en el que se dará la actividad.
- *         totalVacancies:
- *           type: object
- *           description: Un objeto para representar los cupos totales en un día en concreto en el que se dará la actividad.
+ *           type: array
+ *           description: Un arreglo con los horarios en los que se dará la actividad.
+ *         quota:
+ *           type: number
+ *           description: Los cupos disponibles que tendrá la actividad.
  *         trainer:
  *           type: string
  *           description: El id del entrenador que dictará la actividad.
@@ -54,16 +57,17 @@ const mongoose = require("mongoose");
  *         name: 'Body Pump'
  *         description: 'Es una clase que se realiza con una barra y discos, desarrolla la fuerza y resistencia y da tono muscular, pero también está diseñada para incrementar el gasto calórico de tal forma que ayuda también a mejorar la composición corporal y por tanto a perder grasa. Se ejecutan los ejercicios más básicos del gimnasio pero con la gran diferencia de ir al ritmo de la música y con pre-coreografías.'
  *         image: 'https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg'
+ *         days:
+ *           - 'martes'
+ *           - 'jueves'
  *         schedule:
- *           miércoles: "10:00-12:00"
- *         freeVacancies:
- *           miércoles: 19
- *         totalVacancies:
- *           miércoles: 20
+ *           - "14:00"
+ *           - "16:00"
+ *         quota: 20
  *         trainer: '64b1c7063f6378c5f32c3b0c'
  *         affiliates:
  *           - affiliate: '64b1c7063f6378c5f32c3b10'
- *             day: 'miércoles'
+ *             day: 'martes'
  */
 
 const ActivitySchema = new mongoose.Schema({
@@ -84,6 +88,7 @@ const ActivitySchema = new mongoose.Schema({
   },
   days: {
     type: [String],
+    enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
     required: true
   },
   schedule: {
