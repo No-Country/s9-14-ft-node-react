@@ -4,6 +4,7 @@ const activitiesRouter = require("./activities");
 const usersRouter = require("./users");
 const subscriptionsRouter = require("./subscriptions");
 const trainingPlansRouter = require("./trainingPlans");
+const search = require("./search");
 
 const rootRouter = Router();
 
@@ -12,5 +13,6 @@ rootRouter.use("/activities", activitiesRouter);
 rootRouter.use("/users", usersRouter);
 rootRouter.use("/subscriptions", subscriptionsRouter);
 rootRouter.use("/trainingPlans", trainingPlansRouter);
+rootRouter.use("/search", search);
 
 module.exports = rootRouter;
