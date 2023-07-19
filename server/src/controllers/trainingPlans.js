@@ -75,10 +75,6 @@ const addTrainingPlanToAffiliate = async (req, res) => {
   }
 };
 
-module.exports = {
-  addTrainingPlanToAffiliate
-};
-
 const updateTrainingPlan = async (req, res) => {
   try {
     const { id } = req.params;
