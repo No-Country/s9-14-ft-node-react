@@ -6,7 +6,7 @@ import {useSession} from '@/hooks/useSession'
 interface Props {
   children: React.ReactNode
   placeholder: string
-  onSearch: ()=> void
+  onSearch: (arg: string)=> void
 }
 
 export function AdminLayout ({children, placeholder, onSearch}: Props) {

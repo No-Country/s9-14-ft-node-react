@@ -12,6 +12,7 @@ interface Store {
   actions: {
     setData: (data: Data) => void
     getData: () => Data | null
+    removeData: () => void
   }
 }
 
@@ -21,6 +22,10 @@ const useSessionStore = create<Store>((set)=> ({
     setData: (data: Data) => {
       localStorage.setItem('data', JSON.stringify(data))     
       set({data})
+    },
+    removeData: () => {
+      localStorage.removeItem('data')
+      set({data: undefined})
     },
     getData: () => {
       const data: Data | null = JSON.parse(localStorage.getItem('data') || '{}')
@@ -35,8 +40,9 @@ const useSessionStore = create<Store>((set)=> ({
 export function useSessionActions () {
   const setData = useSessionStore(state => state.actions.setData)
   const getData = useSessionStore(state => state.actions.getData)
+  const removeData = useSessionStore(state => state.actions.removeData)
 
-  return {setData, getData}
+  return {setData, getData, removeData}
 }
 
 export function useSession () {
@@ -47,7 +53,7 @@ export function useSession () {
   useEffect(()=> {
     if (!session?.token) {
       const data = getData()
-
+      console.log(data)
       if (!data?.token || !(pathname.includes(`/${data?.role}`))) {
         push('/login')  
       }

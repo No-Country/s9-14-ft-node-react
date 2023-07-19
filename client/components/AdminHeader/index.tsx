@@ -10,10 +10,14 @@ import { useState } from "react";
 import { AdminNav } from "../AdminNav";
 import { useUser } from "@/hooks/useUser";
 
-
 const { Logo, Exit } = Icons;
 
-export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSearch: ()=> void}) {
+interface Props {
+  placeholder: string
+  onSearch: (arg: string)=> void
+}
+
+export function AdminHeader({placeholder, onSearch}: Props) {
   const [isActive, setIsActive] = useState(false)
   const user = useUser() // En useUser se hace la peticion a la api para obtener el usuario con el token guardado en el localStorage
 
@@ -25,7 +29,7 @@ export function AdminHeader({placeholder, onSearch}: {placeholder: string, onSea
             <Logo className={style.logo} />
             <div className={style.picture}>
             <span className={style.data}>
-              <UserPhoto src="/user.png" />
+              <UserPhoto src="/adminPicture.svg" />
               <span>
                 <h4>{user?.name}</h4>
                 <small>Admin</small>
