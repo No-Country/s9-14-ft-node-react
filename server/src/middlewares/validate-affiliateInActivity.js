@@ -88,12 +88,10 @@ const dayExistInActivity = async (req, res, next) => {
 
   try {
     const activity = await Activity.findById(id);
-    let dayExist = false;
-    for (let prop in activity.schedule) {
-      if (prop === day) {
-        dayExist = true;
-      }
-    }
+
+    const days = activity.days;
+    const dayExist = days.includes(day);
+
     if (!dayExist) {
       return res.status(400).json({ msg: "The day does not correspond to the activity" });
     }
