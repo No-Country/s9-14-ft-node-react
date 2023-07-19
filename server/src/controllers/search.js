@@ -80,4 +80,24 @@ const searchUsers = async (req, res) => {
   }
 };
 
-module.exports = { searchAffiliatesOfTrainer, searchUsers };
+const searchActivity = async (req, res) => {
+  const { keyword } = req.query;
+
+  let query = {};
+
+  try {
+    keyword &&
+      (query = {
+        ...query,
+        $or: [{ name: { $regex: keyword, $options: "i" } }]
+      });
+
+    const result = await Activity.find(query);
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+module.exports = { searchAffiliatesOfTrainer, searchUsers, searchActivity };

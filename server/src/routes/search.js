@@ -2,7 +2,7 @@ const { Router } = require("express");
 
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
-const { searchAffiliatesOfTrainer, searchUsers } = require("../controllers/search");
+const { searchAffiliatesOfTrainer, searchUsers, searchActivity } = require("../controllers/search");
 
 const router = Router();
 
@@ -120,5 +120,7 @@ router.get("/affiliates", [validateJWT, hasRole(["trainer"])], searchAffiliatesO
  *
  */
 router.get("/users", [validateJWT, hasRole(["admin"])], searchUsers);
+
+router.get("/activity", [validateJWT, hasRole(["admin"])], searchActivity);
 
 module.exports = router;
