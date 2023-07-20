@@ -45,7 +45,9 @@ const mongoose = require("mongoose");
  *           description: El rol del usuario.
  *         subscriptions:
  *           type: array
- *           description: Las suscripciones del usuario.
+ *           items:
+ *             type: string
+ *           description: Un arreglo de ids de las suscripciones del usuario.
  *         birthday:
  *           type: string
  *           description: La fecha de nacimiento del usuario.
@@ -59,18 +61,21 @@ const mongoose = require("mongoose");
  *               type: string
  *               description: La fecha de expiración del apto médico del usuario.
  *       example:
- *         _id: '64b1c7063f6378c5f32c3b04'
+ *         _id: '64b8061d726e0a817bf0cb51'
  *         name: 'Usuario'
- *         surname: 'Admin'
- *         email: 'admin@email.com'
- *         password: '$2b$10$uhkH6jROHyj6qgbSZcRfNOPZHNSvsQXruB4mW3EGb4q5uAJ8dRoc2'
+ *         surname: 'Afiliado 1'
+ *         email: 'afiliado1@email.com'
+ *         password: '$2b$10$JaYHsK9tGX317b3ill03r.SstOJp75mqzhXMtaDocy/v65Z3wSLNK'
  *         status: true
- *         phone: 246939617
+ *         phone: 754655225
  *         phoneEmergency: 12345678
- *         role: 'admin'
- *         subscriptions: []
+ *         role: 'affiliate'
+ *         subscriptions:
+ *           - '64b8061d726e0a817bf0cb3e'
  *         birthday: '2000-10-06T00:00:00.000+00:00'
- *         fitMedical: {}
+ *         fitMedical:
+ *           valid: true
+ *           expire: '2023-12-31T03:00:00.000+00:00'
  */
 
 const UserSchema = new mongoose.Schema({
