@@ -1,8 +1,8 @@
 import style from "@/styles/pages/home.module.scss";
 import Image from "next/image";
 import persona from "@/public/persona.png"
-import button_burger from "@/public/button container.png"
-import button_burger_close from "@/public/button container close.png"
+import button_burger from "@/public/button_container.png"
+import button_burger_close from "@/public/button_container_close.png"
 import { useState } from "react";
 import Link from "next/link";
 //<button className={style.menu_button}>  <Burger></Burger> </button>
