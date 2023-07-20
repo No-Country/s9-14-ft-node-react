@@ -3,7 +3,7 @@ const { Activity } = require("../models");
 
 const refreshVacancies = () => {
   cron.schedule(
-    "59 23 * * *", //minutes, hour
+    "13 9 * * *", //minutes, hour
     async () => {
       console.log("initializing task: refresh activity vacancies");
       const activities = await Activity.find();
@@ -11,14 +11,10 @@ const refreshVacancies = () => {
         const days = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
         const date = new Date();
         const today = days[date.getDay()];
-        let vacancies;
 
         activities.forEach(async activity => {
-          if (today in activity.totalVacancies) {
-            vacancies = activity.totalVacancies[today];
-
+          if (activity.days.includes(today)) {
             await activity.updateOne({
-              $set: { [`freeVacancies.${today}`]: vacancies },
               $pull: {
                 affiliates: { day: today }
               }
