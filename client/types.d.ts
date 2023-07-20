@@ -7,32 +7,36 @@ export interface Trainer {
   phone: number;
   phoneEmergency: number;
   role: string;
-  subscriptions: any[];
+  subscriptions: any[]; //definir
   birthday: string; 
 }
 
+
 export interface User {
+  fitMedical: {
+    valid: boolean;
+    expire: string;
+  };
   _id: string;
-  status: boolean;
-  subscriptions: any[];
   name: string;
   surname: string;
-  password: string;
   email: string;
+  status: boolean;
   phone: number;
   phoneEmergency: number;
-  role_id: string;
-  subscription_id: string;
+  role: string;
+  subscriptions: any[] //definir;
+  birthday: string;
 }
 export interface Activity {
-  name: string;
-  trainer: Trainer
-  image: string;
-  totalVacancies: any //definir
   _id: string;
+  name: string;
   description: string;
-  schedule: any //definir
-  freeVacancies: any // definir
-  affiliates: any[]; // Puedes cambiar 'any[]' por un tipo específico si conoces la estructura de affiliates.
+  image: string;
+  days: string[];
+  schedule: string[];
+  quota: number;
+  trainer: Trainer;
+  affiliates: User[];
 }
 

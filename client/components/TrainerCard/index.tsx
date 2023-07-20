@@ -22,7 +22,6 @@ export function TrainerCard ({name, phone, birthday, token, _id, ...props}: Prop
   return `${day}/${month}/${year}`;
 }
 
-  console.log(props)
   return (
     <div className={style.card}> 
       <section>
