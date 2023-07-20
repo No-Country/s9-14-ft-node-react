@@ -16,7 +16,8 @@ const {
   removeAffiliateOfActivityFromBack,
   setVacancies,
   removeDay,
-  getTrainerActivities
+  getTrainerActivities,
+  getTrainerActivitiesByToken
 } = require("../controllers/activities");
 const { activityExistById, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 const {
@@ -146,6 +147,8 @@ router.get(
   ],
   getActivity
 );
+
+router.get("/trainer/token", [validateJWT, hasRole(["trainer"])], getTrainerActivitiesByToken);
 
 router.get(
   "/trainer/:id",
