@@ -95,15 +95,8 @@ const ActivitySchema = new mongoose.Schema({
   },
   schedule: {
     type: [String]
-  } /*
-  freeVacancies: {
-    type: Object
   },
-  totalVacancies: {
-    type: Object
-  },*/,
   quota: {
-    //totalVacancies
     type: Number,
     required: true
   },
