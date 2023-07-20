@@ -109,7 +109,7 @@ const removeTrainingPlanToAffiliate = async (req, res) => {
     }
 
     if (!affiliateId) {
-      return res.status(404).json({ error: "Training plan not found" });
+      return res.status(404).json({ error: "Affiliate not found" });
     }
 
     const updatedAffiliate = existingTrainingPlan.affiliates.filter(

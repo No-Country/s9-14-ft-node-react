@@ -61,6 +61,7 @@ const router = Router();
  *
  */
 router.get("/affiliates", [validateJWT, hasRole(["trainer"])], searchAffiliatesOfTrainer);
+
 /**
  * @openapi
  * /api/search/users:

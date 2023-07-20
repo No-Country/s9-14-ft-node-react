@@ -9,10 +9,9 @@ const router = Router();
  * @openapi
  * /api/auth/login:
  *   post:
- *     tags:
- *       - Login
+ *     summary: Login de usuario.
+ *     tags: [Auth]
  *     requestBody:
- *       description: Credentials for user login
  *       required: true
  *       content:
  *         application/json:
@@ -21,11 +20,15 @@ const router = Router();
  *             properties:
  *               email:
  *                 type: string
+ *                 description: El email del usuario.
+ *                 example: 'example@email.com'
  *               password:
  *                 type: string
+ *                 description: La contraseña del usuario.
+ *                 example: 'password12345'
  *     responses:
  *       200:
- *         description: Respuesta del login
+ *         description: Respuesta exitosa que devuelve el token de autenticación del usuario.
  *         content:
  *           application/json:
  *             schema:
@@ -33,7 +36,14 @@ const router = Router();
  *               properties:
  *                 token:
  *                   type: string
- *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YWMwZjgwODAxMWU5ZTVmNDI2ODVlOCIsImVtYWlsIjoiZnJhbnJleTE0QGhvdG1haWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNjg4OTk3Nzc1LCJleHAiOjE2ODkwODQxNzV9.UcNPlw9LhVNqZ-0Q0O2iFASdWlrtA3_6JwugJ_hodtY"
+ *                   description: Un token alfanumérico de autenticación para el usuario.
+ *                   example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0YjgxMzdhOTZlOTc4ZjMwZmU5MTU4MCIsImlhdCI6MTY4OTg2NTYyMywiZXhwIjoxNjg5OTUyMDIzfQ.Dtm9793v2CnKeH_-3z45w5LIt8oKB-vRluB_qyl0954'
+ *       400:
+ *         description: Respuesta no exitosa que indica que el email no está registrado o la contraseña ingresada es incorrecta.
+ *       401:
+ *         description: Respuesta no exitosa que indica que el usuario está deshabilitado y por lo tanto no puede loguearse.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor y arroja un 'Login error'.
  */
 router.post(
   "/login",

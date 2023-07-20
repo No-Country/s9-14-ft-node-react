@@ -20,10 +20,7 @@ const router = Router();
  * @openapi
  * /api/trainingPlans/{userId}:
  *   get:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Obtén el plan de entrenamiento de un afiliado o los planes de entrenamiento armados por un entrenador a través de su id.
+ *     summary: Obtener el plan de entrenamiento de un afiliado o los planes de entrenamiento armados por un entrenador a través de su ID.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -35,6 +32,9 @@ const router = Router();
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -73,7 +73,7 @@ router.get(
  *     security:
  *       - bearerAuth: []
  *       - apiKeyAuth: []
- *     summary: Obtén el plan de entramiento de un afiliado en concreto a través de su id.
+ *     summary: Obtener el plan de entramiento de un afiliado en concreto a través de su ID.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
