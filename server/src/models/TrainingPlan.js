@@ -23,7 +23,9 @@ const mongoose = require("mongoose");
  *           description: El id del entrenador asociado al plan de entrenamiento.
  *         affiliates:
  *           type: array
- *           description: Los afiliados asociados al plan de entrenamiento.
+ *           items:
+ *             type: string
+ *           description: Un arreglo de ids de los afiliados asociados al plan de entrenamiento.
  *         exercises:
  *           type: array
  *           items:
