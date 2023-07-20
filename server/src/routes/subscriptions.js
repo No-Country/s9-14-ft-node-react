@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { addUserNewSubscription, deleteUserSubscription } = require("../controllers/subscriptions");
+const { addUserNewSubscription, deleteUserSubscription, getAllSubscriptions } = require("../controllers/subscriptions");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
@@ -7,6 +7,12 @@ const { body, param } = require("express-validator");
 const { idIsNotAdmin, idIsNotAffiliate } = require("../helpers/db-validators");
 
 const router = Router();
+
+router.get(
+  "/",
+  [validateJWT, hasRole(["admin", "trainer"]), validateFields],
+  getAllSubscriptions
+);
 
 /**
  * @openapi
