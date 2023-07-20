@@ -1,4 +1,4 @@
-import style from "./style.module.scss";
+import style from "@/styles/pages/home.module.scss";
 import Image from "next/image";
 import persona from "../public/persona.png"
 import persona_small from "../public/persona small.png"
@@ -37,7 +37,7 @@ export default function Home() {
             </nav>
             <Link href="/login" className={style.heading_button}>Iniciar Sesion</Link>
             <button className={style.burger_button} onClick={handleToggleMenu}> 
-            {!isOpen ? <Image src={button_burger}/> : <Image src={button_burger_close}/>}
+            {!isOpen ? <Image alt="burger" src={button_burger}/> : <Image alt='' src={button_burger_close}/>}
             </button>
           </header>
           <section className={style.main}>
@@ -48,7 +48,7 @@ export default function Home() {
                 <h5>Elige el camino del fitness y conquista tu destino</h5>
                 <button className={style.main_button}>Ver Planes</button>
               </div>
-              <Image src={persona} className={style.main_article_image}/>
+              <Image alt="" src={persona} className={style.main_article_image}/>
             </article>
           </section>
         </main>

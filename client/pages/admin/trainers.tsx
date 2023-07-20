@@ -44,39 +44,6 @@ export default function Trainers () {
           </div>
         )
       }
-      
-
-      {/* <div className={style.title}>
-        <h1>ACTIVIDADES</h1>
-        <Link href={'#'} className={style.add}>Añadir nueva</Link>
-      </div>
-      {
-        activities.length > 0 ? (
-          <>
-            <section className={style.section}>
-              <h2 className={style.heading}>ACTIVAS</h2>
-              <Slider>
-                {
-                  activities.map((activity)=> activity.trainer.status ? <ActivityCard key={activity._id} {...activity} token={user!.token} /> : null )     
-                }
-              </Slider>
-            </section>
-            <section className={style.section}>
-              <h2 className={style.heading}>INACTIVAS</h2>
-              <Slider>
-                {
-                  activities.map((activity)=> !activity.trainer.status ? <ActivityCard key={activity._id} {...activity} token={user!.token} /> : null )     
-                }
-              </Slider>
-            </section>
-          </>
-        )
-       : (
-        <div className={style.loader}>
-          <Loader />
-        </div>
-      )
-    } */}
     </AdminLayout>
   )
 }

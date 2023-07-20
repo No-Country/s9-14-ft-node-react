@@ -12,8 +12,10 @@ interface Props {
 export function AdminLayout ({children, placeholder, onSearch}: Props) {
   const session = useSession()
 
+  console.log(session)
+
   return (
-  <main className={styles.main}>
+    <main className={styles.main}>
       {
         session?.token ?
         <>
