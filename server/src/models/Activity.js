@@ -33,6 +33,8 @@ const mongoose = require("mongoose");
  *           description: Un arreglo con los días en los que se dará la actividad.
  *         schedule:
  *           type: array
+ *           items:
+ *             type: string
  *           description: Un arreglo con los horarios en los que se dará la actividad.
  *         quota:
  *           type: number
