@@ -46,7 +46,6 @@ const router = Router();
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor y arroja un 'Login error'.
  */
-
 router.post(
   "/login",
   [

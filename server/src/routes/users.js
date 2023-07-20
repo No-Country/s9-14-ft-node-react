@@ -119,6 +119,7 @@ router.get(
   ],
   getUsers
 );
+
 /**
  * @openapi
  * /api/users/{id}/profile:
@@ -209,6 +210,7 @@ router.get(
   ],
   getUserById
 );
+
 /**
  * @openapi
  * /api/users:
@@ -349,6 +351,7 @@ router.post(
   ],
   registerUser
 );
+
 /**
  * @openapi
  * /api/users/{id}/profile:
@@ -501,6 +504,7 @@ router.post(
  *                         subscriptions: []
  */
 router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
+
 /**
  * @openapi
  * /api/users/{id}:
@@ -591,6 +595,7 @@ router.delete(
   ],
   deleteUser
 );
+
 /**
  * @openapi
  * /api/users/{id}/setStatus:
@@ -709,6 +714,7 @@ router.patch(
   ],
   setUserStatus
 );
+
 /**
  * @openapi
  * /api/users/profile:

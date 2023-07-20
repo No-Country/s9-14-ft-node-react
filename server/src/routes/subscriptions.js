@@ -3,17 +3,17 @@ const { addUserNewSubscription, deleteUserSubscription } = require("../controlle
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { validateFields } = require("../middlewares/validate-fields");
-const { body, param } = require("express-validator");
-const { idIsNotAdmin, idIsNotAffiliate } = require("../helpers/db-validators");
+const { param } = require("express-validator");
+const { idIsNotAffiliate } = require("../helpers/db-validators");
 
 const router = Router();
 
 /**
  * @openapi
- * /api/activities/{id}/editSubscription:
+ * /api/subscriptions/{id}/addNewSubscription:
  *    put:
- *     tags:
- *       - Subscriptions
+ *     summary: Agregar una nueva suscripción a un afiliado.
+ *     tags: [Subscriptions]
  *     components:
  *       securitySchemes:
  *         bearerAuth:
@@ -33,27 +33,32 @@ const router = Router();
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación.
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID del usuario
+ *         description: ID del afiliado.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Subscription'
  *     responses:
  *       200:
- *         description: Usuario con el ID especificado
+ *         description: Respuesta exitosa que devuelve al afiliado al que se le añadió la nueva suscripción.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: object
- *                   properties:
- *
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin es el único que tiene acceso.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
 router.put(
-  "/:id/editSubscription",
+  "/:id/addNewSubscription",
   [
     validateJWT,
     hasRole(["admin"]),
@@ -66,10 +71,10 @@ router.put(
 
 /**
  * @openapi
- * /api/activities/{id}/editSubscription:
+ * /api/subscriptions/{id}/deleteSubscription:
  *    delete:
- *     tags:
- *       - Subscriptions
+ *     summary: Eliminar una suscripción a un afiliado.
+ *     tags: [Subscriptions]
  *     components:
  *       securitySchemes:
  *         bearerAuth:
@@ -89,27 +94,32 @@ router.put(
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación.
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID del usuario
+ *         description: ID del afiliado.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Subscription'
  *     responses:
  *       200:
- *         description: Usuario con el ID especificado
+ *         description: Respuesta exitosa que devuelve al afiliado al que se le eliminó la suscripción.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 data:
- *                   type: object
- *                   properties:
- *
+ *               $ref: '#/components/schemas/User'
+ *       401:
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin es el único que tiene acceso.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
 router.delete(
-  "/:id/editSubscription",
+  "/:id/deleteSubscription",
   [
     validateJWT,
     hasRole(["admin"]),
