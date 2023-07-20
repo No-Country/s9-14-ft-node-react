@@ -355,6 +355,23 @@ const removeDay = async (req, res) => {
   }
 };
 
+const getTrainerActivitiesByToken = async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const trainerActivities = await Activity.find({ trainer: id }).populate(
+      "trainer",
+      "-password -subscriptions -__v"
+    );
+
+    !trainerActivities.length
+      ? res.status(404).json({ message: "The trainer is not in charge of any activity yet." })
+      : res.status(200).json(trainerActivities);
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
+
 module.exports = {
   addActivity,
   getActivity,
@@ -369,5 +386,6 @@ module.exports = {
   getVacanciesOfActivity,
   setVacancies,
   removeDay,
-  getTrainerActivities
+  getTrainerActivities,
+  getTrainerActivitiesByToken
 };
