@@ -20,7 +20,7 @@ const validateJWT = async (req, res, next) => {
     req.user = user;
     next();
   } catch (error) {
-    return res.status(401).json({ msg: `Invalid token: ${error}` });
+    return res.status(500).json({ msg: `Invalid token: ${error}` });
   }
 };
 
