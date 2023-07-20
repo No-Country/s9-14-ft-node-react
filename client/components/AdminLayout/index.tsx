@@ -13,7 +13,7 @@ export function AdminLayout ({children, placeholder, onSearch}: Props) {
   const session = useSession()
 
   return (
-  <main className={styles.main}>
+    <main className={styles.main}>
       {
         session?.token ?
         <>

@@ -10,19 +10,20 @@ interface Props extends Activity {
   token: string
 }
 
-export function ActivityCard ({name, trainer, image, totalVacancies, token, _id, ...img}: Props) {
+export function ActivityCard ({name, trainer, image, quota, days, token, _id, schedule}: Props) {
   const { deleteActivity } = useActivitiesActions()
 
-  // const getSpanishDay = (nextDay?: boolean) => {
-  //   const date = new Date()
-  //   const days = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado']
-  
-  //   if (nextDay) {
-  //     date.setDate(date.getDate() + 1)
-  //   }
-    
-  //   return days[date.getDay()]
-  // }
+  function formatDaysOfWeek(days: string[]) {
+
+  if (days.length === 1) {
+    return days[0];
+  } else if (days.length === 2) {
+    return `${days[0]} y ${days[1]}`;
+  } else {
+    const lastDay = days.pop();
+    return `${days.join(', ')} y ${lastDay}`;
+  }
+}
 
   return (
     <div className={style.card}> 
@@ -40,16 +41,15 @@ export function ActivityCard ({name, trainer, image, totalVacancies, token, _id,
         <div className={style.metadata}>
           <span>
             <Person className={style.icon} />
-            {/* <p>Cupo: {totalVacancies[getSpanishDay()]}</p> */}
-            <p>Cupo: 20</p>
+            <p>Cupo: {quota}</p>
           </span>
           <span>
             <Calendar className={style.icon} />
-            <p>Días: Lunes, Miércoles y Viernes.</p>
+            <p>Días: {formatDaysOfWeek(days)}</p>
           </span>
           <span>
             <Clock className={style.icon} />
-            <p>Horario: 09:00 - 18:00</p>
+            <p>Horario: {schedule.join(' - ')}</p>
           </span>
         </div>
       </section>
