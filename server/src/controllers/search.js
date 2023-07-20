@@ -100,4 +100,28 @@ const searchActivity = async (req, res) => {
   }
 };
 
-module.exports = { searchAffiliatesOfTrainer, searchUsers, searchActivity };
+const searchTrainer = async (req, res) => {
+  const { keyword } = req.query;
+
+  let query = { role: "trainer" };
+
+  try {
+    keyword &&
+      (query = {
+        ...query,
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { surname: { $regex: keyword, $options: "i" } }
+        ]
+      });
+
+    const result = await User.find(query);
+
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server error" });
+  }
+};
+
+module.exports = { searchAffiliatesOfTrainer, searchUsers, searchActivity, searchTrainer };
