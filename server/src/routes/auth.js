@@ -12,7 +12,6 @@ const router = Router();
  *     summary: Login de usuario.
  *     tags: [Auth]
  *     requestBody:
- *       description: Credenciales para que un usuario pueda loguearse.
  *       required: true
  *       content:
  *         application/json:
