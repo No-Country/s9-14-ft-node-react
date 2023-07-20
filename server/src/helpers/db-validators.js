@@ -33,4 +33,18 @@ const idIsNotAffiliate = async id => {
   }
 };
 
-module.exports = { activityExistById, idIsNotAdmin, idIsNotAffiliate, idIsNotAdminOrTrainer };
+const idIsNotTrainer = async id => {
+  const user = await User.findById(id);
+
+  if (user.role !== "trainer") {
+    throw new Error(`User ID is not a trainer`);
+  }
+};
+
+module.exports = {
+  activityExistById,
+  idIsNotAdmin,
+  idIsNotAffiliate,
+  idIsNotTrainer,
+  idIsNotAdminOrTrainer
+};
