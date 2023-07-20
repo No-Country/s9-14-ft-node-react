@@ -157,9 +157,10 @@ const DataForm: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className={styles.part}>
-          <div className={styles.field}>
+        <div className={`${styles.last} ${styles.part}`}>
+          <div className={`${styles.lasts} ${styles.field}`}>
             <label htmlFor="name">Apto medico:</label>
+            <div className={styles.status}><p>Vencido</p></div>
             <input
               type="date"
               id="meddoc"
@@ -169,9 +170,9 @@ const DataForm: React.FC = () => {
               required
             />
           </div>
-          <div className={styles.field}>
+          <div className={`${styles.lasts} ${styles.field}`}>
             <label htmlFor="name">Membresia:</label>
-            <div className={styles.status}></div>
+            <div className={styles.plan}><p>Mensual</p></div>
             <input
               type="date"
               id="member"
@@ -182,7 +183,7 @@ const DataForm: React.FC = () => {
             />
           </div>
         </div>
-        <button type="submit">Submit</button>
+        <button type="submit">Guardar</button>
       </form>
     </div>
   );

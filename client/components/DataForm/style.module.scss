@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat:wght@600&display=swap');
 
 .App {
-  width: 100vw;
   color: white;
   font-family: 'Montserrat', sans-serif;
   padding: 30px;
@@ -13,6 +12,7 @@
     background-color: #FF8A00;
     border: none;
     border-radius: 4px;
+    align-self: flex-end;
   }
 }
 
@@ -54,19 +54,75 @@
   gap: 20px;
   justify-content: space-between;
   align-items: center;
-
+  
+  label{
+    min-width: 120px;
+    flex-grow: 1;
+  }
+  
   input {
-    width: 320px;
+    max-width: 450px;
+    width: 200px;
     height: 42px;
     border-radius: 5px;
     border: none;
     box-sizing: border-box;
     padding: 15px;
+    flex-grow: 2;
+  }
+}
+
+.lasts{
+  justify-content: space-between;
+
+  label{
+    width: 110px;
+  }
+
+  input{
+    width: 150px;
   }
 }
 
 .status{
-  height: 40px;
-  width: 120px;
-  background-color: green;
+  height: 24px;
+  width: 60px;
+  color: #A65959;
+  flex-shrink: 2;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #EDDEDE;
+  font-family: 'Manrope', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.plan{
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  width: 60px;
+  color: black;
+  flex-shrink: 2;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #FF8A00;
+  font-family: 'Manrope', sans-serif;
+}
+
+@media (min-width: 1024px) {
+
+  .formcont{
+    flex-direction: row;
+  }
+
+
+
+  .last{
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
 }
