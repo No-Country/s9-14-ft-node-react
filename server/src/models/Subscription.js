@@ -25,7 +25,9 @@ const mongoose = require("mongoose");
  *           description: La descrición de la suscripción.
  *         benefits:
  *           type: array
- *           description: Un arreglo de strings que representarán los diferentes beneficios de la suscripción.
+ *           items:
+ *             type: string
+ *           description: Un arreglo con los diferentes beneficios de la suscripción.
  *         price:
  *           type: number
  *           description: El precio que tendrá la suscripción.
