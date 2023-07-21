@@ -9,10 +9,9 @@ const getUsers = async (req, res) => {
   role && (query = { ...query, role });
   status && (query = { ...query, status });
 
-  console.log(query);
-
   try {
-    const users = await User.find(query);
+    const users = await User.find(query).populate("subscriptions", "duration");
+
     res.status(200).json({ users });
   } catch (error) {
     console.log(error);
@@ -41,8 +40,12 @@ const getUserByToken = async (req, res) => {
 
 const registerUser = async (req, res) => {
   try {
-    const user = req.body;
-    const email = user.email;
+    let { password, email, birthday, ...data } = req.body;
+    delete data._id;
+    delete data.__v;
+    delete data.status;
+    delete data.age;
+
     const existingEmail = await User.findOne({ email });
 
     if (existingEmail) {
@@ -50,18 +53,24 @@ const registerUser = async (req, res) => {
     }
 
     const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(user.password, salt);
+    const passwordHash = await bcrypt.hash(password, salt);
 
-    const newUser = new User({
-      name: user.name,
-      surname: user.surname,
-      email: user.email,
+    const dateBirthday = new Date(birthday);
+    const today = new Date();
+    let age = today.getFullYear() - dateBirthday.getFullYear();
+    const diffMonths = today.getMonth() - dateBirthday.getMonth();
+
+    if (diffMonths < 0 || (diffMonths === 0 && today.getDate() < dateBirthday.getDate())) {
+      age--;
+    }
+
+    data = {
+      ...data,
+      email,
       password: passwordHash,
-      active: user.active,
-      phone: user.phone,
-      role: user.role,
-      subscriptions: user.subscriptions
-    });
+      age
+    };
+    const newUser = await User.create(data);
     await newUser.save();
 
     return res.status(201).json({ newUser });

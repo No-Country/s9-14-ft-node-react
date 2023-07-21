@@ -7,7 +7,8 @@ const usersToSeed = [
     phone: 246939617,
     phoneEmergency: 12345678,
     role: "Admin",
-    birthday: "2000-10-06"
+    birthday: "2000-10-06",
+    age: 22
   },
   {
     name: "Usuario",
@@ -17,7 +18,8 @@ const usersToSeed = [
     phone: 342361346,
     phoneEmergency: 12345678,
     role: "Trainer",
-    birthday: "2000-10-06"
+    birthday: "2000-10-06",
+    age: 22
   },
   {
     name: "Usuario",
@@ -27,7 +29,8 @@ const usersToSeed = [
     phone: 325325254,
     phoneEmergency: 13445678,
     role: "Trainer",
-    birthday: "2000-10-06"
+    birthday: "2000-10-06",
+    age: 22
   },
   {
     name: "Usuario",
@@ -37,7 +40,8 @@ const usersToSeed = [
     phone: 353253243,
     phoneEmergency: 12345678,
     role: "Trainer",
-    birthday: "2000-10-06"
+    birthday: "2000-10-06",
+    age: 22
   },
   {
     name: "Usuario",
@@ -47,7 +51,8 @@ const usersToSeed = [
     phone: 213124512,
     phoneEmergency: 12345678,
     role: "Trainer",
-    birthday: "2000-10-06"
+    birthday: "2000-10-06",
+    age: 22
   },
   {
     name: "Usuario",
@@ -57,7 +62,8 @@ const usersToSeed = [
     phone: 576864361,
     phoneEmergency: 12345678,
     role: "Trainer",
-    birthday: "2000-10-06"
+    birthday: "2000-10-06",
+    age: 22
   },
   {
     name: "Usuario",
@@ -68,9 +74,10 @@ const usersToSeed = [
     phoneEmergency: 12345678,
     role: "Affiliate",
     birthday: "2000-10-06",
+    age: 22,
     fitMedical: {
       valid: true,
-      expire: "2023/12/31"
+      expire: "2023/07/20"
     }
   },
   {
@@ -81,10 +88,11 @@ const usersToSeed = [
     phone: 353436468,
     phoneEmergency: 12345678,
     role: "Affiliate",
-    birthday: "2000-10-06",
+    birthday: "2000-08-10",
+    age: 22,
     fitMedical: {
       valid: true,
-      expire: "2023/12/31"
+      expire: "2023/08/10"
     }
   },
   {
@@ -95,10 +103,11 @@ const usersToSeed = [
     phone: 435475859,
     phoneEmergency: 12345678,
     role: "Affiliate",
-    birthday: "2000-10-06",
+    birthday: "2000-07-26",
+    age: 22,
     fitMedical: {
       valid: true,
-      expire: "2023/12/31"
+      expire: "2023/07/26"
     }
   }
 ];
