@@ -128,24 +128,14 @@ const UserSchema = new mongoose.Schema({
     },
     status: {
       type: String,
-      enum: ["Al día", "Próximo a vencer", "Vencido"],
-      default: "Al día"
+      enum: ["al día", "próximo a vencer", "vencido"],
+      default: "al día"
     }
   },
   subscriptions: {
-    subscription: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Subscription",
-    },
-    status: {
-      type: String,
-      enum: ["Al día" ,"Próximo a vencer", "Vencido"],
-      default: "Al día"
-    },
-    expire: {
-      type: Date,
-    },
-  },
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: "Subscription"
+  }
 });
 
 UserSchema.methods.toJSON = function () {
