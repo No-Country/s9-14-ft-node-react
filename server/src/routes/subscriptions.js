@@ -92,7 +92,7 @@ router.get("/", [validateJWT, hasRole(["admin"]), validateFields], getAllSubscri
  *           schema:
  *             type: object
  *             properties:
- *               subscription:
+ *               subscriptionId:
  *                 type: string
  *                 description: ID de la suscripción.
  *                 example: '64b1c7053f6378c5f32c3af6'
@@ -112,7 +112,7 @@ router.get("/", [validateJWT, hasRole(["admin"]), validateFields], getAllSubscri
  *       401:
  *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin es el único que tiene acceso.
  *       404:
- *         description: Respuesta no exitosa que indica que no se ha recibido nada por body.
+ *         description: Respuesta no exitosa que indica que no se ha recibido nada por body o que no se encontró ninguna suscripción con ese id.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
@@ -166,7 +166,7 @@ router.put(
  *           schema:
  *             type: object
  *             properties:
- *               subscription:
+ *               subscriptionId:
  *                 type: string
  *                 description: ID de la suscripción.
  *                 example: '64b1c7053f6378c5f32c3af6'
@@ -186,7 +186,7 @@ router.put(
  *       401:
  *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin es el único que tiene acceso.
  *       404:
- *         description: Respuesta no exitosa que indica que no se ha recibido nada por body.
+ *         description: Respuesta no exitosa que indica que no se ha recibido nada por body o que la suscripción no pertenece al afiliado.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
