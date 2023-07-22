@@ -116,12 +116,20 @@ const UserSchema = new mongoose.Schema({
   birthday: {
     type: Date
   },
+  age: {
+    type: Number
+  },
   fitMedical: {
     valid: {
       type: Boolean
     },
     expire: {
       type: Date
+    },
+    status: {
+      type: String,
+      enum: ["Al día", "Próximo a vencer", "Vencido"],
+      default: "Al día"
     }
   },
   subscriptions: {

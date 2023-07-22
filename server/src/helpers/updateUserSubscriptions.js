@@ -1,6 +1,5 @@
 const { User } = require("../models");
 
-
 const addUserSubscription = async ({ id, subscriptions }) => {
 
   try {
@@ -46,5 +45,6 @@ const removeUserSubscription = async ({ id, subscriptions }) => {
     throw error;
   }
 }
+
 
 module.exports = { addUserSubscription, removeUserSubscription };

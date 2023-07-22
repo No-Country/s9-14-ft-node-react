@@ -3,7 +3,7 @@ const { Activity } = require("../models");
 
 const refreshVacancies = () => {
   cron.schedule(
-    "13 9 * * *", //minutes, hour
+    "59 23 * * *", //minutes, hour
     async () => {
       console.log("initializing task: refresh activity vacancies");
       const activities = await Activity.find();

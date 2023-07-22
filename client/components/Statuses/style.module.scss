@@ -1,0 +1,19 @@
+@import '@/styles/variables.scss';
+
+.alDia, .vencido {
+  font-family: 'Manrope', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  padding: 4px;
+  display: inline-block;
+  border-radius: 4px;
+  color: $white;
+}
+
+.alDia {
+  background-color: #427A5B;
+}
+
+.vencido {
+  background-color: #A65959;
+}

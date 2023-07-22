@@ -52,7 +52,7 @@ export function useTrainers () {
   const trainers = useTrainerStore((state) => state.trainers)
   const {getTrainers} = useTrainersActions()
   const session = useSession()
-
+  console.log(trainers)
   useEffect(()=> {
     if (session?.token) getTrainers(session.token)
   }, [session?.token])

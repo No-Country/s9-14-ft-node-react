@@ -19,7 +19,11 @@ const {
   getTrainerActivities,
   getTrainerActivitiesByToken
 } = require("../controllers/activities");
-const { activityExistById, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
+const {
+  activityExistById,
+  idIsNotAdminOrTrainer,
+  idIsNotTrainer
+} = require("../helpers/db-validators");
 const {
   affiliateNotEnrolled,
   affiliateNotEnrolledFromBack,
@@ -70,7 +74,6 @@ const router = Router();
  *                   items:
  *                     $ref: "#/components/schemas/Activity"
  */
-
 router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAllActivities);
 
 /**
@@ -156,6 +159,7 @@ router.get(
     validateJWT,
     hasRole(["trainer", "affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(idIsNotTrainer),
     validateFields
   ],
   getTrainerActivities
@@ -249,7 +253,6 @@ router.get(
  *                     __v:
  *                       type: number
  */
-
 router.post(
   "/",
   [
@@ -443,6 +446,7 @@ router.delete(
   ],
   deleteActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/addAffiliate:
@@ -631,6 +635,7 @@ router.patch(
   ],
   removeAffiliateOfActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/affiliates:
@@ -723,6 +728,7 @@ router.get(
   ],
   getAffiliatesInActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/vacancies:
@@ -811,6 +817,7 @@ router.get(
   ],
   getVacanciesOfActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/setVacancies:
@@ -903,6 +910,7 @@ router.patch(
   ],
   setVacancies
 );
+
 /**
  * @openapi
  * /api/activities/{id}/removeDay:
@@ -997,7 +1005,6 @@ router.patch(
 );
 
 // version admins/trainers path
-
 /**
  * @openapi
  * /api/activities/{id}/adminAddAffiliate:
