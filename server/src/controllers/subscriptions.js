@@ -6,16 +6,53 @@ const {
 
 const getAllSubscriptions = async (req, res) => {
   try {
+
     const subscriptions = await Subscription.find({}, "-__v");
     res.status(200).json(subscriptions);
+    
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
 };
 
 const addUserNewSubscription = async (req, res) => {
+
   const { id } = req.params;
-  const { subscription } = req.body;
+
+  const { subscriptionID, plan } = req.body;
+
+  try {
+    if (!id) {
+      return res.status(404).json({ message: "Affiliate not found" });
+    }
+
+    if (!subscriptionID) {
+      return res.status(404).json({ message: "Subscription not found" });
+    }
+
+    const currentDate = new Date();
+    let expireDate;
+
+    if (plan === "mensual") {
+
+      expireDate = new Date(currentDate);
+      expireDate.setDate(expireDate.getDate() + 30);
+
+    } else if (plan === "anual") {
+
+      expireDate = new Date(currentDate);
+      expireDate.setDate(expireDate.getDate() + 365);
+
+    } else {
+      return res.status(400).json({ message: "Invalid plan value" });
+    }
+
+    const subscriptions = {
+      subscription: subscriptionID,
+      expire: expireDate,
+    };
+
+    const user = await addUserSubscription({ id, subscriptions });
 
   if (!subscription) {
     return res.status(404).json({ message: "There is no subscription to add." });
@@ -24,18 +61,27 @@ const addUserNewSubscription = async (req, res) => {
   try {
     await addUserSubscription({ id, subscription });
     res.status(200).json({ message: "Subscription successfully added to affiliate." });
+    
   } catch (error) {
+
     return res.status(500).json({ errorMessage: error.message });
   }
 };
 
+
+
 const deleteUserSubscription = async (req, res) => {
+
   const { id } = req.params;
   const { subscription } = req.body;
 
-  if (!subscription) {
-    return res.status(404).json({ message: "There is no subscription to delete." });
-  }
+    if (!subscriptions) {
+      return res.status(404).json({ message: "Subscription not found" });
+    }
+
+    const user = await removeUserSubscription({ id, subscriptions });
+
+    res.status(410).json(user);
 
   try {
     await removeUserSubscription({ id, subscription });
