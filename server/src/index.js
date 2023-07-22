@@ -6,6 +6,7 @@ const swaggerDocs = require("./swagger");
 const connectAndPopulateDb = require("./database");
 const refreshVacancies = require("./tasks/refreshVacancies");
 const fileUpload = require("express-fileupload");
+const refreshSubscriptions = require("./tasks/refreshSubscriptions");
 require("dotenv").config();
 
 const app = express();
@@ -32,6 +33,7 @@ app.listen(PORT, () => {
   swaggerDocs(app, PORT);
   connectAndPopulateDb();
   refreshVacancies();
+  refreshSubscriptions();
 });
 
 module.exports = app;
