@@ -1,4 +1,4 @@
-const { Subscription } = require("../models");
+const { Subscription, User } = require("../models");
 const {
   addUserSubscription,
   removeUserSubscription
@@ -6,10 +6,8 @@ const {
 
 const getAllSubscriptions = async (req, res) => {
   try {
-
     const subscriptions = await Subscription.find({}, "-__v");
     res.status(200).json(subscriptions);
-    
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
@@ -17,71 +15,53 @@ const getAllSubscriptions = async (req, res) => {
 
 const addUserNewSubscription = async (req, res) => {
   const { id } = req.params;
-  const { subscriptionID, plan } = req.body;
+  const { subscriptionId } = req.body;
 
   try {
-    if (!id) {
-      return res.status(404).json({ message: "Affiliate not found" });
-    }
+    const currentSubscription = await Subscription.findById(subscriptionId);
+    if (!subscriptionId || !currentSubscription)
+      return res.status(404).json({ message: "Subscription not found." });
 
-    if (!subscriptionID) {
-      return res.status(404).json({ message: "Subscription not found" });
-    }
-
-    const currentDate = new Date();
-
+    let currentDate = new Date();
     let expireDate;
-    if (plan === "mensual") {
-      // Agregar 30 días a la fecha actual para el plan mensual
-      expireDate = new Date(currentDate);
-      expireDate.setDate(expireDate.getDate() + 30);
-    } else if (plan === "anual") {
-      // Agregar 365 días a la fecha actual para el plan anual
-      expireDate = new Date(currentDate);
-      expireDate.setDate(expireDate.getDate() + 365);
+
+    if (currentSubscription.duration === "mensual") {
+      expireDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
     } else {
-      return res.status(400).json({ message: "Invalid plan value" });
+      expireDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1));
     }
 
-    const subscriptions = {
-      subscription: subscriptionID,
-      status: "Al día",
-      expire: expireDate,
-    };
+    currentDate = new Date();
 
-    // Agregar el día actual después de esperar
-    const days = ["Al día", "Próximo a vencer", "Vencido"];
-    const today = days[currentDate.getDay()];
-    subscriptions.status = today;
-
-    const user = await addUserSubscription({ id, subscriptions });
-    
-    res.status(200).json(user);
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      msg: "Server error",
+    const newSubscription = await Subscription.create({
+      name: currentSubscription.name,
+      description: currentSubscription.description,
+      benefits: currentSubscription.benefits,
+      price: currentSubscription.price,
+      duration: currentSubscription.duration,
+      startDate: currentDate,
+      endDate: expireDate,
+      status: "al día"
     });
+
+    await addUserSubscription({ id, newSubscription });
+    res.status(200).json({ message: "Subscription successfully added to affiliate." });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
   }
 };
 
-
-
-
 const deleteUserSubscription = async (req, res) => {
-
   const { id } = req.params;
-  const { subscriptions } = req.body;
+  const { subscriptionId } = req.body;
+
   try {
-    if (!subscriptions) {
-      return res.status(404).json({ message: "Subscription not found" });
-    }
+    const userSub = await User.findOne({ _id: id, subscriptions: { $in: subscriptionId } });
+    if (!subscriptionId || !userSub)
+      return res.status(404).json({ message: "Subscription not found." });
 
-    const user = await removeUserSubscription({ id, subscriptions });
-
-    res.status(410).json(user);
-
+    await removeUserSubscription({ id, subscriptionId });
+    res.status(200).json({ message: "Subscription successfully deleted from affiliate." });
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
