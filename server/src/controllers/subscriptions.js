@@ -16,9 +16,7 @@ const getAllSubscriptions = async (req, res) => {
 };
 
 const addUserNewSubscription = async (req, res) => {
-
   const { id } = req.params;
-
   const { subscriptionID, plan } = req.body;
 
   try {
@@ -31,50 +29,51 @@ const addUserNewSubscription = async (req, res) => {
     }
 
     const currentDate = new Date();
+
     let expireDate;
-
     if (plan === "mensual") {
-
+      // Agregar 30 días a la fecha actual para el plan mensual
       expireDate = new Date(currentDate);
       expireDate.setDate(expireDate.getDate() + 30);
-
     } else if (plan === "anual") {
-
+      // Agregar 365 días a la fecha actual para el plan anual
       expireDate = new Date(currentDate);
       expireDate.setDate(expireDate.getDate() + 365);
-
     } else {
       return res.status(400).json({ message: "Invalid plan value" });
     }
 
     const subscriptions = {
       subscription: subscriptionID,
+      status: "Al día",
       expire: expireDate,
     };
 
+    // Agregar el día actual después de esperar
+    const days = ["Al día", "Próximo a vencer", "Vencido"];
+    const today = days[currentDate.getDay()];
+    subscriptions.status = today;
+
     const user = await addUserSubscription({ id, subscriptions });
-
-  if (!subscription) {
-    return res.status(404).json({ message: "There is no subscription to add." });
-  }
-
-  try {
-    await addUserSubscription({ id, subscription });
-    res.status(200).json({ message: "Subscription successfully added to affiliate." });
     
-  } catch (error) {
+    res.status(200).json(user);
 
-    return res.status(500).json({ errorMessage: error.message });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server error",
+    });
   }
 };
+
 
 
 
 const deleteUserSubscription = async (req, res) => {
 
   const { id } = req.params;
-  const { subscription } = req.body;
-
+  const { subscriptions } = req.body;
+  try {
     if (!subscriptions) {
       return res.status(404).json({ message: "Subscription not found" });
     }
@@ -83,9 +82,6 @@ const deleteUserSubscription = async (req, res) => {
 
     res.status(410).json(user);
 
-  try {
-    await removeUserSubscription({ id, subscription });
-    res.status(200).json({ message: "Subscription successfully deleted from affiliate." });
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
