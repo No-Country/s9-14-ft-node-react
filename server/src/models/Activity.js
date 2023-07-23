@@ -100,6 +100,10 @@ const ActivitySchema = new mongoose.Schema({
     type: Number,
     required: true
   },
+  status: {
+    type: Boolean,
+    default: true
+  },
   trainer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -120,6 +124,11 @@ const ActivitySchema = new mongoose.Schema({
     }
   ]
 });
+
+ActivitySchema.methods.toJSON = function () {
+  const { __v, ...activity } = this.toObject();
+  return activity;
+};
 
 const Activity = mongoose.model("Activity", ActivitySchema);
 

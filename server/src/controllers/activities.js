@@ -1,3 +1,4 @@
+const addFieldQuotaAvailable = require("../helpers/activities");
 const uploadToCloudinary = require("../helpers/upload-image");
 const { Activity } = require("../models");
 const { mongoose } = require("mongoose");
@@ -5,7 +6,10 @@ const { mongoose } = require("mongoose");
 const getAllActivities = async (req, res) => {
   try {
     const activities = await Activity.find().populate("trainer", "name surname");
-    res.json(activities);
+
+    const activitiesWithQuota = addFieldQuotaAvailable(activities);
+
+    res.json({ activities: activitiesWithQuota });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -63,7 +67,7 @@ const addActivity = async (req, res) => {
     });
   }
 };
-
+/*
 const updateActivity = async (req, res) => {
   const { id } = req.params;
   const { vacancies, affiliates, ...data } = req.body;
@@ -77,8 +81,8 @@ const updateActivity = async (req, res) => {
       msg: "Server error"
     });
   }
-};
-
+}; */
+/*
 const setVacancies = async (req, res) => {
   const { id } = req.params;
   const { day, limit, hour } = req.body;
@@ -137,7 +141,7 @@ const setVacancies = async (req, res) => {
     });
   }
 };
-
+*/
 const deleteActivity = async (req, res) => {
   const { id } = req.params;
 
@@ -313,21 +317,46 @@ const getAffiliatesInActivity = async (req, res) => {
     });
   }
 };
-
-const getVacanciesOfActivity = async (req, res) => {
+/*
+const getFreeSpaces = async (req, res) => {
   const { id } = req.params;
-
   try {
-    const activity = await Activity.findById(id).select("name freeVacancies");
-    res.json(activity);
+    const activity = await Activity.findById(id);
+    const quota = activity.quota;
+    const days = activity.days;
+    const freeSpaces = [];
+
+    days.forEach(async day => {
+      let affiliates = await Activity.aggregate([
+        {
+          $match: {
+            __id: new mongoose.Types.ObjectId(id)
+          }
+        },
+        {
+          $unwind: "$affiliates"
+        },
+        {
+          $match: { "affiliates.day": day }
+        }
+      ]);
+
+      let enrolled = affiliates.length;
+      let result = quota - enrolled;
+
+      freeSpaces.push({`${day}: ${result} `})
+    });
+
+ 
+    res.json({ day, freeSpaces });
   } catch (error) {
     console.log(error);
     return res.status(500).json({
       msg: "Server error"
     });
   }
-};
-
+}; */
+/*
 const removeDay = async (req, res) => {
   const { id } = req.params;
   const { day } = req.body;
@@ -353,7 +382,7 @@ const removeDay = async (req, res) => {
       msg: "Server error"
     });
   }
-};
+};*/
 
 const getTrainerActivitiesByToken = async (req, res) => {
   const { id } = req.user;
@@ -376,16 +405,15 @@ module.exports = {
   addActivity,
   getActivity,
   getAllActivities,
-  updateActivity,
+  //updateActivity,
   deleteActivity,
   addAffiliateInActivity,
   removeAffiliateOfActivity,
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
   getAffiliatesInActivity,
-  getVacanciesOfActivity,
-  setVacancies,
-  removeDay,
+  // setVacancies,
+  //removeDay,
   getTrainerActivities,
   getTrainerActivitiesByToken
 };
