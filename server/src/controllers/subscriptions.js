@@ -1,4 +1,4 @@
-const { Subscription } = require("../models");
+const { Subscription, User } = require("../models");
 const {
   addUserSubscription,
   removeUserSubscription
@@ -6,10 +6,9 @@ const {
 
 const getAllSubscriptions = async (req, res) => {
   try {
-
-    const subscriptions = await Subscription.find({}, "-__v");
+    // Se devuelven sólo los 4 tipos de suscripciones que brinda el gimnasio (Básico mensual y anual - Premium mensual y anual).
+    const subscriptions = await Subscription.find({ status: { $exists: false } }, "-__v");
     res.status(200).json(subscriptions);
-    
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
@@ -17,71 +16,78 @@ const getAllSubscriptions = async (req, res) => {
 
 const addUserNewSubscription = async (req, res) => {
   const { id } = req.params;
-  const { subscriptionID, plan } = req.body;
+  const { subscriptionId } = req.body;
 
   try {
-    if (!id) {
-      return res.status(404).json({ message: "Affiliate not found" });
-    }
-
-    if (!subscriptionID) {
-      return res.status(404).json({ message: "Subscription not found" });
-    }
-
-    const currentDate = new Date();
-
-    let expireDate;
-    if (plan === "mensual") {
-      // Agregar 30 días a la fecha actual para el plan mensual
-      expireDate = new Date(currentDate);
-      expireDate.setDate(expireDate.getDate() + 30);
-    } else if (plan === "anual") {
-      // Agregar 365 días a la fecha actual para el plan anual
-      expireDate = new Date(currentDate);
-      expireDate.setDate(expireDate.getDate() + 365);
-    } else {
-      return res.status(400).json({ message: "Invalid plan value" });
-    }
-
-    const subscriptions = {
-      subscription: subscriptionID,
-      status: "Al día",
-      expire: expireDate,
-    };
-
-    // Agregar el día actual después de esperar
-    const days = ["Al día", "Próximo a vencer", "Vencido"];
-    const today = days[currentDate.getDay()];
-    subscriptions.status = today;
-
-    const user = await addUserSubscription({ id, subscriptions });
-    
-    res.status(200).json(user);
-
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      msg: "Server error",
+    // Chequear si llega algo por body y, si es así, comprobar que el id de suscripción corresponda con alguna de las suscripciones que brinda el gimnasio. Si no es así, se envía un mensaje en formato JSON con un status 404, informando que la suscripción no se ha encontrado.
+    const availableSubs = await Subscription.find({
+      _id: subscriptionId,
+      status: { $exists: false }
     });
+
+    if (!subscriptionId || !availableSubs.length)
+      return res.status(404).json({ message: "Subscription not found." });
+
+    // Si el afiliado, en su arreglo de suscripciones, tiene alguna cuyo status sea "al día" o "próximo a vencer", no puede abonar una nueva suscripción.
+    const userSubs = await User.findById(id, "subscriptions").populate("subscriptions");
+
+    for (const sub of userSubs.subscriptions) {
+      if (sub.status === "al día" || sub.status === "próximo a vencer") {
+        return res
+          .status(400)
+          .json({ message: "The affiliate already has an active subscription." });
+      }
+    }
+
+    // Si la suscripción elegida es mensual o anual, fijar la fecha de vencimiento correspondiente.
+    let currentDate = new Date();
+    let expireDate;
+
+    if (availableSubs[0].duration === "mensual") {
+      expireDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+    } else {
+      expireDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1));
+    }
+
+    currentDate = new Date();
+
+    // Se crea la nueva suscripción con los datos previos.
+    const newSubscription = await Subscription.create({
+      name: availableSubs[0].name,
+      description: availableSubs[0].description,
+      benefits: availableSubs[0].benefits,
+      price: availableSubs[0].price,
+      duration: availableSubs[0].duration,
+      startDate: currentDate,
+      endDate: expireDate,
+      status: "al día"
+    });
+
+    // Se asocia dicha suscripción al afiliado correspondiente.
+    await addUserSubscription({ id, newSubscription });
+
+    // Se retorna un simple mensaje de éxito en formato JSON, informando que se le ha asignado la suscripción al afiliado.
+    res.status(200).json({ message: "Subscription successfully added to affiliate." });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
   }
 };
 
-
-
-
 const deleteUserSubscription = async (req, res) => {
-
   const { id } = req.params;
-  const { subscriptions } = req.body;
+  const { subscriptionId } = req.body;
+
   try {
-    if (!subscriptions) {
-      return res.status(404).json({ message: "Subscription not found" });
-    }
+    // Chequear si llega algo por body y, si es así, comprobar que la suscripción ya se encuentre en el arreglo de suscripciones del afiliado. Si no es así, se envía un mensaje en formato JSON con un status 404, informando que la suscripción no se ha encontrado.
+    const userSub = await User.findOne({ _id: id, subscriptions: { $in: subscriptionId } });
+    if (!subscriptionId || !userSub)
+      return res.status(404).json({ message: "Subscription not found." });
 
-    const user = await removeUserSubscription({ id, subscriptions });
+    // Se le elimina la suscripción al afiliado y se la quita de su arreglo de suscripiciones.
+    await removeUserSubscription({ id, subscriptionId });
 
-    res.status(410).json(user);
-
+    // Se retorna un simple mensaje de éxito en formato JSON, informando que se le ha eliminado la suscripción al afiliado.
+    res.status(200).json({ message: "Subscription successfully deleted from affiliate." });
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }

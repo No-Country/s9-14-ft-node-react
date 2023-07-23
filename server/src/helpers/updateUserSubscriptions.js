@@ -1,50 +1,19 @@
 const { User } = require("../models");
 
-const addUserSubscription = async ({ id, subscriptions }) => {
-
+const addUserSubscription = async ({ id, newSubscription }) => {
   try {
-
-    const user = await User.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          subscriptions: {
-            subscription: subscriptions.subscription,
-            expire: subscriptions.expire,
-          },
-        },
-      },
-      { upsert: true, new: true }
-    );
-
-    user.save();
-    
-    return  ({ message: "Subscription added to an affiliate" });
-
+    await User.findOneAndUpdate({ _id: id }, { $push: { subscriptions: newSubscription } });
   } catch (error) {
     throw error;
   }
 };
 
-
-const removeUserSubscription = async ({ id, subscriptions }) => {
-
+const removeUserSubscription = async ({ id, subscriptionId }) => {
   try {
-    const user = await User.findOneAndUpdate(
-      { _id: id },
-      {
-        $set: {
-          subscriptions: {},
-        },
-      }
-    );
-
-    return ({ message: "Subscription deleted" });
-
+    await User.findOneAndUpdate({ _id: id }, { $pull: { subscriptions: subscriptionId } });
   } catch (error) {
     throw error;
   }
-}
-
+};
 
 module.exports = { addUserSubscription, removeUserSubscription };

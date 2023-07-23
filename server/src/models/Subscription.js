@@ -68,8 +68,7 @@ const SubscriptionSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
-    unique: true
+    required: true
   },
   duration: {
     type: String,
@@ -82,6 +81,10 @@ const SubscriptionSchema = new mongoose.Schema({
   },
   endDate: {
     type: Date
+  },
+  status: {
+    type: String,
+    enum: ["al día", "próximo a vencer", "vencido"]
   }
 });
 
