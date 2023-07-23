@@ -40,7 +40,7 @@ const router = Router();
  *         description: Token de autenticación
  *     responses:
  *       200:
- *         description: Lista de todas las suscripciones existentes.
+ *         description: Lista de todas las suscripciones que brinda el gimnasio.
  *         content:
  *           application/json:
  *             schema:
