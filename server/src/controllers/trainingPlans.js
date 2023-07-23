@@ -4,12 +4,14 @@ const getUserTrainingPlan = async (req, res) => {
   const { userId } = req.params;
 
   try {
+    // Chequear que el id que llega por params corresponda a un usuario existente. Si no es así, o si el id pertenece al usuario admin, se envía un mensaje en formato JSON con un status 404, informando que el usuario no se ha encontrado.
     const user = await User.findById(userId);
-    if (!user || user.role === "admin") return res.status(404).json({ message: "User not found" });
+    if (!user || user.role === "admin") return res.status(404).json({ message: "User not found." });
 
+    // Si el id pertenece a un afiliado, se busca el plan de entrenamiento asociado al mismo y se lo devuelve. Si no se encuentra ningún resultado, se devuelve un mensaje en formato JSON, informando que el afiliado aún no posee ningún plan de entrenamiento.
     if (user.role === "affiliate") {
       const affiliateTrainingPlan = await TrainingPlan.find(
-        { affiliates: { $in: [userId] } },
+        { affiliates: { $in: userId } },
         "-__v"
       );
 
@@ -17,6 +19,7 @@ const getUserTrainingPlan = async (req, res) => {
         ? res.status(200).json({ message: "The affiliate does not have a training plan yet." })
         : res.status(200).json(affiliateTrainingPlan);
     } else {
+      // Si el id pertenece a un entrenador, se buscan los planes de entrenamiento asociados al mismo y se los devuelve. Si no se encuentra ningún resultado, se devuelve un mensaje en formato JSON, informando que el entrenador aún no ha armado ningún plan de entranamiento.
       const trainerTrainingPlans = await TrainingPlan.find({ trainer: userId }, "-__v");
 
       !trainerTrainingPlans.length
