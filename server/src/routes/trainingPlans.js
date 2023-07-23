@@ -54,6 +54,12 @@ const router = Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TrainingPlan'
+ *       401:
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que los entrenadores y los afiliados son los únicos que tienen acceso.
+ *       404:
+ *         description: Respuesta no exitosa que indica que el usuario no se encontró debido a que el id pasado por params no pertenece a ningún usuario existente o pertenece al usuario admin.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
 router.get(
   "/:userId",

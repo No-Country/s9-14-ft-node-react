@@ -15,18 +15,9 @@ const seedDb = async () => {
       await Subscription.create(subscription);
     }
 
-    const subscriptions = await Subscription.find();
-    const subscriptionsIds = subscriptions.map(subscription => subscription._id);
-
     // users seeder
     for (const user of usersToSeed) {
       if (user.role === "Affiliate") {
-        await User.create({
-          ...user,
-          password: await bcrypt.hash(user.password, 10),
-          subscriptions: subscriptionsIds[Math.floor(Math.random() * subscriptionsIds.length)]
-        });
-      } else {
         await User.create({
           ...user,
           password: await bcrypt.hash(user.password, 10)

@@ -36,14 +36,11 @@ const getTrainerActivities = async (req, res) => {
   const { id } = req.params;
 
   try {
-    const trainerActivities = await Activity.find({ trainer: id }).populate(
-      "trainer",
-      "-password -subscriptions -__v"
-    );
+    // Se buscan, a partir del id pasado por params, las actividades a las que está asociado el entrenador.
+    const trainerActivities = await Activity.find({ trainer: id }, "-__v");
 
-    !trainerActivities.length
-      ? res.status(404).json({ message: "The trainer is not in charge of any activity yet." })
-      : res.status(200).json(trainerActivities);
+    // Si se encuentran resultados, se los devuelve. Si no es así, se envía un arreglo vacío.
+    !trainerActivities.length ? res.status(200).json([]) : res.status(200).json(trainerActivities);
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
