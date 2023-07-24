@@ -300,8 +300,8 @@ router.get(
 router.post(
   "/",
   [
-    validateJWT,
-    hasRole(["admin", "trainer"]),
+   /*  validateJWT,
+    hasRole(["admin", "trainer"]), */
     body("name", "Name must have between 1 and 50 characters")
       .isString()
       .isLength({ min: 1, max: 50 }),
@@ -330,9 +330,22 @@ router.post(
     body("birthday", "Birthday must be of type date").optional().isDate(),
     body("age", "Age must be of type date").optional().isNumeric(),
     body("fitMedical", "Fit medical must be of type object").optional().isObject(),
+    body('fitMedical.valid', 'Field "valid" of fitMedical must be a boolean.')
+      .optional()
+      .isBoolean(),
+    body('fitMedical.expire', 'Expire date of fitMedical is not valid.')
+      .optional()
+      .isDate(),
+    body('fitMedical.status', 'fitMedical status must be a string.')
+      .optional()
+      .isString()
+      .isIn(["al día", "próximo a vencer", "vencido"]).withMessage('fitMedical field must be "al día", "próximo a vencer", "vencido".'),
     body("subscriptionId", "id is not a MongoId").optional().isMongoId(),
+    body('assignedPlan')
+      .optional()
+      .isBoolean().withMessage('Field "assignedPlan" must be a boolean.'),
     validateFields
-  ], 
+  ],
   registerUser
 );
 
