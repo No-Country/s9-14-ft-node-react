@@ -15,9 +15,18 @@ const seedDb = async () => {
       await Subscription.create(subscription);
     }
 
+    const subscriptions = await Subscription.find();
+    const subscriptionsIds = subscriptions.map(subscription => subscription._id);
+
     // users seeder
     for (const user of usersToSeed) {
       if (user.role === "Affiliate") {
+        await User.create({
+          ...user,
+          password: await bcrypt.hash(user.password, 10),
+          subscriptions: subscriptionsIds[Math.floor(Math.random() * subscriptionsIds.length)]
+        });
+      } else {
         await User.create({
           ...user,
           password: await bcrypt.hash(user.password, 10)
@@ -36,25 +45,15 @@ const seedDb = async () => {
       });
     }
 
-    const affiliatesSubscriptions = await User.find({ role: "affiliate" }, { _id: 1 }).populate({
-      path: "subscriptions",
-      match: { name: "Plan Premium" },
-      select: "_id"
-    });
-
-    const premiumAffiliatesIds = [];
-    for (const affiliate of affiliatesSubscriptions) {
-      if (affiliate.subscriptions.length) {
-        premiumAffiliatesIds.push(affiliate._id);
-      }
-    }
+    const affiliates = await User.find({ role: "affiliate" });
+    const affiliatesIds = affiliates.map(affiliate => affiliate._id);
 
     // training plans seeder
-    for (const premiumAffiliateId of premiumAffiliatesIds) {
+    for (const affiliateId of affiliatesIds) {
       await TrainingPlan.create({
         ...trainingPlansToSeed[Math.floor(Math.random() * trainingPlansToSeed.length)],
         trainer: trainersIds[Math.floor(Math.random() * trainersIds.length)],
-        affiliates: [premiumAffiliateId]
+        affiliates: [affiliateId]
       });
     }
 

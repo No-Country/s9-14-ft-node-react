@@ -13,7 +13,6 @@ const mongoose = require("mongoose");
  *         - email
  *         - password
  *         - role
- *         - birthday
  *       properties:
  *         _id:
  *           type: string
@@ -30,6 +29,9 @@ const mongoose = require("mongoose");
  *         password:
  *           type: string
  *           description: La contraseña del usuario.
+ *         profileImage:
+ *           type: string
+ *           description: La imagen de perfil del usuario.
  *         status:
  *           type: boolean
  *           description: El estatus del usuario.
@@ -51,31 +53,45 @@ const mongoose = require("mongoose");
  *         birthday:
  *           type: string
  *           description: La fecha de nacimiento del usuario.
+ *         age:
+ *           type: number
+ *           description: La edad del usuario.
  *         fitMedical:
  *           type: object
  *           properties:
  *             valid:
  *               type: boolean
- *               description: Indica si es válido el apto médico del usuario.
+ *               description: Booleano que indica si es válido el apto médico del usuario.
  *             expire:
  *               type: string
  *               description: La fecha de expiración del apto médico del usuario.
+ *             status:
+ *               type: string
+ *               enum: [al día, próximo a vencer, vencido]
+ *               description: El estatus del apto médico del usuario.
+ *         assignedPlan:
+ *           type: boolean
+ *           description: Booleano que indica si el afiliado tiene asignado un plan de entrenamiento.
  *       example:
- *         _id: '64b8061d726e0a817bf0cb51'
- *         name: 'Usuario'
- *         surname: 'Afiliado 1'
+ *         _id: '64bea32751c3d8439126ab7c'
+ *         name: 'Paula'
+ *         surname: 'Aguirre'
  *         email: 'afiliado1@email.com'
- *         password: '$2b$10$JaYHsK9tGX317b3ill03r.SstOJp75mqzhXMtaDocy/v65Z3wSLNK'
+ *         password: '$2b$10$fcyD0YivlIWX3xwk/Y/Y8uDMT2vbgqJY5Dc6jTJcr8iq.uVhbIn5i'
+ *         profileImage: 'https://cdn-icons-png.flaticon.com/512/6522/6522516.png'
  *         status: true
  *         phone: 754655225
  *         phoneEmergency: 12345678
  *         role: 'affiliate'
  *         subscriptions:
- *           - '64b8061d726e0a817bf0cb3e'
- *         birthday: '2000-10-06T00:00:00.000+00:00'
+ *           - '64bea32651c3d8439126ab6a'
+ *         birthday: '2000-07-29T00:00:00.000+00:00'
+ *         age: 22
  *         fitMedical:
  *           valid: true
- *           expire: '2023-12-31T03:00:00.000+00:00'
+ *           expire: '2023-07-29T00:00:00.000+00:00'
+ *           status: 'próximo a vencer'
+ *         assignedPlan: true
  */
 
 const UserSchema = new mongoose.Schema({
@@ -96,6 +112,10 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true
+  },
+  profileImage: {
+    type: String,
+    default: "https://cdn-icons-png.flaticon.com/512/6522/6522516.png"
   },
   status: {
     type: Boolean,
@@ -128,22 +148,16 @@ const UserSchema = new mongoose.Schema({
     },
     status: {
       type: String,
-      enum: ["al día", "próximo a vencer", "vencido"],
-      default: "al día"
+      enum: ["al día", "próximo a vencer", "vencido"]
     }
   },
   subscriptions: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: "Subscription"
+    ref: "Subscription",
+    default: undefined
   },
-  trainer: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User"
-  },
-
   assignedPlan: {
-    type: Boolean,
-    default: false
+    type: Boolean
   }
 });
 
