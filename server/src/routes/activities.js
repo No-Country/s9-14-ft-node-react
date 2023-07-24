@@ -6,18 +6,19 @@ const {
   addActivity,
   getActivity,
   getAllActivities,
-  updateActivity,
+  //updateActivity,
   deleteActivity,
   addAffiliateInActivity,
   getAffiliatesInActivity,
   removeAffiliateOfActivity,
-  getVacanciesOfActivity,
+  //getVacanciesOfActivity,
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
-  setVacancies,
-  removeDay,
+  //setVacancies,
+  //removeDay,
   getTrainerActivities,
-  getTrainerActivitiesByToken
+  getTrainerActivitiesByToken,
+  getFreeSpaces
 } = require("../controllers/activities");
 const {
   activityExistById,
@@ -407,7 +408,7 @@ router.post(
  *                     __v:
  *                       type: number
  */
-router.put(
+/*router.put(
   "/:id",
   [
     validateJWT,
@@ -433,7 +434,7 @@ router.put(
     validateFields
   ],
   updateActivity
-);
+);*/
 
 /**
  * @openapi
@@ -850,7 +851,7 @@ router.get(
  *                           type: string
  *                           example: "Entrenador 2"
  */
-router.get(
+/*router.get(
   "/:id/vacancies",
   [
     validateJWT,
@@ -860,7 +861,7 @@ router.get(
     validateFields
   ],
   getVacanciesOfActivity
-);
+);*/
 
 /**
  * @openapi
@@ -939,7 +940,7 @@ router.get(
  *                           type: string
  *                           example: "Entrenador 2"
  */
-router.patch(
+/*router.patch(
   "/:id/setVacancies",
   [
     validateJWT,
@@ -953,7 +954,7 @@ router.patch(
     validateFields
   ],
   setVacancies
-);
+);*/
 
 /**
  * @openapi
@@ -1032,7 +1033,7 @@ router.patch(
  *                           type: string
  *                           example: "Entrenador 2"
  */
-router.patch(
+/*router.patch(
   "/:id/removeDay",
   [
     validateJWT,
@@ -1046,7 +1047,7 @@ router.patch(
     validateFields
   ],
   removeDay
-);
+);*/
 
 // version admins/trainers path
 /**
@@ -1241,5 +1242,17 @@ router.patch(
   ],
   removeAffiliateOfActivityFromBack
 );
+
+/*router.get(
+  "/:id/:day/freeSpaces",
+  [
+    validateJWT,
+    hasRole(["admin", "trainer", "affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(activityExistById),
+    validateFields
+  ],
+  getFreeSpaces
+);*/
 
 module.exports = router;
