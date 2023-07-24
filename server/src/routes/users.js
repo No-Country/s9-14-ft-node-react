@@ -347,8 +347,12 @@ router.post(
     body("phone", "Phone must have have between 9 and 13 characters")
       .isString()
       .isLength({ min: 9, max: 13 }),
+      body('role')
+      .notEmpty().withMessage('Required field.')
+      .isIn(['admin', 'trainer', 'affiliate']).withMessage('Role field must be "admin", "trainer" o "affiliate".'),
+      
     validateFields
-  ],
+  ], 
   registerUser
 );
 
