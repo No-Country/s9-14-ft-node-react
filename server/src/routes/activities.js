@@ -18,7 +18,8 @@ const {
   //removeDay,
   getTrainerActivities,
   getTrainerActivitiesByToken,
-  getFreeSpaces
+  getFreeSpaces,
+  getTrainerAffiliatesByToken
 } = require("../controllers/activities");
 const {
   activityExistById,
@@ -199,6 +200,13 @@ router.get("/trainer/token", [validateJWT, hasRole(["trainer"])], getTrainerActi
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
+
+router.get(
+  "/trainer/affiliates",
+  [validateJWT, hasRole(["trainer"]), validateFields],
+  getTrainerAffiliatesByToken
+);
+
 router.get(
   "/trainer/:id",
   [
@@ -1242,17 +1250,5 @@ router.patch(
   ],
   removeAffiliateOfActivityFromBack
 );
-
-/*router.get(
-  "/:id/:day/freeSpaces",
-  [
-    validateJWT,
-    hasRole(["admin", "trainer", "affiliate"]),
-    param("id", "id is not a MongoId").isMongoId(),
-    param("id").custom(activityExistById),
-    validateFields
-  ],
-  getFreeSpaces
-);*/
 
 module.exports = router;

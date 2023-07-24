@@ -135,6 +135,15 @@ const UserSchema = new mongoose.Schema({
   subscriptions: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: "Subscription"
+  },
+  trainer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User"
+  },
+
+  assignedPlan: {
+    type: Boolean,
+    default: false
   }
 });
 
