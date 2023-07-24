@@ -10,7 +10,7 @@ const {
 } = require("../controllers/trainingPlans");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
-const { body, param } = require("express-validator");
+const { param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
 const { idIsNotAdmin, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 
@@ -54,6 +54,8 @@ const router = Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TrainingPlan'
+ *       400:
+ *         description: Respuesta no exitosa que indica que el id pasado por params no es válido.
  *       401:
  *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que los entrenadores y los afiliados son los únicos que tienen acceso.
  *       404:
