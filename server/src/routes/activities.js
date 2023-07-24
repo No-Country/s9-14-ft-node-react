@@ -6,20 +6,26 @@ const {
   addActivity,
   getActivity,
   getAllActivities,
-  updateActivity,
+  //updateActivity,
   deleteActivity,
   addAffiliateInActivity,
   getAffiliatesInActivity,
   removeAffiliateOfActivity,
-  getVacanciesOfActivity,
+  //getVacanciesOfActivity,
   addAffiliateInActivityFromBack,
   removeAffiliateOfActivityFromBack,
-  setVacancies,
-  removeDay,
+  //setVacancies,
+  //removeDay,
   getTrainerActivities,
-  getTrainerActivitiesByToken
+  getTrainerActivitiesByToken,
+  getFreeSpaces,
+  getTrainerAffiliatesByToken
 } = require("../controllers/activities");
-const { activityExistById, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
+const {
+  activityExistById,
+  idIsNotAdminOrTrainer,
+  idIsNotTrainer
+} = require("../helpers/db-validators");
 const {
   affiliateNotEnrolled,
   affiliateNotEnrolledFromBack,
@@ -70,7 +76,6 @@ const router = Router();
  *                   items:
  *                     $ref: "#/components/schemas/Activity"
  */
-
 router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAllActivities);
 
 /**
@@ -150,12 +155,64 @@ router.get(
 
 router.get("/trainer/token", [validateJWT, hasRole(["trainer"])], getTrainerActivitiesByToken);
 
+/**
+ * @openapi
+ * /api/activities/trainer/{id}:
+ *   get:
+ *     summary: Obtener las actividades que dicta un entrenador a través de su ID.
+ *     tags: [Activities]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación.
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         description: Id del entrenador.
+ *     responses:
+ *       200:
+ *         description: Lista de actividades en las cuales está a cargo el entrenador.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: "#/components/schemas/Activity"
+ *       401:
+ *         description: Respuesta no exitosa que indica que no se ha provisto el token en la consulta, o que no existe un usuario con ese token.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
+ */
+
+router.get(
+  "/trainer/affiliates",
+  [validateJWT, hasRole(["trainer"]), validateFields],
+  getTrainerAffiliatesByToken
+);
+
 router.get(
   "/trainer/:id",
   [
     validateJWT,
-    hasRole(["trainer", "affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
+    param("id").custom(idIsNotTrainer),
     validateFields
   ],
   getTrainerActivities
@@ -249,7 +306,6 @@ router.get(
  *                     __v:
  *                       type: number
  */
-
 router.post(
   "/",
   [
@@ -360,7 +416,7 @@ router.post(
  *                     __v:
  *                       type: number
  */
-router.put(
+/*router.put(
   "/:id",
   [
     validateJWT,
@@ -386,7 +442,7 @@ router.put(
     validateFields
   ],
   updateActivity
-);
+);*/
 
 /**
  * @openapi
@@ -443,6 +499,7 @@ router.delete(
   ],
   deleteActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/addAffiliate:
@@ -631,6 +688,7 @@ router.patch(
   ],
   removeAffiliateOfActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/affiliates:
@@ -723,6 +781,7 @@ router.get(
   ],
   getAffiliatesInActivity
 );
+
 /**
  * @openapi
  * /api/activities/{id}/vacancies:
@@ -800,7 +859,7 @@ router.get(
  *                           type: string
  *                           example: "Entrenador 2"
  */
-router.get(
+/*router.get(
   "/:id/vacancies",
   [
     validateJWT,
@@ -810,7 +869,8 @@ router.get(
     validateFields
   ],
   getVacanciesOfActivity
-);
+);*/
+
 /**
  * @openapi
  * /api/activities/{id}/setVacancies:
@@ -888,7 +948,7 @@ router.get(
  *                           type: string
  *                           example: "Entrenador 2"
  */
-router.patch(
+/*router.patch(
   "/:id/setVacancies",
   [
     validateJWT,
@@ -902,7 +962,8 @@ router.patch(
     validateFields
   ],
   setVacancies
-);
+);*/
+
 /**
  * @openapi
  * /api/activities/{id}/removeDay:
@@ -980,7 +1041,7 @@ router.patch(
  *                           type: string
  *                           example: "Entrenador 2"
  */
-router.patch(
+/*router.patch(
   "/:id/removeDay",
   [
     validateJWT,
@@ -994,10 +1055,9 @@ router.patch(
     validateFields
   ],
   removeDay
-);
+);*/
 
 // version admins/trainers path
-
 /**
  * @openapi
  * /api/activities/{id}/adminAddAffiliate:

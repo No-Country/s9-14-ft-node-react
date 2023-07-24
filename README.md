@@ -44,5 +44,5 @@ El equipo esta conformado por 10 personas, 1 Project Manager, 3 Frontend Develop
 
 
 ## Links
-+ Link Deploy Frontend:
++ Link Deploy Frontend: [MANAGYM - Frontend](https://managym.vercel.app/ "MANAGYM - Frontend")
 + Link Deploy Backend: [MANAGYM - Backend](https://managym.cyclic.app/ "MANAGYM - Backend")

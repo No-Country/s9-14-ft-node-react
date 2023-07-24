@@ -119,6 +119,7 @@ router.get(
   ],
   getUsers
 );
+
 /**
  * @openapi
  * /api/users/{id}/profile:
@@ -209,6 +210,7 @@ router.get(
   ],
   getUserById
 );
+
 /**
  * @openapi
  * /api/users:
@@ -345,10 +347,15 @@ router.post(
     body("phone", "Phone must have have between 9 and 13 characters")
       .isString()
       .isLength({ min: 9, max: 13 }),
+      body('role')
+      .notEmpty().withMessage('Required field.')
+      .isIn(['admin', 'trainer', 'affiliate']).withMessage('Role field must be "admin", "trainer" o "affiliate".'),
+      
     validateFields
-  ],
+  ], 
   registerUser
 );
+
 /**
  * @openapi
  * /api/users/{id}/profile:
@@ -501,6 +508,7 @@ router.post(
  *                         subscriptions: []
  */
 router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
+
 /**
  * @openapi
  * /api/users/{id}:
@@ -591,6 +599,7 @@ router.delete(
   ],
   deleteUser
 );
+
 /**
  * @openapi
  * /api/users/{id}/setStatus:
@@ -709,6 +718,7 @@ router.patch(
   ],
   setUserStatus
 );
+
 /**
  * @openapi
  * /api/users/profile:

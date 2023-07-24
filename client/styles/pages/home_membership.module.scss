@@ -1,0 +1,107 @@
+@import "@/styles/_variables.scss";
+
+.membership{
+    background-image: url("../../public/membresia.png");
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+.font_16{
+    font-size: 1rem;
+}
+.font_30{
+    font-size: 2rem;
+}
+.font_50{
+    font-size: 3rem;
+}
+.title{
+    font-family: 'Bebas_Neue';
+    text-align: center;
+    font-size: 45px;
+    padding-top: 1rem;
+}
+
+.plans{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 3rem;
+}
+
+.plan{
+    font-family: 'Montserrat';
+    padding: 3rem;
+    height: 500px;
+    position: relative;
+}
+.basic{
+    background-color: #FFFFFF33;
+}
+.premium{
+    background-color: #FF8A0099;
+    
+}
+.list{
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 2px solid $orange;
+}
+
+.li{
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+.button{
+    position: absolute;
+    border: none;
+    border-radius: 20px;
+    width: 80%;
+    height: 50px;
+    bottom: 5%;
+    left: 10%;
+    cursor: pointer;
+}
+
+.button_basic{ 
+    background-color: $orange;
+    color: $white;
+}
+
+.button_premium{
+    background-color: $white;
+    color: $orange;
+}
+
+.color_orange{
+    color: $orange;
+}
+
+.price{
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+@media screen and (min-width: 860px){
+    .plans{
+        width:70%;
+        display: grid;
+        column-gap: 3rem;
+        grid-template-columns: repeat(2, minmax(200px,1fr));
+        margin: 1rem auto auto auto;
+        padding-bottom: 1rem;
+        color: $white;
+    }
+
+    .plan{
+        transition: transform 0.3s ease;
+    }
+    .plan:hover {
+        transform: scale(1.1); /* Aumentamos el tamaño en un 20% */
+      }
+}

@@ -5,6 +5,27 @@ const searchAffiliatesOfTrainer = async (req, res) => {
   const { id } = req.user;
   const { keyword } = req.query;
 
+  let query = { status: true, trainer: id };
+
+  try {
+    keyword &&
+      (query = {
+        ...query,
+        $or: [
+          { name: { $regex: keyword, $options: "i" } },
+          { surname: { $regex: keyword, $options: "i" } }
+        ]
+      });
+
+    const affiliates = await User.find(query);
+
+    res.json(affiliates);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ msg: "Server error" });
+  }
+
+  /*
   let query = { "affiliate.status": true };
 
   try {
@@ -52,7 +73,7 @@ const searchAffiliatesOfTrainer = async (req, res) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ msg: "Server error" });
-  }
+  }*/
 };
 
 const searchUsers = async (req, res) => {
