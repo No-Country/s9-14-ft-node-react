@@ -1,6 +1,6 @@
 const addFieldQuotaAvailable = require("../helpers/activities");
 const uploadToCloudinary = require("../helpers/upload-image");
-const { Activity } = require("../models");
+const { Activity, User } = require("../models");
 const { mongoose } = require("mongoose");
 
 const getAllActivities = async (req, res) => {
@@ -398,6 +398,20 @@ const getTrainerActivitiesByToken = async (req, res) => {
   }
 };
 
+const getTrainerAffiliatesByToken = async (req, res) => {
+  const { id } = req.user;
+
+  try {
+    const affiliates = await User.find({ trainer: id });
+    res.json(affiliates);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      msg: "Server error"
+    });
+  }
+};
+
 module.exports = {
   addActivity,
   getActivity,
@@ -412,5 +426,6 @@ module.exports = {
   // setVacancies,
   //removeDay,
   getTrainerActivities,
-  getTrainerActivitiesByToken
+  getTrainerActivitiesByToken,
+  getTrainerAffiliatesByToken
 };
