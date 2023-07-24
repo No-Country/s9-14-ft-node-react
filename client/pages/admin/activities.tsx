@@ -15,7 +15,7 @@ export default function AdminActivities () {
     <AdminLayout placeholder="Buscar actividades..." onSearch={()=> null}>
       <div className={style.title}>
         <h1>ACTIVIDADES</h1>
-        <Link href={'#'} className={style.add}>Añadir nueva</Link>
+        <Link href={'/admin/newActivity'} className={style.add}>Añadir nueva</Link>
       </div>
       {
         activities.length > 0 ? (
