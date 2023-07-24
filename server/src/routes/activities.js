@@ -196,7 +196,7 @@ router.get("/trainer/token", [validateJWT, hasRole(["trainer"])], getTrainerActi
  *               items:
  *                 $ref: "#/components/schemas/Activity"
  *       401:
- *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que los entrenadores y los afiliados son los únicos que tienen acceso.
+ *         description: Respuesta no exitosa que indica que no se ha provisto el token en la consulta, o que no existe un usuario con ese token.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
@@ -211,7 +211,6 @@ router.get(
   "/trainer/:id",
   [
     validateJWT,
-    hasRole(["trainer", "affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(idIsNotTrainer),
     validateFields

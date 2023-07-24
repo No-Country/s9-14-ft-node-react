@@ -219,10 +219,126 @@ router.post(
   createUserTrainingPlan
 );
 
+/**
+ * @openapi
+ * /api/trainingPlans/addtoaffiliate:
+ *   patch:
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     summary: Agrega un afiliado a un plan de entrenamiento.
+ *     tags: [TrainingPlans]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación.
+ *     requestBody:
+ *       description: Plan de entrenamiento del afiliado.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               trainingPlanId:
+ *                 type: string
+ *                 description: ID del plan de entrenamiento.
+ *               affiliateId:
+ *                 type: string
+ *                 description: ID del afiliado.
+ *             example:
+ *               trainingPlanId: "64a57edcab21e16190e32ec8"
+ *               affiliateId: "64a57edcab21e16190e32ec9"
+ *     responses:
+ *       200:
+ *         description: Plan de entrenamiento del afiliado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TrainingPlan'
+ *       404:
+ *         description: Respuesta no exitosa que indica que no se ha recibido nada por body o que no se encontró ningun plan de entrenamiento con ese id.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
+ */
 router.patch(
   "/addtoaffiliate",
   [validateJWT, hasRole(["admin", "trainer", "affiliate"]), validateFields],
   addTrainingPlanToAffiliate
+);
+
+/**
+ * @openapi
+ * /api/trainingPlans/removeffiliate:
+ *   patch:
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     summary: Elimina un afiliado de un plan de entrenamiento.
+ *     tags: [TrainingPlans]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación.
+ *     requestBody:
+ *       description: Plan de entrenamiento del afiliado.
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               trainingPlanId:
+ *                 type: string
+ *                 description: ID del plan de entrenamiento.
+ *               affiliateId:
+ *                 type: string
+ *                 description: ID del afiliado.
+ *             example:
+ *               trainingPlanId: "64a57edcab21e16190e32ec8"
+ *               affiliateId: "64a57edcab21e16190e32ec9"
+ *     responses:
+ *       200:
+ *         description: Plan de entrenamiento del afiliado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/TrainingPlan'
+ *       404:
+ *         description: Respuesta no exitosa que indica que no se ha recibido nada por body o que no se encontró ningun plan de entrenamiento con ese id.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
+ */
+router.patch(
+  "/removeaffiliate",
+  [validateJWT, hasRole(["admin", "trainer"]), validateFields],
+  removeTrainingPlanToAffiliate
 );
 
 /**
@@ -274,24 +390,6 @@ router.put(
     validateFields
   ],
   updateTrainingPlan
-);
-
-router.delete(
-  "/:id",
-  [
-    validateJWT,
-    hasRole(["admin", "trainer", "affiliate"]),
-    param("id", "id is not a MongoId").isMongoId(),
-    param("id").custom(idIsNotAdmin),
-    validateFields
-  ],
-  deleteTrainingPlan
-);
-
-router.patch(
-  "/removeaffiliate",
-  [validateJWT, hasRole(["admin", "trainer"]), validateFields],
-  removeTrainingPlanToAffiliate
 );
 
 /**
