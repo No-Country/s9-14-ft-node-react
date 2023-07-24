@@ -332,7 +332,7 @@ router.post(
     body("fitMedical", "Fit medical must be of type object").optional().isObject(),
     body("subscriptionId", "id is not a MongoId").optional().isMongoId(),
     validateFields
-  ],
+  ], 
   registerUser
 );
 
