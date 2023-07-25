@@ -200,22 +200,22 @@ router.get("/trainer/token", [validateJWT, hasRole(["trainer"])], getTrainerActi
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
-
-router.get(
-  "/trainer/affiliates",
-  [validateJWT, hasRole(["trainer"]), validateFields],
-  getTrainerAffiliatesByToken
-);
-
 router.get(
   "/trainer/:id",
   [
     validateJWT,
+    hasRole(["admin", "trainer", "affiliate"]),
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(idIsNotTrainer),
     validateFields
   ],
   getTrainerActivities
+);
+
+router.get(
+  "/trainer/affiliates",
+  [validateJWT, hasRole(["trainer"]), validateFields],
+  getTrainerAffiliatesByToken
 );
 
 /**

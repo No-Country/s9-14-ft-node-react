@@ -1,5 +1,5 @@
 const updateUserStatus = require("../helpers/updateUserStatus");
-const { User } = require("../models");
+const { User, Subscription } = require("../models");
 const bcrypt = require("bcrypt");
 
 const getUsers = async (req, res) => {
@@ -40,40 +40,50 @@ const getUserByToken = async (req, res) => {
 
 const registerUser = async (req, res) => {
   try {
-    let { password, email, birthday, ...data } = req.body;
-    delete data._id;
-    delete data.__v;
-    delete data.status;
-    delete data.age;
+    let { password, email, birthday, role, subscriptionId, fitMedical, ...data } = req.body;
 
     const existingEmail = await User.findOne({ email });
+    if (existingEmail) return res.status(400).json({ message: "Email already exists" });
 
-    if (existingEmail) {
-      return res.status(400).json({ message: "Email already exists" });
+    if (subscriptionId) {
+      const existingSubscription = await Subscription.findById(subscriptionId);
+      if (!existingSubscription) return res.status(404).json({ message: "Subscription not found" });
     }
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    const dateBirthday = new Date(birthday);
-    const today = new Date();
-    let age = today.getFullYear() - dateBirthday.getFullYear();
-    const diffMonths = today.getMonth() - dateBirthday.getMonth();
+    let subscriptionToAdd;
+    let fitMedicalToAdd;
+    if (role === "affiliate") {
+      subscriptionToAdd = subscriptionId;
+      fitMedicalToAdd = fitMedical;
+    }
 
-    if (diffMonths < 0 || (diffMonths === 0 && today.getDate() < dateBirthday.getDate())) {
-      age--;
+    let age;
+    if (birthday) {
+      const dateBirthday = new Date(birthday);
+      const today = new Date();
+      age = today.getFullYear() - dateBirthday.getFullYear();
+      const diffMonths = today.getMonth() - dateBirthday.getMonth();
+
+      if (diffMonths < 0 || (diffMonths === 0 && today.getDate() < dateBirthday.getDate())) {
+        age--;
+      }
     }
 
     data = {
       ...data,
       email,
       password: passwordHash,
+      role,
+      subscriptions: subscriptionToAdd ? [subscriptionToAdd] : undefined,
+      fitMedical: fitMedicalToAdd,
       age
     };
-    const newUser = await User.create(data);
-    await newUser.save();
 
-    return res.status(201).json({ newUser });
+    const newUser = await User.create(data);
+    return res.status(201).json(newUser);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: error.message });

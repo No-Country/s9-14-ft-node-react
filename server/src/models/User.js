@@ -77,7 +77,6 @@ const mongoose = require("mongoose");
  *         name: 'Paula'
  *         surname: 'Aguirre'
  *         email: 'afiliado1@email.com'
- *         password: '$2b$10$fcyD0YivlIWX3xwk/Y/Y8uDMT2vbgqJY5Dc6jTJcr8iq.uVhbIn5i'
  *         profileImage: 'https://cdn-icons-png.flaticon.com/512/6522/6522516.png'
  *         status: true
  *         phone: 754655225
