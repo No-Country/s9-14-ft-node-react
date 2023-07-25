@@ -2,6 +2,7 @@ import {create} from 'zustand'
 import type { Trainer } from '@/types'
 import { useEffect } from 'react'
 import { useSession } from './useSession'
+import type {Activity} from '@/types'
 
 interface Store {
   trainers: Trainer[]
@@ -16,15 +17,33 @@ const useTrainerStore = create<Store>((set)=> ({
   actions: {
     getTrainers: async (token: string) => {
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/users?role=trainer`, {
-        headers: {
-          'x-token': token,
-          'Content-Type': 'application/json'
-        }})
+      headers: {
+        'x-token': token,
+        'Content-Type': 'application/json'
+      }})
 
-      if (request.ok) {
-        const data = await request.json()
-        set({trainers: data.users})
-      }
+      if (!request.ok) throw new Error('Error fetching trainers')
+      const {users} = await request.json()
+      
+      const trainersWithActivities = users.map((trainer: Omit<Trainer, 'activities'>) => {
+        return fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/activities/trainer/${trainer._id}`, {
+          headers: {
+            'x-token': token,
+            'Content-Type': 'application/json'
+          }
+        })
+      })
+
+      const trainers = await Promise.all(trainersWithActivities)
+      await (async () => {
+        for (let i = 0; i < trainers.length; i++) {
+          const activities = await trainers[i].json()
+          users[i].activities = activities.map((activity: Activity) => activity.name)
+        }
+      })()
+      console.log(users)
+      set({trainers: users})
+      
     },
     deleteTrainer: async (id: string, token: string) => {
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/users/${id}`, {
@@ -52,9 +71,9 @@ export function useTrainers () {
   const trainers = useTrainerStore((state) => state.trainers)
   const {getTrainers} = useTrainersActions()
   const session = useSession()
-  console.log(trainers)
+  
   useEffect(()=> {
-    if (session?.token) getTrainers(session.token)
+    if (session?.token && trainers.length === 0) getTrainers(session.token)
   }, [session?.token])
 
   return trainers

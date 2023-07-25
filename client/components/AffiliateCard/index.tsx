@@ -4,6 +4,7 @@ import { AlDia } from "../Statuses/AlDia";
 import { Vencido } from "../Statuses/Vencido";
 import style from './style.module.scss'
 import { useAffiliatesActions } from "@/hooks/useAffiliates";
+import { calculateAgeFromISODate, convertDateFromISO } from "@/lib/convertDates";
 
 const {Trash} = Icons
 
@@ -11,12 +12,11 @@ interface Props extends User {
   token: string
 }
 
-export function AffiliateCard ({name, email, phone, status, _id, token, birthday, fitMedical, phoneEmergency}: Props) {
+export function AffiliateCard ({name, email, phone, status, _id, token, birthday, fitMedical, phoneEmergency, ...props}: Props) {
   const {deleteAffiliate} = useAffiliatesActions()
 
   return (
     <article className={style.card}>
-
       <div className={style.description}>
         <p>Afiliado</p>
         <p>Vencimiento</p>
@@ -38,8 +38,8 @@ export function AffiliateCard ({name, email, phone, status, _id, token, birthday
           <p>08/10/2023</p>
         </span>
         <p className={style.dissapear}>Mensual</p>
-        <p className={style.dissapear}>35 años</p>
-        <p className={style.dissapear}>27/10/1987</p>
+        <p className={style.dissapear}>{calculateAgeFromISODate(birthday)}</p>
+        <p className={style.dissapear}>{convertDateFromISO(birthday)}</p>
         <p>{phone}</p>
         <span className={style.dissapear}>
           <p>{fitMedical.valid ? <AlDia /> : <Vencido />}</p>

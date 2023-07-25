@@ -25,9 +25,10 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
         console.error('Error fetching activities')
         return
       }
+      
       const data = await res.json()
-
-      const trainerStatus = data.map((activity: Activity) => {
+      
+      const trainerStatus = data.activities.map((activity: Activity) => {
         if (!activity.trainer) return Promise.resolve({user: {status: null, name: 'No hay'}})
 
         return fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/users/${activity.trainer._id}/profile`, {
@@ -43,16 +44,16 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
       const trainers = await Promise.all(trainerStatus)
 
       await (async () => {
-        for (let i = 0; i < data.length; i++) {
-          if (!data[i].trainer) {
-            data[i].trainer = trainers[i].user
+        for (let i = 0; i < data.activities.length; i++) {
+          if (!data.activities[i].trainer) {
+            data.activities[i].trainer = trainers[i].user
             continue
           }
-          data[i].trainer.status = trainers[i].user.status
+          data.activities[i].trainer.status = trainers[i].user.status
         }
       })()
 
-      set({activities: data})
+      set({activities: data.activities})
     },
     deleteActivity: async (id: string, token: string) => {
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/activities/${id}`, {
@@ -82,7 +83,7 @@ export function useActivities () { // Returns activities
   const session = useSession()
 
   useEffect(() => {
-    if (session?.token) getActivities(session?.token)
+    if (session?.token && activities.length === 0) getActivities(session?.token)
   }, [session?.token])
 
   return activities 
