@@ -31,7 +31,7 @@ const {
   affiliateNotEnrolledFromBack,
   affiliateEnrolled,
   affiliateEnrolledFromBack,
-  dayExistInActivity
+  dayAndHourExistInActivity
 } = require("../middlewares/validate-affiliateInActivity");
 const hasRole = require("../middlewares/validate-role");
 
@@ -588,7 +588,8 @@ router.patch(
       "day",
       " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
     ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
-    dayExistInActivity,
+    body("hour", "'hour' is required").isString(),
+    dayAndHourExistInActivity,
     affiliateNotEnrolled,
     validateFields
   ],
@@ -684,6 +685,7 @@ router.patch(
       "day",
       " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes'"
     ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes"]),
+    body("hour", "'hour' is required").isString(),
     validateFields
   ],
   removeAffiliateOfActivity
@@ -1144,12 +1146,14 @@ router.patch(
     param("id").custom(activityExistById),
     body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
     body("affiliateId").custom(idIsNotAdminOrTrainer),
+    body("hour", "'hour' is required").isString(),
     affiliateNotEnrolledFromBack,
+
     body(
       "day",
       " day must have one of these values: 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado"
     ).isIn(["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]),
-    dayExistInActivity,
+    dayAndHourExistInActivity,
     validateFields
   ],
   addAffiliateInActivityFromBack
@@ -1241,6 +1245,7 @@ router.patch(
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(activityExistById),
     body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
+    body("hour", "'hour' is required").isString(),
     affiliateEnrolledFromBack,
     body(
       "day",

@@ -120,6 +120,10 @@ const ActivitySchema = new mongoose.Schema({
         lowercase: true,
         enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
         required: true
+      },
+      hour: {
+        type: String,
+        required: true
       }
     }
   ]
