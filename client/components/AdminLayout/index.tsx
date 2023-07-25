@@ -6,17 +6,18 @@ import { ProtectedWrapper } from "@/components/ProtectedWrapper"
 interface Props {
   children: React.ReactNode
   placeholder: string
-  onSearch: (arg: string)=> void
+  onSearch?: (arg: string)=> void
+  disabled?: boolean
 }
 
-export function AdminLayout ({children, placeholder, onSearch}: Props) {
+export function AdminLayout ({children, placeholder, onSearch, disabled}: Props) {
 
   return (
     <ProtectedWrapper>
       <main className={styles.main}>
         <AsideBar />
         <section className={styles.content}>
-          <AdminHeader placeholder={placeholder} onSearch={onSearch} />
+          <AdminHeader placeholder={placeholder} onSearch={onSearch} disabled={disabled} />
           {children}
         </section>
       </main>
