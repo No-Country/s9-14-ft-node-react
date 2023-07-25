@@ -42,24 +42,54 @@ const registerUser = async (req, res) => {
   try {
     let { password, email, birthday, role, subscriptionId, fitMedical, ...data } = req.body;
 
+    // Se valida si ya hay un usuario registrado con el mismo email.
     const existingEmail = await User.findOne({ email });
     if (existingEmail) return res.status(400).json({ message: "Email already exists" });
 
+    // Se validad si la suscripción, en caso que sea pasada por body, exista entre las suscripciones brindadas por el gimnasio.
+    let existingSubscription;
     if (subscriptionId) {
-      const existingSubscription = await Subscription.findById(subscriptionId);
+      existingSubscription = await Subscription.findById(subscriptionId);
       if (!existingSubscription) return res.status(404).json({ message: "Subscription not found" });
     }
 
+    // Se hashea (encripta) la constraseña del usuario.
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
+    // Si el usuario que se está registrando es un afiliado, se le agrega la suscripción elegida y el apto médico presentado.
     let subscriptionToAdd;
     let fitMedicalToAdd;
     if (role === "affiliate") {
-      subscriptionToAdd = subscriptionId;
+      let currentDate = new Date();
+      let expireDate;
+
+      // Si la suscripción elegida es mensual o anual, va a tener su correspondiente fecha de expiración.
+      if (existingSubscription.duration === "mensual") {
+        expireDate = new Date(currentDate.setMonth(currentDate.getMonth() + 1));
+      } else {
+        expireDate = new Date(currentDate.setFullYear(currentDate.getFullYear() + 1));
+      }
+
+      currentDate = new Date();
+
+      // Se crea la suscripción y se la asocia al usuario afiliado que se está registrando.
+      const newSubscription = await Subscription.create({
+        name: existingSubscription.name,
+        description: existingSubscription.description,
+        benefits: existingSubscription.benefits,
+        price: existingSubscription.price,
+        duration: existingSubscription.duration,
+        startDate: currentDate,
+        endDate: expireDate,
+        status: "al día"
+      });
+
+      subscriptionToAdd = newSubscription;
       fitMedicalToAdd = fitMedical;
     }
 
+    // En caso que la edad no sea pasada por body, con la fecha de nacimiento se estima la edad del usuario y se guarda en la base de datos.
     let age;
     if (birthday) {
       const dateBirthday = new Date(birthday);
@@ -72,6 +102,7 @@ const registerUser = async (req, res) => {
       }
     }
 
+    // Datos finales con los que se va a registrar al nuevo usuario de la aplicación.
     data = {
       ...data,
       email,
@@ -79,10 +110,14 @@ const registerUser = async (req, res) => {
       role,
       subscriptions: subscriptionToAdd ? [subscriptionToAdd] : undefined,
       fitMedical: fitMedicalToAdd,
+      birthday,
       age
     };
 
+    // Se crea finalmente al usuario que se está registrando y se lo guarda en la base de datos.
     const newUser = await User.create(data);
+
+    // Se devuelve un objeto con los datos que corresponden al nuevo usuario.
     return res.status(201).json(newUser);
   } catch (error) {
     console.log(error);
