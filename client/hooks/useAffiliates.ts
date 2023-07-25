@@ -54,7 +54,7 @@ export function useAffiliates () {
   const { getAffiliates } = useAffiliatesActions()
   
   useEffect(()=> {
-    if (session?.token) getAffiliates(session.token)
+    if (session?.token && affiliates.length === 0) getAffiliates(session.token)
   }, [session?.token])
 
   return affiliates
