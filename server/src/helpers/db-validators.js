@@ -11,7 +11,7 @@ const idIsNotAdmin = async id => {
   const user = await User.findById(id);
 
   if (!user) throw new Error("Admin not found");
-  if (user.role === "admin") throw new Error("User ID is not an admin");
+  if (user.role !== "admin") throw new Error("User ID is not an admin");
 };
 
 const idIsNotAffiliate = async id => {
@@ -32,8 +32,16 @@ const idIsNotAdminOrTrainer = async id => {
   const user = await User.findById(id);
 
   if (!user) throw new Error("Admin or trainer not found");
+  if (user.role !== "admin" || user.role !== "trainer")
+    throw new Error("User ID is not an admin nor a trainer");
+};
+
+const idIsAdminOrTrainer = async id => {
+  const user = await User.findById(id);
+
+  if (!user) throw new Error("Admin or trainer not found");
   if (user.role === "admin" || user.role === "trainer")
-    throw new Error("The administrator or trainer cannot be registered to the activity");
+    throw new Error("User ID cannot belongs to admin or trainer");
 };
 
 module.exports = {
@@ -41,5 +49,6 @@ module.exports = {
   idIsNotAdmin,
   idIsNotAffiliate,
   idIsNotTrainer,
-  idIsNotAdminOrTrainer
+  idIsNotAdminOrTrainer,
+  idIsAdminOrTrainer
 };
