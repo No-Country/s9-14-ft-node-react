@@ -1,5 +1,5 @@
 import style from './style.module.scss'
-import { AdminNav } from '../AdminNav'
+import { AdminNav } from '../Navigation/AdminNav'
 import { Icons } from '../Icons'
 import Link from 'next/link'
 import { useUserActions } from '@/hooks/useUser'
@@ -8,7 +8,7 @@ import { useRouter } from 'next/router'
 
 const { Logo, User, Exit } = Icons
 
-export function AsideBar () {
+export function AsideBar ({Nav}: {Nav: () => React.ReactNode}) {
   const {removeUser} = useUserActions()
   const {removeData} = useSessionActions()
   const {push} = useRouter()
@@ -23,7 +23,7 @@ export function AsideBar () {
     <aside className={style.aside}>
       <Logo className={style.logo} />
       <div>
-        <AdminNav />
+        <Nav />
 
         <div className={style.others}>
             <ul className={style.list}>
