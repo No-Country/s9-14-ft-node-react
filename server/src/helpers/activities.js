@@ -1,20 +1,23 @@
 function addFieldQuotaAvailable(activities) {
   const newList = activities.map(activity => {
     let days = activity.days;
+    let schedule = activity.schedule;
     let quota = activity.quota;
     let quotaAvailable = [];
 
     days.forEach(day => {
-      let count = 0;
+      schedule.forEach(sche => {
+        let count = 0;
 
-      activity.affiliates.forEach(affiliate => {
-        if (affiliate.day === day) {
-          count++;
-        }
+        activity.affiliates.forEach(affiliate => {
+          if (affiliate.day === day && affiliate.hour === sche) {
+            count++;
+          }
+        });
+
+        let result = quota - count;
+        quotaAvailable = [...quotaAvailable, { day: day, hour: sche, amount: result }];
       });
-
-      let result = quota - count;
-      quotaAvailable = [...quotaAvailable, { day: day, amount: result }];
     });
 
     return {

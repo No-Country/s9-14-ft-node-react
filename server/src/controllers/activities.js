@@ -154,7 +154,7 @@ const deleteActivity = async (req, res) => {
 };
 
 const addAffiliateInActivity = async (req, res) => {
-  const { day } = req.body;
+  const { day, hour } = req.body;
   const { id: affiliate } = req.user;
   const { id } = req.params;
 
@@ -174,7 +174,8 @@ const addAffiliateInActivity = async (req, res) => {
       },
       {
         $match: {
-          "affiliates.day": day
+          "affiliates.day": day,
+          "affiliates.hour": hour
         }
       }
     ]);
@@ -187,7 +188,7 @@ const addAffiliateInActivity = async (req, res) => {
       { _id: id },
       {
         $push: {
-          affiliates: { affiliate, day }
+          affiliates: { affiliate, day, hour }
         }
       }
     );
@@ -202,7 +203,7 @@ const addAffiliateInActivity = async (req, res) => {
 };
 
 const addAffiliateInActivityFromBack = async (req, res) => {
-  const { day, affiliateId } = req.body;
+  const { day, affiliateId, hour } = req.body;
   const { id } = req.params;
 
   try {
@@ -221,7 +222,8 @@ const addAffiliateInActivityFromBack = async (req, res) => {
       },
       {
         $match: {
-          "affiliates.day": day
+          "affiliates.day": day,
+          "affiliates.hour": hour
         }
       }
     ]);
@@ -234,7 +236,7 @@ const addAffiliateInActivityFromBack = async (req, res) => {
       { _id: id },
       {
         $push: {
-          affiliates: { affiliate: affiliateId, day }
+          affiliates: { affiliate: affiliateId, day, hour }
         }
       }
     );
@@ -251,14 +253,14 @@ const addAffiliateInActivityFromBack = async (req, res) => {
 const removeAffiliateOfActivity = async (req, res) => {
   const { id } = req.params;
   const { id: affiliate } = req.user;
-  const { day } = req.body;
+  const { day, hour } = req.body;
 
   try {
     await Activity.updateOne(
       { _id: id },
       {
         $pull: {
-          affiliates: { affiliate, day }
+          affiliates: { affiliate, day, hour }
         }
       }
     );
@@ -273,7 +275,7 @@ const removeAffiliateOfActivity = async (req, res) => {
 };
 
 const removeAffiliateOfActivityFromBack = async (req, res) => {
-  const { day, affiliateId } = req.body;
+  const { day, affiliateId, hour } = req.body;
   const { id } = req.params;
 
   try {
@@ -281,7 +283,7 @@ const removeAffiliateOfActivityFromBack = async (req, res) => {
       { _id: id },
       {
         $pull: {
-          affiliates: { affiliate: affiliateId, day }
+          affiliates: { affiliate: affiliateId, day, hour }
         }
       }
     );
