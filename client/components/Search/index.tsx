@@ -8,10 +8,8 @@ export function Search ({className, placeholder, onSearch} : {className?: string
   const [value, setValue] = useState('')
 
   useEffect(()=> {
-    // Debounce value
     const doSearch = setTimeout(()=> {
-      console.log(value) // Should seach here with the value in onSearch
-      // onSearch(value)
+      onSearch(value)
     }, 500)
 
     return ()=> clearTimeout(doSearch)
