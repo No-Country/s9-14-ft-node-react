@@ -22,28 +22,17 @@ const router = Router();
  * @openapi
  * /api/users:
  *   get:
- *     summary: Obtener una lista de todos los usuarios de la apicación.
+ *     summary: Obtener una lista de todos los usuarios de la aplicación.
  *     tags: [Users]
- *     components:
- *       securitySchemes:
- *         bearerAuth:
- *           type: http
- *           scheme: bearer
- *           bearerFormat: JWT
- *         apiKeyAuth:
- *           type: apiKey
- *           in: header
- *           name: x-token
  *     security:
  *       - bearerAuth: []
- *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
- *         name: x-token
+ *         name: Authorization
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación.
+ *         description: Token de autenticación con formato "Bearer <token>".
  *       - in: query
  *         name: role
  *         schema:
@@ -56,7 +45,7 @@ const router = Router();
  *         description: Estatus del usuario.
  *     responses:
  *       200:
- *         description: Respuesta exitosa que devuelve un objeto con la propiedad "users", que es un arreglo de todos los usuarios regitrados en la aplicación y que cumplen con el filtro de las querys si es que se han provisto en el path.
+ *         description: Respuesta exitosa que devuelve un objeto con la propiedad "users", que es un arreglo de todos los usuarios registrados en la aplicación y que cumplen con el filtro de las querys si se han provisto en el path.
  *         content:
  *           application/json:
  *             schema:
@@ -67,10 +56,11 @@ const router = Router();
  *                   items:
  *                     $ref: '#/components/schemas/User'
  *       401:
- *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin y los entrenadores son los únicos que tienen acceso.
+ *         description: No autorizado. Se requiere autenticación válida con un token JWT.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
+
 router.get("/", [validateJWT, hasRole(["admin", "trainer"]), validateFields], getUsers);
 
 /**
@@ -225,9 +215,25 @@ router.get(
  *                 type: string
  *               phone:
  *                 type: number
+ *               birthday:
+ *                 type: string
+ *               age:
+ *                 type: number
  *               role:
  *                 type: string
  *                 enum: [admin, trainer, affiliate]
+ *               profileImage:
+ *                 type: string
+ *               fitMedical:
+ *                 type: object
+ *                 properties:
+ *                   valid:
+ *                     type: boolean
+ *                   expire:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                     enum: ["al día", "próximo a vencer", "vencido"]
  *               subscriptions:
  *                 type: array
  *                 items:
@@ -264,6 +270,12 @@ router.get(
  *                         phone:
  *                           type: number
  *                           example: 0
+ *                         birthday:
+ *                           type: string
+ *                           example: "2023-05-01"
+ *                         age:
+ *                           type: number
+ *                           example: 0
  *                         role:
  *                           type: string
  *                           enum: [admin, trainer, affiliate]
@@ -272,7 +284,24 @@ router.get(
  *                           type: array
  *                           items:
  *                             type: string
- *                           example: []
+ *                         profileImage:
+ *                           type: string
+ *                           example: "https://image.pngaaa.com/789/3873789-middle.png"
+ *                         fitMedical:
+ *                           type: object
+ *                           properties:
+ *                             valid:
+ *                               type: boolean
+ *                             expire:
+ *                               type: string
+ *                             status:
+ *                               type: string
+ *                               enum: ["al día", "próximo a vencer", "vencido"]
+ *                               example: "al día"
+ *                           example:
+ *                             valid: true
+ *                             expire: "2023-05-01"
+ *                             status: "al día"
  *                         _id:
  *                           type: string
  *                         __v:
@@ -285,8 +314,15 @@ router.get(
  *                     email: string
  *                     password: string
  *                     active: true
+ *                     age: number
+ *                     birthday: "2023-05-01"
  *                     phone: 0
  *                     role: admin
+ *                     profileImage: "https://image.pngaaa.com/789/3873789-middle.png"
+ *                     fitMedical:
+ *                       valid: true
+ *                       expire: "2023-05-01"
+ *                       status: "al día"
  *                     subscriptions: []
  *                     _id: "64ab394bbd43f7dcfcc3ccaa"
  *                     __v: 0
@@ -297,11 +333,12 @@ router.get(
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
+
 router.post(
   "/",
   [
-   /*  validateJWT,
-    hasRole(["admin", "trainer"]), */
+    validateJWT,
+    hasRole(["admin", "trainer"]),
     body("name", "Name must have between 1 and 50 characters")
       .isString()
       .isLength({ min: 1, max: 50 }),
@@ -353,8 +390,8 @@ router.post(
  * @openapi
  * /api/users/{id}/profile:
  *   patch:
- *     tags:
- *       - Users
+ *     summary: Actualizar el perfil de un usuario en la aplicación.
+ *     tags: [Users]
  *     components:
  *       securitySchemes:
  *         bearerAuth:
@@ -374,14 +411,14 @@ router.post(
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación.
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID del usuario
+ *         description: ID del usuario.
  *     requestBody:
- *       description: Actualizacion del usuario
+ *       description: Actualización del perfil del usuario.
  *       required: true
  *       content:
  *         application/json:
@@ -396,18 +433,46 @@ router.post(
  *                 type: string
  *               password:
  *                 type: string
- *               active:
- *                 type: boolean
  *               phone:
+ *                 type: number
+ *               birthday:
+ *                 type: string
+ *               age:
  *                 type: number
  *               role:
  *                 type: string
  *                 enum: [admin, trainer, affiliate]
+ *               profileImage:
+ *                 type: string
+ *               fitMedical:
+ *                 type: object
+ *                 properties:
+ *                   valid:
+ *                     type: boolean
+ *                   expire:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                     enum: ["al día", "próximo a vencer", "vencido"]
  *               subscriptions:
  *                 type: array
  *                 items:
  *                   type: string
- *                 example: []
+ *               example:
+ *                 name: "John"
+ *                 surname: "Doe"
+ *                 email: "john.doe@example.com"
+ *                 password: "secret"
+ *                 phone: 1234567890
+ *                 birthday: "2000-01-01"
+ *                 age: 21
+ *                 role: "affiliate"
+ *                 profileImage: "https://example.com/image.jpg"
+ *                 fitMedical:
+ *                   valid: true
+ *                   expire: "2023-05-01"
+ *                   status: "al día"
+ *                   example: []
  *     responses:
  *       200:
  *         description: OK
@@ -416,90 +481,97 @@ router.post(
  *             schema:
  *               type: object
  *               properties:
- *                 data:
+ *                 message:
+ *                   type: string
+ *                   example: "User updated successfully"
+ *                 userUpdated:
  *                   type: object
  *                   properties:
- *                     newUser:
+ *                     name:
+ *                       type: string
+ *                       example: "John"
+ *                     surname:
+ *                       type: string
+ *                       example: "Doe"
+ *                     email:
+ *                       type: string
+ *                       example: "john.doe@example.com"
+ *                     password:
+ *                       type: string
+ *                       example: "secret"
+ *                     active:
+ *                       type: boolean
+ *                       example: true
+ *                     phone:
+ *                       type: number
+ *                       example: 1234567890
+ *                     birthday:
+ *                       type: string
+ *                       example: "2000-01-01"
+ *                     age:
+ *                       type: number
+ *                       example: 21
+ *                     role:
+ *                       type: string
+ *                       enum: [admin, trainer, affiliate]
+ *                       example: "affiliate"
+ *                     subscriptions:
+ *                       type: array
+ *                       items:
+ *                         type: string
+ *                       example: []
+ *                     profileImage:
+ *                       type: string
+ *                       example: "https://example.com/image.jpg"
+ *                     fitMedical:
  *                       type: object
  *                       properties:
- *                         name:
- *                           type: string
- *                           example: string
- *                         surname:
- *                           type: string
- *                           example: string
- *                         email:
- *                           type: string
- *                           example: string
- *                         password:
- *                           type: string
- *                           example: string
- *                         active:
+ *                         valid:
  *                           type: boolean
  *                           example: true
- *                         phone:
- *                           type: number
- *                           example: 0
- *                         role:
+ *                         expire:
  *                           type: string
- *                           enum: [admin, trainer, affiliate]
- *                           example: admin
- *                         subscriptions:
- *                           type: array
- *                           items:
- *                             type: string
- *                           example: []
- *                         _id:
+ *                           example: "2023-05-01"
+ *                         status:
  *                           type: string
- *                         __v:
- *                           type: number
- *                 example:
- *                   message: "User updated successfully"
- *                   userUpdated:
- *                     type: object
- *                     properties:
- *                       status:
- *                         type: boolean
- *                       _id:
- *                         type: string
- *                       name:
- *                         type: string
- *                       surname:
- *                         type: string
- *                       email:
- *                         type: string
- *                       password:
- *                         type: string
- *                       phone:
- *                         type: number
- *                       role:
- *                         type: string
- *                         enum: [admin, trainer, affiliate]
- *                       subscription:
- *                         nullable: true
- *                         type: object
- *                       __v:
- *                         type: number
- *                       subscriptions:
- *                         type: array
- *                         items:
- *                           type: string
- *                         example: []
- *                     example:
- *                       message: "User updated successfully"
- *                       userUpdated:
- *                         status: true
- *                         _id: "64a57edcab21e16190e32ec8"
- *                         name: "Entrenador testing ruta patch"
- *                         surname: "string"
- *                         email: "string"
- *                         password: "$2b$10$IugABrGshHLhOX/nmLLpJ.irm4fC6dZPcIqBvq3d2BN9rrwir.nLu"
- *                         phone: 0
- *                         role: "admin"
- *                         subscription: null
- *                         __v: 0
- *                         subscriptions: []
+ *                           enum: ["al día", "próximo a vencer", "vencido"]
+ *                           example: "al día"
+ *                       example:
+ *                         valid: true
+ *                         expire: "2023-05-01"
+ *                         status: "al día"
+ *                     _id:
+ *                       type: string
+ *                       example: "64ab394bbd43f7dcfcc3ccaa"
+ *                     __v:
+ *                       type: number
+ *                       example: 0
+ *               example:
+ *                 message: "User updated successfully"
+ *                 userUpdated:
+ *                   name: "John"
+ *                   surname: "Doe"
+ *                   email: "john.doe@example.com"
+ *                   password: "secret"
+ *                   active: true
+ *                   phone: 1234567890
+ *                   birthday: "2000-01-01"
+ *                   age: 21
+ *                   role: "affiliate"
+ *                   profileImage: "https://example.com/image.jpg"
+ *                   fitMedical:
+ *                     valid: true
+ *                     expire: "2023-05-01"
+ *                     status: "al día"
+ *                   subscriptions: []
+ *                   _id: "64ab394bbd43f7dcfcc3ccaa"
+ *                   __v: 0
+ *       400:
+ *         description: Respuesta que indica que el usuario que se quiere modificar no existe.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
+
 router.patch("/:id/profile", [validateJWT, hasRole(["admin"])], updateUserById);
 
 /**
@@ -599,59 +671,31 @@ router.delete(
  *   patch:
  *     tags:
  *       - Users
- *     components:
- *       securitySchemes:
- *         bearerAuth:
- *           type: http
- *           scheme: bearer
- *           bearerFormat: JWT
- *         apiKeyAuth:
- *           type: apiKey
- *           in: header
- *           name: x-token
  *     security:
  *       - bearerAuth: []
- *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
- *         name: x-token
+ *         name: Authorization
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación con formato "Bearer <token>".
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID del usuario
+ *         description: ID del usuario.
  *     requestBody:
- *       description: Actualizacion del usuario
+ *       description: Establecer el estado del usuario.
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               status:
  *                 type: string
- *               surname:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               active:
- *                 type: boolean
- *               phone:
- *                 type: number
- *               role:
- *                 type: string
- *                 enum: [admin, trainer, affiliate]
- *               subscriptions:
- *                 type: array
- *                 items:
- *                   type: string
- *                 example: []
+ *                 enum: ["active", "inactive"]
  *     responses:
  *       200:
  *         description: OK
@@ -668,38 +712,68 @@ router.delete(
  *                       properties:
  *                         name:
  *                           type: string
- *                           example: string
+ *                           example: "John"
  *                         surname:
  *                           type: string
- *                           example: string
+ *                           example: "Doe"
  *                         email:
  *                           type: string
- *                           example: string
+ *                           example: "john.doe@example.com"
  *                         password:
  *                           type: string
- *                           example: string
+ *                           example: "secret"
  *                         active:
  *                           type: boolean
  *                           example: true
  *                         phone:
  *                           type: number
- *                           example: 0
+ *                           example: 1234567890
+ *                         birthday:
+ *                           type: string
+ *                           example: "2000-01-01"
+ *                         age:
+ *                           type: number
+ *                           example: 21
  *                         role:
  *                           type: string
  *                           enum: [admin, trainer, affiliate]
- *                           example: admin
+ *                           example: "affiliate"
  *                         subscriptions:
  *                           type: array
  *                           items:
  *                             type: string
  *                           example: []
+ *                         profileImage:
+ *                           type: string
+ *                           example: "https://example.com/image.jpg"
+ *                         fitMedical:
+ *                           type: object
+ *                           properties:
+ *                             valid:
+ *                               type: boolean
+ *                               example: true
+ *                             expire:
+ *                               type: string
+ *                               example: "2023-05-01"
+ *                             status:
+ *                               type: string
+ *                               enum: ["al día", "próximo a vencer", "vencido"]
+ *                               example: "al día"
+ *                           example:
+ *                             valid: true
+ *                             expire: "2023-05-01"
+ *                             status: "al día"
  *                         _id:
  *                           type: string
+ *                           example: "64ab394bbd43f7dcfcc3ccaa"
  *                         __v:
  *                           type: number
+ *                           example: 0
  *               example:
- *                 {"message": "User updated successfully"}
+ *                 message: "User status updated successfully"
+ *                 data: {}
  */
+
 router.patch(
   "/:id/setStatus",
   [
@@ -716,8 +790,8 @@ router.patch(
  * @openapi
  * /api/users/profile:
  *   patch:
- *     tags:
- *       - Users
+ *     summary: Actualizar el perfil del usuario en la aplicación.
+ *     tags: [Users]
  *     components:
  *       securitySchemes:
  *         bearerAuth:
@@ -737,9 +811,9 @@ router.patch(
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación.
  *     requestBody:
- *       description: Actualizacion del usuario
+ *       description: Actualización del perfil del usuario.
  *       required: true
  *       content:
  *         application/json:
@@ -754,18 +828,46 @@ router.patch(
  *                 type: string
  *               password:
  *                 type: string
- *               active:
- *                 type: boolean
  *               phone:
+ *                 type: number
+ *               birthday:
+ *                 type: string
+ *               age:
  *                 type: number
  *               role:
  *                 type: string
  *                 enum: [admin, trainer, affiliate]
+ *               profileImage:
+ *                 type: string
+ *               fitMedical:
+ *                 type: object
+ *                 properties:
+ *                   valid:
+ *                     type: boolean
+ *                   expire:
+ *                     type: string
+ *                   status:
+ *                     type: string
+ *                     enum: ["al día", "próximo a vencer", "vencido"]
  *               subscriptions:
  *                 type: array
  *                 items:
  *                   type: string
- *                 example: []
+ *               example:
+ *                 name: "John"
+ *                 surname: "Doe"
+ *                 email: "john.doe@example.com"
+ *                 password: "secret"
+ *                 phone: 1234567890
+ *                 birthday: "2000-01-01"
+ *                 age: 21
+ *                 role: "affiliate"
+ *                 profileImage: "https://example.com/image.jpg"
+ *                 fitMedical:
+ *                   valid: true
+ *                   expire: "2023-05-01"
+ *                   status: "al día"
+ *                   example: []
  *     responses:
  *       200:
  *         description: OK
@@ -774,6 +876,9 @@ router.patch(
  *             schema:
  *               type: object
  *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User updated successfully"
  *                 data:
  *                   type: object
  *                   properties:
@@ -782,38 +887,86 @@ router.patch(
  *                       properties:
  *                         name:
  *                           type: string
- *                           example: string
+ *                           example: "John"
  *                         surname:
  *                           type: string
- *                           example: string
+ *                           example: "Doe"
  *                         email:
  *                           type: string
- *                           example: string
+ *                           example: "john.doe@example.com"
  *                         password:
  *                           type: string
- *                           example: string
+ *                           example: "secret"
  *                         active:
  *                           type: boolean
  *                           example: true
  *                         phone:
  *                           type: number
- *                           example: 0
+ *                           example: 1234567890
+ *                         birthday:
+ *                           type: string
+ *                           example: "2000-01-01"
+ *                         age:
+ *                           type: number
+ *                           example: 21
  *                         role:
  *                           type: string
  *                           enum: [admin, trainer, affiliate]
- *                           example: admin
+ *                           example: "affiliate"
  *                         subscriptions:
  *                           type: array
  *                           items:
  *                             type: string
  *                           example: []
+ *                         profileImage:
+ *                           type: string
+ *                           example: "https://example.com/image.jpg"
+ *                         fitMedical:
+ *                           type: object
+ *                           properties:
+ *                             valid:
+ *                               type: boolean
+ *                               example: true
+ *                             expire:
+ *                               type: string
+ *                               example: "2023-05-01"
+ *                             status:
+ *                               type: string
+ *                               enum: ["al día", "próximo a vencer", "vencido"]
+ *                               example: "al día"
+ *                           example:
+ *                             valid: true
+ *                             expire: "2023-05-01"
+ *                             status: "al día"
  *                         _id:
  *                           type: string
+ *                           example: "64ab394bbd43f7dcfcc3ccaa"
  *                         __v:
  *                           type: number
+ *                           example: 0
  *               example:
- *                 {"message": "User patch successfully"}
+ *                 message: "User updated successfully"
+ *                 data:
+ *                   newUser:
+ *                     name: "John"
+ *                     surname: "Doe"
+ *                     email: "john.doe@example.com"
+ *                     password: "secret"
+ *                     active: true
+ *                     phone: 1234567890
+ *                     birthday: "2000-01-01"
+ *                     age: 21
+ *                     role: "affiliate"
+ *                     profileImage: "https://example.com/image.jpg"
+ *                     fitMedical:
+ *                       valid: true
+ *                       expire: "2023-05-01"
+ *                       status: "al día"
+ *                     subscriptions: []
+ *                     _id: "64ab394bbd43f7dcfcc3ccaa"
+ *                     __v: 0
  */
+
 router.patch("/profile", [validateJWT, hasRole(["affiliate"])], updateUserByToken);
 
 module.exports = router;
