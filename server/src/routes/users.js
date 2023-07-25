@@ -198,7 +198,6 @@ router.get(
  *         required: true
  *         description: Token de autenticación.
  *     requestBody:
- *       description: Información para registrar al nuevo usuario.
  *       required: true
  *       content:
  *         application/json:
@@ -207,125 +206,95 @@ router.get(
  *             properties:
  *               name:
  *                 type: string
+ *                 example: 'Juan'
  *               surname:
  *                 type: string
+ *                 example: 'Pérez'
  *               email:
  *                 type: string
+ *                 example: 'juanperez@email.com'
  *               password:
  *                 type: string
+ *                 example: 'juan123'
  *               phone:
  *                 type: number
+ *                 example: 673124517
+ *               phoneEmergency:
+ *                 type: number
+ *                 example: 673124517
  *               birthday:
  *                 type: string
+ *                 example: '2000-12-10'
  *               age:
  *                 type: number
+ *                 example: 22
  *               role:
  *                 type: string
  *                 enum: [admin, trainer, affiliate]
+ *                 example: 'affiliate'
  *               profileImage:
  *                 type: string
+ *                 example: 'https://cdn-icons-png.flaticon.com/512/6522/6522516.png'
  *               fitMedical:
  *                 type: object
  *                 properties:
  *                   valid:
  *                     type: boolean
+ *                     example: true
  *                   expire:
  *                     type: string
+ *                     example: '2024-01-01'
  *                   status:
  *                     type: string
  *                     enum: ["al día", "próximo a vencer", "vencido"]
- *               subscriptions:
- *                 type: array
- *                 items:
- *                   type: string
+ *                     example: 'al día'
+ *               subscriptionId:
+ *                 type: string
+ *                 example: '64bea95d2ae25fcdb96be9c0'
  *     responses:
  *       200:
- *         description: OK
+ *         description: Un objeto que representa al nuevo usuario registrado.
  *         content:
  *           application/json:
  *             schema:
  *               type: object
  *               properties:
- *                 data:
+ *                 _id:
+ *                   example: '64bff4951ff102a37dc15425'
+ *                 name:
+ *                   example: 'Juan'
+ *                 surname:
+ *                   example: 'Pérez'
+ *                 email:
+ *                   example: 'juanperez@email.com'
+ *                 status:
+ *                   example: true
+ *                 phone:
+ *                   example: 673124517
+ *                 phoneEmergency:
+ *                   example: 123456789
+ *                 birthday:
+ *                   example: '2000-05-01'
+ *                 age:
+ *                   example: 22
+ *                 role:
+ *                   example: 'affiliate'
+ *                 subscriptions:
+ *                   type: array
+ *                   items:
+ *                     type: string
+ *                     example: '64bfef87fa7354c8cc8be255'
+ *                 profileImage:
+ *                   example: 'https://cdn-icons-png.flaticon.com/512/6522/6522516.png'
+ *                 fitMedical:
  *                   type: object
  *                   properties:
- *                     newUser:
- *                       type: object
- *                       properties:
- *                         name:
- *                           type: string
- *                           example: string
- *                         surname:
- *                           type: string
- *                           example: string
- *                         email:
- *                           type: string
- *                           example: string
- *                         password:
- *                           type: string
- *                           example: string
- *                         active:
- *                           type: boolean
- *                           example: true
- *                         phone:
- *                           type: number
- *                           example: 0
- *                         birthday:
- *                           type: string
- *                           example: "2023-05-01"
- *                         age:
- *                           type: number
- *                           example: 0
- *                         role:
- *                           type: string
- *                           enum: [admin, trainer, affiliate]
- *                           example: admin
- *                         subscriptions:
- *                           type: array
- *                           items:
- *                             type: string
- *                         profileImage:
- *                           type: string
- *                           example: "https://image.pngaaa.com/789/3873789-middle.png"
- *                         fitMedical:
- *                           type: object
- *                           properties:
- *                             valid:
- *                               type: boolean
- *                             expire:
- *                               type: string
- *                             status:
- *                               type: string
- *                               enum: ["al día", "próximo a vencer", "vencido"]
- *                               example: "al día"
- *                           example:
- *                             valid: true
- *                             expire: "2023-05-01"
- *                             status: "al día"
- *                         _id:
- *                           type: string
- *                         __v:
- *                           type: number
- *               example:
- *                 data:
- *                   newUser:
- *                     name: string
- *                     surname: string
- *                     email: string
- *                     password: string
- *                     active: true
- *                     age: number
- *                     birthday: "2023-05-01"
- *                     phone: 0
- *                     role: admin
- *                     profileImage: "https://image.pngaaa.com/789/3873789-middle.png"
- *                     fitMedical:
- *                       valid: true
- *                       expire: "2023-05-01"
- *                       status: "al día"
- *                     subscriptions: []
- *                     _id: "64ab394bbd43f7dcfcc3ccaa"
- *                     __v: 0
+ *                     valid:
+ *                       example: true
+ *                     expire:
+ *                       example: '2024-01-01'
+ *                     status:
+ *                       example: 'al día'
  *       400:
  *         description: Respuesta no exitosa que indica que el email con el que se quiere registrar al nuevo usuario ya está en uso o que hubo una serie de distintos errores en la validación de lo que está llegando por body, con su correspondiente mensaje.
  *       401:
@@ -367,20 +336,16 @@ router.post(
     body("birthday", "Birthday must be of type date").optional().isDate(),
     body("age", "Age must be of type date").optional().isNumeric(),
     body("fitMedical", "Fit medical must be of type object").optional().isObject(),
-    body('fitMedical.valid', 'Field "valid" of fitMedical must be a boolean.')
+    body("fitMedical.valid", 'Field "valid" of fitMedical must be a boolean.')
       .optional()
       .isBoolean(),
-    body('fitMedical.expire', 'Expire date of fitMedical is not valid.')
-      .optional()
-      .isDate(),
-    body('fitMedical.status', 'fitMedical status must be a string.')
+    body("fitMedical.expire", "Expire date of fitMedical is not valid.").optional().isDate(),
+    body("fitMedical.status", "fitMedical status must be a string.")
       .optional()
       .isString()
-      .isIn(["al día", "próximo a vencer", "vencido"]).withMessage('fitMedical field must be "al día", "próximo a vencer", "vencido".'),
+      .isIn(["al día", "próximo a vencer", "vencido"])
+      .withMessage('fitMedical field must be "al día", "próximo a vencer", "vencido".'),
     body("subscriptionId", "id is not a MongoId").optional().isMongoId(),
-    body('assignedPlan')
-      .optional()
-      .isBoolean().withMessage('Field "assignedPlan" must be a boolean.'),
     validateFields
   ],
   registerUser
