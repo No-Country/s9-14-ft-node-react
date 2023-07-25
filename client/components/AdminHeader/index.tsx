@@ -14,12 +14,13 @@ const { Logo, Exit } = Icons;
 
 interface Props {
   placeholder: string
-  onSearch: (arg: string)=> void
+  onSearch?: (arg: string)=> void
+  disabled?:boolean
 }
 
-export function AdminHeader({placeholder, onSearch}: Props) {
+export function AdminHeader({placeholder, onSearch, disabled = false}: Props) {
   const [isActive, setIsActive] = useState(false)
-  const user = useUser() // En useUser se hace la peticion a la api para obtener el usuario con el token guardado en el localStorage
+  const user = useUser() 
 
   return (
     <>
@@ -41,7 +42,7 @@ export function AdminHeader({placeholder, onSearch}: Props) {
         </div>
 
         <div className={style.menu}>
-          <Search onSearch={onSearch} placeholder={placeholder} />
+          <Search onSearch={onSearch} placeholder={placeholder} disabled={disabled} />
           <Image src={burgerSvg} className={style.burger} onClick={()=> setIsActive(!isActive)} alt="burgermenu" />
         </div>
       </header>
@@ -56,7 +57,7 @@ export function AdminHeader({placeholder, onSearch}: Props) {
           <Image src={closeSvg} className={style.icon} onClick={()=> setIsActive(!isActive)} alt="close" />
         </span>
         <div className={style.active_items}>
-          <AdminNav invert={true} />
+          <AdminNav />
           <div className={style.others}>
             <ul className={style.list}>
               <li className={style.item}>

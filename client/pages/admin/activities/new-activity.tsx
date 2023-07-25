@@ -462,7 +462,7 @@ const Component: React.FC = () => {
 
 export default function newActivity() {
   return (
-    <AdminLayout>
+    <AdminLayout disabled={true} placeholder="">
       <section>
         <Component />
       </section>
