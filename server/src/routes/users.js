@@ -22,28 +22,17 @@ const router = Router();
  * @openapi
  * /api/users:
  *   get:
- *     summary: Obtener una lista de todos los usuarios de la apicación.
+ *     summary: Obtener una lista de todos los usuarios de la aplicación.
  *     tags: [Users]
- *     components:
- *       securitySchemes:
- *         bearerAuth:
- *           type: http
- *           scheme: bearer
- *           bearerFormat: JWT
- *         apiKeyAuth:
- *           type: apiKey
- *           in: header
- *           name: x-token
  *     security:
  *       - bearerAuth: []
- *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
- *         name: x-token
+ *         name: Authorization
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación.
+ *         description: Token de autenticación con formato "Bearer <token>".
  *       - in: query
  *         name: role
  *         schema:
@@ -56,7 +45,7 @@ const router = Router();
  *         description: Estatus del usuario.
  *     responses:
  *       200:
- *         description: Respuesta exitosa que devuelve un objeto con la propiedad "users", que es un arreglo de todos los usuarios regitrados en la aplicación y que cumplen con el filtro de las querys si es que se han provisto en el path.
+ *         description: Respuesta exitosa que devuelve un objeto con la propiedad "users", que es un arreglo de todos los usuarios registrados en la aplicación y que cumplen con el filtro de las querys si se han provisto en el path.
  *         content:
  *           application/json:
  *             schema:
@@ -67,10 +56,11 @@ const router = Router();
  *                   items:
  *                     $ref: '#/components/schemas/User'
  *       401:
- *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin y los entrenadores son los únicos que tienen acceso.
+ *         description: No autorizado. Se requiere autenticación válida con un token JWT.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
+
 router.get("/", [validateJWT, hasRole(["admin", "trainer"]), validateFields], getUsers);
 
 /**
@@ -681,72 +671,31 @@ router.delete(
  *   patch:
  *     tags:
  *       - Users
- *     components:
- *       securitySchemes:
- *         bearerAuth:
- *           type: http
- *           scheme: bearer
- *           bearerFormat: JWT
- *         apiKeyAuth:
- *           type: apiKey
- *           in: header
- *           name: x-token
  *     security:
  *       - bearerAuth: []
- *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
- *         name: x-token
+ *         name: Authorization
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación con formato "Bearer <token>".
  *       - in: path
  *         name: id
  *         schema:
  *           type: string
- *         description: ID del usuario
+ *         description: ID del usuario.
  *     requestBody:
- *       description: Actualización del perfil del usuario.
-   required: true
+ *       description: Establecer el estado del usuario.
+ *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             properties:
- *               name:
+ *               status:
  *                 type: string
- *               surname:
- *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               phone:
- *                 type: number
- *               birthday:
- *                 type: string
- *               age:
- *                 type: number
- *               role:
- *                 type: string
- *                 enum: [admin, trainer, affiliate]
- *               profileImage:
- *                 type: string
- *               fitMedical:
- *                 type: object
- *                 properties:
- *                   valid:
- *                     type: boolean
- *                   expire:
- *                     type: string
- *                   status:
- *                     type: string
- *                     enum: ["al día", "próximo a vencer", "vencido"]
- *               subscriptions:
- *                 type: array
- *                 items:
- *                   type: string
+ *                 enum: ["active", "inactive"]
  *     responses:
  *       200:
  *         description: OK
@@ -763,46 +712,49 @@ router.delete(
  *                       properties:
  *                         name:
  *                           type: string
- *                           example: string
+ *                           example: "John"
  *                         surname:
  *                           type: string
- *                           example: string
+ *                           example: "Doe"
  *                         email:
  *                           type: string
- *                           example: string
+ *                           example: "john.doe@example.com"
  *                         password:
  *                           type: string
- *                           example: string
+ *                           example: "secret"
  *                         active:
  *                           type: boolean
  *                           example: true
  *                         phone:
  *                           type: number
- *                           example: 0
+ *                           example: 1234567890
  *                         birthday:
  *                           type: string
- *                           example: "2023-05-01"
+ *                           example: "2000-01-01"
  *                         age:
  *                           type: number
- *                           example: 0
+ *                           example: 21
  *                         role:
  *                           type: string
  *                           enum: [admin, trainer, affiliate]
- *                           example: admin
+ *                           example: "affiliate"
  *                         subscriptions:
  *                           type: array
  *                           items:
  *                             type: string
+ *                           example: []
  *                         profileImage:
  *                           type: string
- *                           example: "https://image.pngaaa.com/789/3873789-middle.png"
+ *                           example: "https://example.com/image.jpg"
  *                         fitMedical:
  *                           type: object
  *                           properties:
  *                             valid:
  *                               type: boolean
+ *                               example: true
  *                             expire:
  *                               type: string
+ *                               example: "2023-05-01"
  *                             status:
  *                               type: string
  *                               enum: ["al día", "próximo a vencer", "vencido"]
@@ -813,11 +765,15 @@ router.delete(
  *                             status: "al día"
  *                         _id:
  *                           type: string
+ *                           example: "64ab394bbd43f7dcfcc3ccaa"
  *                         __v:
  *                           type: number
+ *                           example: 0
  *               example:
- *                 {"message": "User updated successfully"}
+ *                 message: "User status updated successfully"
+ *                 data: {}
  */
+
 router.patch(
   "/:id/setStatus",
   [
