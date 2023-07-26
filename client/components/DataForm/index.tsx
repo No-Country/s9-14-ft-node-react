@@ -88,7 +88,7 @@ const DataForm: React.FC = () => {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="birthday">Birthday:</label>
+              <label htmlFor="birthday">Fecha de nacimiento:</label>
               <input
                 type="date"
                 id="birthday"
@@ -99,7 +99,7 @@ const DataForm: React.FC = () => {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="phone">Phone:</label>
+              <label htmlFor="phone">Telefono:</label>
               <input
                 type="tel"
                 id="phone"
@@ -112,7 +112,7 @@ const DataForm: React.FC = () => {
           </div>
           <div className={`${styles.second} ${styles.part}`}>
             <div className={styles.field}>
-              <label htmlFor="lastName">Last Name:</label>
+              <label htmlFor="lastName">Apellido:</label>
               <input
                 type="text"
                 id="lastName"
@@ -123,7 +123,7 @@ const DataForm: React.FC = () => {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="password">Password:</label>
+              <label htmlFor="password">Contraseña:</label>
               <input
                 type="password"
                 id="password"
@@ -134,7 +134,7 @@ const DataForm: React.FC = () => {
               />
             </div>
             <div className={styles.field}>
-              <label htmlFor="age">Age:</label>
+              <label htmlFor="age">Edad:</label>
               <input
                 type="number"
                 id="age"

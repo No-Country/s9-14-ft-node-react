@@ -5,7 +5,6 @@ const rootRouter = require("./routes");
 const swaggerDocs = require("./swagger");
 const connectAndPopulateDb = require("./database");
 const refreshVacancies = require("./tasks/refreshVacancies");
-const fileUpload = require("express-fileupload");
 
 const refreshSubscriptions = require("./tasks/refreshSubscriptions");
 
@@ -19,13 +18,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cors());
-
-app.use(
-  fileUpload({
-    useTempFiles: true,
-    tempFileDir: "./uploads"
-  })
-);
 
 // api routes
 app.use("/api", rootRouter);
