@@ -28,6 +28,14 @@ const idIsNotTrainer = async id => {
   if (user.role !== "trainer") throw new Error("User ID is not a trainer");
 };
 
+const idIsNotAffiliateOrTrainer = async id => {
+  const user = await User.findById(id);
+
+  if (!user) throw new Error("Admin or trainer not found");
+  if (user.role !== "affiliate" || user.role !== "trainer")
+    throw new Error("User ID is not an affiliate nor a trainer");
+};
+
 const idIsNotAdminOrTrainer = async id => {
   const user = await User.findById(id);
 
@@ -49,6 +57,7 @@ module.exports = {
   idIsNotAdmin,
   idIsNotAffiliate,
   idIsNotTrainer,
+  idIsNotAffiliateOrTrainer,
   idIsNotAdminOrTrainer,
   idIsAdminOrTrainer
 };
