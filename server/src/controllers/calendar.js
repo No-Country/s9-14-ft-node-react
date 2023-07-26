@@ -28,12 +28,16 @@ const getGymCalendar = async (req, res) => {
   ];
 
   try {
-    const activities = await Activity.find().populate("trainer", "name surname");
+    const activities = await Activity.find().populate("trainer", "name surname status");
 
     calendar.forEach(item => {
       hours.forEach(hour => {
         activities.forEach(activity => {
-          if (activity.days.includes(item.day) && activity.schedule.includes(hour)) {
+          if (
+            activity.days.includes(item.day) &&
+            activity.schedule.includes(hour) &&
+            activity.trainer.status === true
+          ) {
             item.activities.push({
               name: activity.name,
               trainer: `${activity.trainer.name} ${activity.trainer.surname}`,
@@ -134,18 +138,20 @@ const getAffiliateCalendar = async (req, res) => {
   try {
     const activities = await Activity.find({
       affiliates: { $elemMatch: { affiliate: id } }
-    });
+    }).populate("trainer", "name surname status");
     calendar.forEach(item => {
       hours.forEach(hour => {
         activities.forEach(activity => {
-          activity.affiliates.forEach(affiliate => {
-            if (affiliate.day === item.day && affiliate.hour === hour) {
-              item.activities.push({
-                name: activity.name,
-                hour
-              });
-            }
-          });
+          if (activity.trainer.status === true) {
+            activity.affiliates.forEach(affiliate => {
+              if (affiliate.day === item.day && affiliate.hour === hour) {
+                item.activities.push({
+                  name: activity.name,
+                  hour
+                });
+              }
+            });
+          }
         });
       });
     });

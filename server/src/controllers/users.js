@@ -1,3 +1,4 @@
+const removeUserOfActivities = require("../helpers/remove-user-activity");
 const updateUserStatus = require("../helpers/updateUserStatus");
 const { User, Subscription } = require("../models");
 const bcrypt = require("bcrypt");
@@ -161,9 +162,10 @@ const deleteUser = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
+    removeUserOfActivities(id);
     // Remove user
-    await User.deleteOne({ _id: id });
+    //await User.deleteOne({ _id: id });
+    await user.updateOne({ status: false });
 
     res.status(200).json({ message: "User deleted successfully" });
   } catch (error) {
