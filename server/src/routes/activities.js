@@ -76,7 +76,7 @@ const router = Router();
  *                   items:
  *                     $ref: "#/components/schemas/Activity"
  */
-router.get("/", [validateJWT, hasRole(["admin", "trainer", "affiliate"])], getAllActivities);
+router.get("/", getAllActivities);
 
 /**
  * @openapi
