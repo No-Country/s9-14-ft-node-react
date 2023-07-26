@@ -12,7 +12,7 @@ const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
-const { idIsNotAdmin, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
+const { idIsNotAdmin, idIsAdminOrTrainer } = require("../helpers/db-validators");
 
 const router = Router();
 
@@ -178,7 +178,7 @@ router.get(
  *                       type: array
  *                       items:
  *                         type: string
- *                         enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]
+ *                         enum: [lunes, martes, miércoles, jueves, viernes, sábado]
  *                       required: true
  *             example:
  *               trainer: "64a57edcab21e16190e32ec8"
@@ -200,7 +200,6 @@ router.get(
  *             schema:
  *               $ref: '#/components/schemas/TrainingPlan'
  */
-
 router.post(
   "/",
   [

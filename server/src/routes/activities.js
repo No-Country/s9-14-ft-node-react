@@ -23,7 +23,7 @@ const {
 } = require("../controllers/activities");
 const {
   activityExistById,
-  idIsNotAdminOrTrainer,
+  idIsAdminOrTrainer,
   idIsNotTrainer
 } = require("../helpers/db-validators");
 const {
@@ -1145,7 +1145,7 @@ router.patch(
     param("id", "id is not a MongoId").isMongoId(),
     param("id").custom(activityExistById),
     body("affiliateId", "affiliateId is not a MongoId").isMongoId(),
-    body("affiliateId").custom(idIsNotAdminOrTrainer),
+    body("affiliateId").custom(idIsAdminOrTrainer),
     body("hour", "'hour' is required").isString(),
     affiliateNotEnrolledFromBack,
 
