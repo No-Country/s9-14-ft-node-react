@@ -107,8 +107,7 @@ const TrainingPlanSchema = new mongoose.Schema({
       },
       days: {
         type: [String],
-        enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"],
-        required: true
+        enum: ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]
       }
     }
   ]

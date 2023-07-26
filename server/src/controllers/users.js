@@ -144,9 +144,9 @@ const updateUserById = async (req, res) => {
       updates.password = await bcrypt.hash(password, salt);
     }
 
-    const userUpdated = await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(id, { $set: updates }, { new: true });
 
-    res.status(200).json({ message: "User updated successfully", userUpdated });
+    res.status(200).json({ message: "User updated successfully", updatedUser });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
