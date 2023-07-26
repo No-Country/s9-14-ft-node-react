@@ -47,14 +47,9 @@ const getTrainerActivities = async (req, res) => {
 };
 
 const addActivity = async (req, res) => {
-  const { affiliates, schedule, days, ...data } = req.body;
+  const { affiliates, ...data } = req.body;
 
   try {
-    const urlImage = await uploadToCloudinary(req.files);
-    data.schedule = JSON.parse(schedule);
-    data.days = JSON.parse(days);
-    data.image = urlImage;
-
     const activity = await Activity.create(data);
     res.status(201).json({ created: true, activity });
   } catch (error) {
