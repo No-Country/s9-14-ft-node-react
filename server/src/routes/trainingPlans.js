@@ -10,7 +10,7 @@ const {
 } = require("../controllers/trainingPlans");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
-const { body, param } = require("express-validator");
+const { param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
 const { idIsNotAdmin, idIsNotAdminOrTrainer } = require("../helpers/db-validators");
 
@@ -54,6 +54,8 @@ const router = Router();
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TrainingPlan'
+ *       400:
+ *         description: Respuesta no exitosa que indica que el id pasado por params no es válido.
  *       401:
  *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que los entrenadores y los afiliados son los únicos que tienen acceso.
  *       404:
@@ -119,7 +121,7 @@ router.get(
  *     security:
  *       - bearerAuth: []
  *       - apiKeyAuth: []
- *     summary: Obtén el plan de entrenamiento de un afiliado en concreto a través de su id.
+ *     summary: Crea un plan de entrenamiento.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -138,11 +140,6 @@ router.get(
  *           type: string
  *         required: true
  *         description: Token de autenticación.
- *       - in: path
- *         name: userId
- *         schema:
- *           type: string
- *         description: Id del afiliado.
  *     requestBody:
  *       description: Plan de entrenamiento del afiliado.
  *       required: true
@@ -151,11 +148,14 @@ router.get(
  *           schema:
  *             type: object
  *             properties:
+ *               name:
+ *                 type: string
+ *                 description: Nombre del plan.
  *               trainer:
  *                 type: string
  *                 description: ID del entrenador.
- *               affiliate:
- *                 type: string
+ *               affiliates:
+ *                 type: Array
  *                 description: ID del afiliado.
  *               exercises:
  *                 type: array
@@ -165,16 +165,15 @@ router.get(
  *                     name:
  *                       type: string
  *                       required: true
- *                     sets:
+ *                     setsAndRepititions:
+ *                       type: String
+ *                       required: true
+ *                     weiight:
  *                       type: number
  *                       required: true
- *                     repetitionsOrDuration:
+ *                     duration:
  *                       type: number
  *                       required: true
- *                     isRepetitions:
- *                       type: boolean
- *                       required: true
- *                       default: true
  *                     days:
  *                       type: array
  *                       items:
@@ -183,37 +182,30 @@ router.get(
  *                       required: true
  *             example:
  *               trainer: "64a57edcab21e16190e32ec8"
- *               affiliate: "64a57edcab21e16190e32ec9"
+ *               name: "Plan 1"
+ *               affiliates: [
+ *                    "64a57edcab21e16190e32ec9"
+ *                      ]
  *               exercises:
  *                 - name: "Ejercicio 1"
- *                   sets: 3
- *                   repetitionsOrDuration: 10
- *                   isRepetitions: true
+ *                   setsAndRepetitions: 3x15
+ *                   duration: 10
+ *                   weight: 15
  *                   days: ["lunes", "martes"]
- *                 - name: "Ejercicio 2"
- *                   sets: 4
- *                   repetitionsOrDuration: 30
- *                   isRepetitions: false
- *                   days: ["miércoles", "jueves"]
  *     responses:
  *       200:
- *         description: Plan de entrenamiento creado correctamente.
+ *         description: Plan de entrenamiento del afiliado.
  *         content:
  *           application/json:
  *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *                   example: "Plan de entrenamiento creado correctamente."
+ *               $ref: '#/components/schemas/TrainingPlan'
  */
+
 router.post(
   "/",
   [
     validateJWT,
     hasRole(["admin", "trainer"]),
-    param("id", "id is not a MongoId").isMongoId(),
-    param("id").custom(idIsNotAdminOrTrainer),
     validateFields
   ],
   createUserTrainingPlan

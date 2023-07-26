@@ -7,10 +7,6 @@ const activitiesToSeed = [
       "https://assets.website-files.com/5b84405c92a9561568b554cd/5be060766fd97409e65ce7f9_lesmills_0004_Bodypump%203.jpg",
     days: ["martes", "jueves"],
     schedule: ["14:00", "16:00"],
-    /* freeVacancies: {
-      lunes: 20,
-      martes: 20
-    },*/
     quota: 20,
     trainer: {}
   },
@@ -21,10 +17,7 @@ const activitiesToSeed = [
     image:
       "https://classpass.com/blog/wp-content/uploads/2023/03/Zumba-Workout-ClassPass-scaled.jpeg",
     days: ["martes", "jueves"],
-    schedule: ["13:00", "15:00"] /*
-    freeVacancies: {
-      martes: 20
-    },*/,
+    schedule: ["13:00", "15:00"],
     quota: 20,
     trainer: {}
   },
@@ -34,11 +27,7 @@ const activitiesToSeed = [
       "Modalidad de boxeo en la que se une el ejercicio cardio a tope con pequeños intervalos de descanso. Es una clase dura, pero si eres de los que les gustan los retos, ¡tienes que probarla! Se trata de una fila de sacos de boxeo que llegan hasta el suelo y que, junto con otros accesorios como cintas elásticas y demás, te permiten realizar un ejercicio intenso muy beneficioso para todo el cuerpo.",
     image: "https://hbxspain.es/wp-content/uploads/2022/02/essayer_hbx_4_raisons_1200x854.jpg",
     days: ["martes", "jueves"],
-    schedule: ["12:00", "16:00"] /*
-    freeVacancies: {
-      miércoles: 20,
-      jueves: 20
-    },*/,
+    schedule: ["12:00", "16:00"],
     quota: 20,
     trainer: {}
   },
@@ -48,11 +37,7 @@ const activitiesToSeed = [
       "Es una actividad aeróbica en una bicicleta fija que se realiza a diferentes niveles de intensidad. Simula la práctica deportiva del ciclismo pero sin riesgos. Ideal para aquellos que buscan perder peso y moldear sus piernas, además es un excelente trabajo cardiovascular.",
     image: "https://www.ispo.com/sites/default/files/2021-09/Spinning%20Kurs.png",
     days: ["martes", "jueves"],
-    schedule: ["11:00", "15:00"] /*
-    freeVacancies: {
-      jueves: 20,
-      viernes: 20
-    },*/,
+    schedule: ["11:00", "15:00"],
     quota: 20,
     trainer: {}
   },
@@ -64,9 +49,6 @@ const activitiesToSeed = [
       "https://media.glamour.mx/photos/6466babcdab5717b12a640d9/3:2/w_2118,h_1412,c_limit/pilates_reformer.jpg",
     days: ["martes", "jueves"],
     schedule: ["10:00", "16:00"],
-    /* freeVacancies: {
-      viernes: 20
-    },*/
     quota: 20,
     trainer: {}
   },
@@ -77,10 +59,7 @@ const activitiesToSeed = [
     image:
       "https://static.nike.com/a/images/w_1920,c_limit/332f87aa-2b91-4a47-9e08-3f07316c59b9/10-bosu-ball-exercises-that-make-any-workout-better.jpg",
     days: ["martes", "jueves"],
-    schedule: ["09:00", "15:00"] /*
-    freeVacancies: {
-      sábado: 20
-    },*/,
+    schedule: ["09:00", "15:00"],
     quota: 20,
     trainer: {}
   },
@@ -90,11 +69,7 @@ const activitiesToSeed = [
       "Creado por oficiales de la marina de los Estados Unidos, utiliza ejercicios funcionales con el peso corporal pero con la gran diferencia de estar en suspensión mediante unos arneses que se fijan a una puerta, pared o algún elemento elevado y a su vez a las manos o pies. Tiene la ventaja de adaptar la resistencia en cualquier momento mediante la regulación de la posición corporal. Proporciona a sus practicantes coordinación, fuerza, equilibrio, resistencia y flexibilidad.",
     image: "https://www.ispo.com/sites/default/files/2020-02/TRX%20%28Lucky%20Business%29.jpg",
     days: ["martes", "jueves"],
-    schedule: ["08:00", "14:00"] /*,/*
-    freeVacancies: {
-      lunes: 20,
-      martes: 20
-    },*/,
+    schedule: ["08:00", "14:00"],
     quota: 20,
     trainer: {}
   },
@@ -105,10 +80,7 @@ const activitiesToSeed = [
     image:
       "https://www.sinburpeesenmiwod.com/wp-content/uploads/2021/08/Competir-crossfit-SBEMW.jpg",
     days: ["lunes", "miércoles", "viernes"],
-    schedule: ["11:00", "20:00"] /*
-    freeVacancies: {
-      miércoles: 20
-    },*/,
+    schedule: ["11:00", "20:00"],
     quota: 20,
     trainer: {}
   },
@@ -118,10 +90,7 @@ const activitiesToSeed = [
       "Es una actividad que se basa en realizar ejercicios que imitan los movimientos o trabajos físicos de la vida cotidiana, se utiliza el peso corporal y accesorios tales como poleas, mancuernas, pelotas medicinales, trampolines, conos, colchonetas, bandas elásticas y steps, ente otros. Sus practicantes mejoran la postura, el control del cuerpo, la fuerza y dan tono a su cuerpo.",
     image: "https://ftsalud.com/wp-content/uploads/2022/06/GettyImages-840886788.jpg",
     days: ["lunes", "miércoles", "viernes"],
-    schedule: ["10:00", "19:00"] /*
-    freeVacancies: {
-      jueves: 20
-    },*/,
+    schedule: ["10:00", "19:00"],
     quota: 20,
     trainer: {}
   },
@@ -132,10 +101,6 @@ const activitiesToSeed = [
     image: "https://workoutmusic.co.uk/cdn/shop/articles/aerobics-class_1200x1200.jpg",
     days: ["lunes", "miércoles", "viernes"],
     schedule: ["09:00", "18:00"],
-    /* freeVacancies: {
-      viernes: 20,
-      sábado: "09:00-10:00"
-    },*/
     quota: 20,
     trainer: {}
   }

@@ -1,11 +1,9 @@
-import { useSession } from "@/hooks/useSession"
+import { TrainerLayout } from "@/components/TrainerLayout"
 
 export default function TrainerDashboard() {
-  const session = useSession()
-  
   return (
-        <div>
-            <h1>Trainer Dashboard</h1>
-        </div>
-    )
+    <TrainerLayout>
+
+    </TrainerLayout>
+)
 }

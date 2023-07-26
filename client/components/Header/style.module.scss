@@ -126,7 +126,7 @@
   height: calc(100% - 100px);
   animation: fade-in 0.5s ease-in-out forwards;
   overflow-x: hidden;
-
+  z-index: 100;
 
   .list {
     display: flex;

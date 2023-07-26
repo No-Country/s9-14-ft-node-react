@@ -10,17 +10,17 @@ interface Props extends Trainer {
   token: string
 }
 
-export function TrainerCard ({name, phone, birthday, token, _id, ...props}: Props) {
+export function TrainerCard ({name, phone, birthday, token, _id, activities, ...props}: Props) {
   const {deleteTrainer} = useTrainersActions()
-  
-  function convertDate(fechaISO: string) {
-  const date = new Date(fechaISO);
-  const day = date.getDate().toString().padStart(2, '0');
-  const month = (date.getMonth() + 1).toString().padStart(2, '0');
-  const year = date.getFullYear().toString().slice(-2);
 
-  return `${day}/${month}/${year}`;
-}
+  function convertDate(fechaISO: string) {
+    const date = new Date(fechaISO);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const year = date.getFullYear().toString().slice(-2);
+
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <div className={style.card}> 
@@ -43,7 +43,9 @@ export function TrainerCard ({name, phone, birthday, token, _id, ...props}: Prop
           </span>
           <span>
             <Dumbell className={style.icon} />
-            <p>Crosstraining</p>
+            {activities.length === 0 ? <p>Sin actividades</p> : (
+              <p>{activities.map((activity:string, i) => i + 1 === activities.length ? `${activity}` : `${activity}, \n`)}</p>
+            )}
           </span>
         </div>
       </section>

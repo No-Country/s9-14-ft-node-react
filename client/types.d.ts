@@ -7,10 +7,9 @@ export interface Trainer {
   phone: number;
   phoneEmergency: number;
   role: string;
-  subscriptions: any[]; //definir
-  birthday: string; 
+  activities: string[]
+  birthday: string;
 }
-
 
 export interface User {
   fitMedical: {
@@ -38,5 +37,6 @@ export interface Activity {
   quota: number;
   trainer: Trainer;
   affiliates: User[];
+  status: boolean
 }
 

@@ -1,17 +1,25 @@
 const { Activity } = require("../models");
+const { mongoose } = require("mongoose");
 
 const affiliateNotEnrolled = async (req, res, next) => {
   const { id } = req.params;
-  const { day } = req.body;
-  const { id: affiliate } = req.user;
+  const { day, hour } = req.body;
+  const { id: affiliateId } = req.user;
 
   try {
     const activity = await Activity.findById(id);
-    const affiliatesInActivity = activity.affiliates.some(
-      a => a.day === day && a.affiliate.toString() === affiliate
-    );
+    let exist = false;
+    activity.affiliates.forEach(affiliate => {
+      if (
+        affiliate.affiliate.toString() === affiliateId &&
+        affiliate.day === day &&
+        affiliate.hour === hour
+      ) {
+        exist = true;
+      }
+    });
 
-    if (affiliatesInActivity) {
+    if (exist) {
       return res.status(400).json({ msg: "The affiliate is already enrolled in the activity" });
     }
 
@@ -23,15 +31,22 @@ const affiliateNotEnrolled = async (req, res, next) => {
 
 const affiliateNotEnrolledFromBack = async (req, res, next) => {
   const { id } = req.params;
-  const { day, affiliateId } = req.body;
+  const { day, hour, affiliateId } = req.body;
 
   try {
     const activity = await Activity.findById(id);
-    const affiliatesInActivity = activity.affiliates.some(
-      a => a.day === day && a.affiliate.toString() === affiliateId
-    );
+    let exist = false;
+    activity.affiliates.forEach(affiliate => {
+      if (
+        affiliate.affiliate.toString() === affiliateId &&
+        affiliate.day === day &&
+        affiliate.hour === hour
+      ) {
+        exist = true;
+      }
+    });
 
-    if (affiliatesInActivity) {
+    if (exist) {
       return res.status(400).json({ msg: "The affiliate is already enrolled in the activity" });
     }
 
@@ -43,16 +58,24 @@ const affiliateNotEnrolledFromBack = async (req, res, next) => {
 
 const affiliateEnrolled = async (req, res, next) => {
   const { id } = req.params;
-  const { day } = req.body;
-  const { id: affiliate } = req.user;
+  const { day, hour } = req.body;
+  const { id: affiliateId } = req.user;
 
   try {
     const activity = await Activity.findById(id);
-    const affiliatesInActivity = activity.affiliates.some(
-      a => a.day === day && a.affiliate.toString() === affiliate
-    );
+    let exist = false;
 
-    if (!affiliatesInActivity) {
+    activity.affiliates.forEach(affiliate => {
+      if (
+        affiliate.affiliate.toString() === affiliateId &&
+        affiliate.day === day &&
+        affiliate.hour === hour
+      ) {
+        exist = true;
+      }
+    });
+
+    if (!exist) {
       return res.status(400).json({ msg: "the affiliate is not enrolled in the activity" });
     }
 
@@ -64,15 +87,22 @@ const affiliateEnrolled = async (req, res, next) => {
 
 const affiliateEnrolledFromBack = async (req, res, next) => {
   const { id } = req.params;
-  const { day, affiliateId } = req.body;
+  const { day, hour, affiliateId } = req.body;
 
   try {
     const activity = await Activity.findById(id);
-    const affiliatesInActivity = activity.affiliates.some(
-      a => a.day === day && a.affiliate.toString() === affiliateId
-    );
+    let exist = false;
+    activity.affiliates.forEach(affiliate => {
+      if (
+        affiliate.affiliate.toString() === affiliateId &&
+        affiliate.day === day &&
+        affiliate.hour === hour
+      ) {
+        exist = true;
+      }
+    });
 
-    if (!affiliatesInActivity) {
+    if (!exist) {
       return res.status(400).json({ msg: "the affiliate is not enrolled in the activity" });
     }
 
@@ -82,19 +112,27 @@ const affiliateEnrolledFromBack = async (req, res, next) => {
   }
 };
 
-const dayExistInActivity = async (req, res, next) => {
+const dayAndHourExistInActivity = async (req, res, next) => {
   const { id } = req.params;
-  const { day } = req.body;
+  const { day, hour } = req.body;
 
   try {
     const activity = await Activity.findById(id);
 
     const days = activity.days;
+    const schedule = activity.schedule;
     const dayExist = days.includes(day);
 
     if (!dayExist) {
       return res.status(400).json({ msg: "The day does not correspond to the activity" });
     }
+
+    const hourExist = schedule.includes(hour);
+
+    if (!hourExist) {
+      return res.status(400).json({ msg: "The hour does not correspond to the activity" });
+    }
+
     next();
   } catch (error) {
     console.log(error);
@@ -107,5 +145,5 @@ module.exports = {
   affiliateNotEnrolledFromBack,
   affiliateEnrolled,
   affiliateEnrolledFromBack,
-  dayExistInActivity
+  dayAndHourExistInActivity
 };
