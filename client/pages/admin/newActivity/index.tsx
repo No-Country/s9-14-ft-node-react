@@ -22,13 +22,13 @@ interface weekFormState {
   [key: string]: boolean;
 }
 
-const Component: React.FC = () => {
+const Component2: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
     image: "",
     days: [],
-    schedule: "",
+    schedule: [],
     limit: 0,
     trainer: ""
   });
@@ -62,12 +62,12 @@ const Component: React.FC = () => {
 
   const [checkboxes, setCheckboxes] = useState<CheckboxFormState>(initialFormState);
   const [weekCheckboxes, setWeekCheckboxes] = useState<weekFormState>(initialWeekFormState);
-  const trainers = useTrainers()
+  const trainers = useTrainers();
   useEffect(() => {
     let finalDays: string[] = [];
     for (let prop in weekCheckboxes) {
       if (weekCheckboxes[prop]) {
-        finalDays.push(`${prop}`)
+        finalDays.push(`${prop}`);
       }
     }
 
@@ -75,33 +75,26 @@ const Component: React.FC = () => {
       ...prevFormData,
       days: finalDays
     }));
+  }, [weekCheckboxes]);
 
-  }, [weekCheckboxes])
-  
   useEffect(() => {
     let finalHours: string[] = [];
     for (let prop in checkboxes) {
       if (checkboxes[prop]) {
-        let prop2 = `${prop}`
+        let prop2 = `${prop}`;
         if (prop2.length > 1) {
           finalHours.push(`${prop}:00`);
         } else {
           finalHours.push(`0${prop}:00`);
-          
         }
       }
     }
 
-    
     setFormData(prevFormData => ({
       ...prevFormData,
       schedule: finalHours
     }));
-
-    
-  }, [checkboxes])
-  
-
+  }, [checkboxes]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -117,7 +110,6 @@ const Component: React.FC = () => {
       ...prevCheckboxes,
       [name]: checked
     }));
-
   };
 
   const handleWeekChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -126,35 +118,32 @@ const Component: React.FC = () => {
       ...PrevWeekCheckboxes,
       [name]: checked
     }));
-
   };
-  
 
-  const sesion = useSession()
+  const sesion = useSession();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    
+    console.log(formData);
+
     if (formData) {
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/activities`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          'x-token':  sesion.token
+          "x-token": sesion.token
         },
         body: JSON.stringify(formData)
-      })
+      });
 
       if (request.ok) {
-        const response = await request.json() 
-        console.log(response)
-
+        const response = await request.json();
+        console.log(response);
       } else {
-        const error = await request.json()
-        console.log(error)
+        const error = await request.json();
+        console.log(error);
       }
-    };
-    
+    }
   };
 
   return (
@@ -179,7 +168,11 @@ const Component: React.FC = () => {
               <select name="trainer" id="trainer" onChange={handleInputChange}>
                 <option value="">Selecciona un profesor</option>
                 {trainers.map(element => {
-                  return (<option value={element._id} key={element._id}>{element.name}</option>)
+                  return (
+                    <option value={element._id} key={element._id}>
+                      {element.name}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -451,9 +444,119 @@ const Component: React.FC = () => {
           </div>
         </div>
         <div className={styles.field_description}>
-              <label htmlFor="description">Descripcion:</label>
-              <textarea name="description" id="description" cols="30" rows="10" onChange={handleInputChange}>Describe la tarea </textarea>
+          <label htmlFor="description">Descripcion:</label>
+          <textarea
+            name="description"
+            id="description"
+            cols="30"
+            rows="10"
+            onChange={handleInputChange}
+          >
+            Describe la tarea{" "}
+          </textarea>
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+  );
+};
+
+const Component: React.FC = () => {
+
+  interface exercice {
+    name: string;
+    setsAndRepetitions: string;
+    weight: string;
+    duration: string;
+    days: string[];
+  }
+
+  interface excercices extends Array<exercice> { }
+
+  interface newPlan {
+    name: string;
+    trainer: string;
+    affiliates: string[];
+    exercices: excercices;
+  }
+
+  const [first, setfirst] = useState(second)
+
+  function newExcercise() {
+    event.preventDefault();
+
+    // Step 1: Select the element with the id 'holder'
+    const holder = document.getElementById("holder");
+
+    // Make sure the 'holder' element exists
+    if (!holder) {
+      console.error("Element with id 'holder' not found.");
+      return;
+    }
+
+    // Step 2: Create a new div element with the classname attribute equal to {styles.exercises_item}
+    const newDiv = document.createElement("div");
+    newDiv.classList.add(`${styles.excercices_item}`);
+
+    // Step 3: Edit the HTML inside the div element (You can replace 'Your content goes here' with your desired content)
+    newDiv.innerHTML = `              
+    <input
+    type="text"
+    id="name"
+    name="name"
+    value=""
+    placeholder="Nombre de Ejercicio"
+    required
+  />
+  <input type="number" id="sets" name="sets" value="" required />
+  <input
+    type="number"
+    id="repetitionsDuration"
+    name="repetitionsDuration"
+    value=""
+    required
+  />
+  <input type="checkbox" />
+  `;
+
+    // Step 4: Add the div element at the end of the holder element
+    holder.appendChild(newDiv);
+  }
+
+  return (
+    <div className={styles.App}>
+      <h2 className={styles.Title}>NUEVO PLAN DE EJERCICIOS</h2>
+      <form className={styles.formNew}>
+        <div className={styles.ex_formcont}>
+          <div className={`${styles.ex_labels}`}>
+            <p>Nombre</p>
+            <p>Sets</p>
+            <p>Tiempo/Repeticion</p>
+            <p>Es tiempo?</p>
+          </div>
+          <div className={`${styles.excercices}`} id="holder">
+            <div className={styles.excercices_item}>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                value=""
+                placeholder="Nombre de Ejercicio"
+                required
+              />
+              <input type="number" id="sets" name="sets" value="" required />
+              <input
+                type="number"
+                name="reps"
+                id="repetitionsDuration"
+                value=""
+                required
+              />
+              <input type="checkbox" name="isreps"/>
             </div>
+          </div>
+          <button onClick={newExcercise}>Agregar ejercicio</button>
+        </div>
         <button type="submit">Submit</button>
       </form>
     </div>
