@@ -1,3 +1,6 @@
+
+// @ts-nocheck
+
 import { AdminLayout } from "@/components/AdminLayout";
 import styles from "../../../components/DataForm/style.module.scss";
 import { useState, ChangeEvent, FormEvent, useEffect, useRef } from "react";

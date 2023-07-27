@@ -54,7 +54,7 @@ export default function Actividades(){
     <h1 className={`${style.title} ${isOpen ? style.hidden : ''}`}>NUESTRAS ACTIVIDADES</h1>
     <section className={`${style.cards} ${isOpen ? style.hidden : ''}`}>         
        <article className={style.card}>
-         <Image src={activity1}/>
+         <Image alt="activity" src={activity1}/>
          <p className={style.text}>Fer Ruiz
           <br/>
           Lunes-Martes-Miercoles
@@ -64,7 +64,7 @@ export default function Actividades(){
          <Link href="/login" className={style.activity_button}>Inscribirme</Link>
        </article>
        <article className={style.card}>
-         <Image src={activity2}/>
+         <Image alt="activity" src={activity2}/>
          <p className={style.text}>Fer Ruiz
           <br/>
           Martes-Jueves
@@ -74,7 +74,7 @@ export default function Actividades(){
          <Link href="/login" className={style.activity_button}>Inscribirme</Link>
        </article>
        <article className={style.card}>
-         <Image src={activity3}/>
+         <Image alt="activity" src={activity3}/>
          <p className={style.text}>Fer Ruiz
           <br/>
           Miercoles-Viernes
