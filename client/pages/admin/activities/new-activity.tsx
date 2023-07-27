@@ -4,6 +4,7 @@ import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import { useTrainers } from "@/hooks/useTrainers";
 import { useSession } from "@/hooks/useSession";
 
+
 interface FormData {
   name: string;
   description: string;
@@ -22,7 +23,7 @@ interface weekFormState {
   [key: string]: boolean;
 }
 
-const Component2: React.FC = () => {
+const Component: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
@@ -125,6 +126,8 @@ const Component2: React.FC = () => {
     event.preventDefault();
 
     console.log(formData);
+
+    
 
     if (formData) {
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/activities`, {
@@ -452,110 +455,8 @@ const Component2: React.FC = () => {
             rows="10"
             onChange={handleInputChange}
           >
-            Describe la tarea{" "}
+            Describe la tarea
           </textarea>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
-  );
-};
-
-const Component: React.FC = () => {
-
-  interface exercice {
-    name: string;
-    setsAndRepetitions: string;
-    weight: string;
-    duration: string;
-    days: string[];
-  }
-
-  interface excercices extends Array<exercice> { }
-
-  interface newPlan {
-    name: string;
-    trainer: string;
-    affiliates: string[];
-    exercices: excercices;
-  }
-
-  const [first, setfirst] = useState(second)
-
-  function newExcercise() {
-    event.preventDefault();
-
-    // Step 1: Select the element with the id 'holder'
-    const holder = document.getElementById("holder");
-
-    // Make sure the 'holder' element exists
-    if (!holder) {
-      console.error("Element with id 'holder' not found.");
-      return;
-    }
-
-    // Step 2: Create a new div element with the classname attribute equal to {styles.exercises_item}
-    const newDiv = document.createElement("div");
-    newDiv.classList.add(`${styles.excercices_item}`);
-
-    // Step 3: Edit the HTML inside the div element (You can replace 'Your content goes here' with your desired content)
-    newDiv.innerHTML = `              
-    <input
-    type="text"
-    id="name"
-    name="name"
-    value=""
-    placeholder="Nombre de Ejercicio"
-    required
-  />
-  <input type="number" id="sets" name="sets" value="" required />
-  <input
-    type="number"
-    id="repetitionsDuration"
-    name="repetitionsDuration"
-    value=""
-    required
-  />
-  <input type="checkbox" />
-  `;
-
-    // Step 4: Add the div element at the end of the holder element
-    holder.appendChild(newDiv);
-  }
-
-  return (
-    <div className={styles.App}>
-      <h2 className={styles.Title}>NUEVO PLAN DE EJERCICIOS</h2>
-      <form className={styles.formNew}>
-        <div className={styles.ex_formcont}>
-          <div className={`${styles.ex_labels}`}>
-            <p>Nombre</p>
-            <p>Sets</p>
-            <p>Tiempo/Repeticion</p>
-            <p>Es tiempo?</p>
-          </div>
-          <div className={`${styles.excercices}`} id="holder">
-            <div className={styles.excercices_item}>
-              <input
-                type="text"
-                id="name"
-                name="name"
-                value=""
-                placeholder="Nombre de Ejercicio"
-                required
-              />
-              <input type="number" id="sets" name="sets" value="" required />
-              <input
-                type="number"
-                name="reps"
-                id="repetitionsDuration"
-                value=""
-                required
-              />
-              <input type="checkbox" name="isreps"/>
-            </div>
-          </div>
-          <button onClick={newExcercise}>Agregar ejercicio</button>
         </div>
         <button type="submit">Submit</button>
       </form>

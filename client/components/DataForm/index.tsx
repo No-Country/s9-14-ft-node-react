@@ -1,5 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import styles from "./style.module.scss";
+import { useSession } from "@/hooks/useSession";
 
 interface FormData {
   name: string;
@@ -27,6 +28,7 @@ const DataForm: React.FC = () => {
     meddoc: "",
     member: ""
   });
+  const sesion = useSession()
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -39,7 +41,27 @@ const DataForm: React.FC = () => {
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    console.log(formData)
+    console.log(formData);
+    
+
+    if (formData) {
+      const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-token": sesion.token
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (request.ok) {
+        const response = await request.json();
+        console.log(response);
+      } else {
+        const error = await request.json();
+        console.log(error);
+      }
+    }
 
     // Reset form fields
     setFormData({
