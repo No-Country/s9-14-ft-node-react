@@ -1,26 +1,31 @@
 const { TrainingPlan, User } = require("../models");
 
+const getAllTrainingPlans = async (req, res) => {
+  try {
+    const trainingPlans = await TrainingPlan.find();
+    res.status(200).json({ trainingPlans });
+  } catch (error) {
+    res.status(500).json({ errorMessage: error.message });
+  }
+};
+
 const getUserTrainingPlan = async (req, res) => {
   const { userId } = req.params;
 
   try {
-    // Chequear que el id que llega por params corresponda a un usuario existente. Si no es así, o si el id pertenece al usuario admin, se envía un mensaje en formato JSON con un status 404, informando que el usuario no se ha encontrado.
+    // Obtener al usuario a través del id que llega por params, para posteriormente tomar su rol y realizar la lógica en base al mismo.
     const user = await User.findById(userId);
-    if (!user || user.role === "admin") return res.status(404).json({ message: "User not found." });
 
     // Si el id pertenece a un afiliado, se busca el plan de entrenamiento asociado al mismo y se lo devuelve. Si no se encuentra ningún resultado, se devuelve un objeto vacío.
     if (user.role === "affiliate") {
-      const affiliateTrainingPlan = await TrainingPlan.find(
-        { affiliates: { $in: userId } },
-        "-__v"
-      );
+      const affiliateTrainingPlan = await TrainingPlan.find({ affiliates: { $in: userId } });
 
       !affiliateTrainingPlan.length
         ? res.status(200).json({})
         : res.status(200).json(affiliateTrainingPlan);
     } else {
       // Si el id pertenece a un entrenador, se buscan los planes de entrenamiento asociados al mismo y se los devuelve. Si no se encuentra ningún resultado, se devuelve un arreglo vacío.
-      const trainerTrainingPlans = await TrainingPlan.find({ trainer: userId }, "-__v");
+      const trainerTrainingPlans = await TrainingPlan.find({ trainer: userId });
 
       !trainerTrainingPlans.length
         ? res.status(200).json([])
@@ -31,10 +36,15 @@ const getUserTrainingPlan = async (req, res) => {
   }
 };
 
-const getAllUserTrainingPlan = async (req, res) => {
+const getTrainingPlanById = async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const userTrainingPlans = await TrainingPlan.find();
-    res.status(200).json({ userTrainingPlans });
+    // Se busca el plan de entrenamiento con el id pasado por params. Si se obtiene algún resultado se lo devuelve, sino se envía un mensaje en formato JSON con un status 404, informando que el plan de entrenamiento no se ha encontrado.
+    const trainingPlanFound = await TrainingPlan.findById(id);
+    !trainingPlanFound
+      ? res.status(404).json({ message: "Training Plan not found." })
+      : res.status(200).json(trainingPlanFound);
   } catch (error) {
     res.status(500).json({ errorMessage: error.message });
   }
@@ -153,7 +163,8 @@ const deleteTrainingPlan = async (req, res) => {
 
 module.exports = {
   getUserTrainingPlan,
-  getAllUserTrainingPlan,
+  getTrainingPlanById,
+  getAllTrainingPlans,
   createUserTrainingPlan,
   addTrainingPlanToAffiliate,
   deleteTrainingPlan,
