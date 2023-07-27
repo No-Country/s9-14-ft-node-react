@@ -4,6 +4,7 @@ import button_burger_close from "@/public/button_container_close.png"
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import Head from "next/head";
 
 export default function Membership(){
   const [isOpen, setIsOpen] = useState(false);
@@ -12,6 +13,9 @@ export default function Membership(){
   };
     return(
     <div className={style.membership}>
+      <Head>
+        <title>Membresia | MANAGYM</title>
+      </Head>
           <div className={style.heading}>
             <svg width="83" height="68" viewBox="0 0 83 68" fill="none" xmlns="http://www.w3.org/2000/svg">
              <path d="M14.1807 0.0113633C17.0835 0.000112127 19.9863 0.000112127 22.8928 0.0113633C22.8816 5.69695 22.8891 11.3825 22.8853 17.0681C24.3742 17.0719 25.8594 17.0681 27.3483 17.0681C27.352 19.5021 27.3445 21.9399 27.352 24.3776C25.8631 24.3814 24.3742 24.3814 22.8891 24.3814C22.8853 29.8795 22.8816 35.3775 22.8891 40.8794C19.9863 40.8869 17.0835 40.8869 14.1807 40.8756C14.1882 27.2542 14.1882 13.6328 14.1807 0.0113633Z" fill="white"/>

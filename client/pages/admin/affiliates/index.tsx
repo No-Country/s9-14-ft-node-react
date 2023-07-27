@@ -30,7 +30,7 @@ export default function AdminAffiliates () {
     <AdminLayout placeholder="Buscar afiliados..." onSearch={search}>
      <div className={style.title}>
         <h1>AFILIADOS</h1>
-        <Link href={'#'} className={style.add}>Añadir nuevo</Link>
+        <Link href={'/admin/affiliates/add-affiliate'} className={style.add}>Añadir nuevo</Link>
       </div>     
       {
         shown.length > 0 ? (

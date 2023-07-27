@@ -5,6 +5,7 @@ import button_burger from "@/public/button_container.png"
 import button_burger_close from "@/public/button_container_close.png"
 import { useState } from "react";
 import Link from "next/link";
+import Head from 'next/head'
 
 //<button className={style.menu_button}>  <Burger></Burger> </button>
               
@@ -17,6 +18,9 @@ export default function Home() {
 
   return (
     <>
+      <Head>
+        <title>MANAGYM</title>
+      </Head>
         <main className={style.homepage}>
           <div className={style.heading}>
             <svg width="83" height="68" viewBox="0 0 83 68" fill="none" xmlns="http://www.w3.org/2000/svg">

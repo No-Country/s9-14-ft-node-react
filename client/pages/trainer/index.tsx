@@ -2,6 +2,7 @@ import { TrainerLayout } from "@/components/TrainerLayout";
 import { useAffiliates } from '@/hooks/useAffiliates'
 import {Trainer as Members} from '@/components/SearchMembers/Trainer'
 import { useState, useMemo } from "react";
+import {Calendar} from "@/components/Calendar";
 
 export default function TrainerPlans () {
   const affiliates = useAffiliates()
@@ -22,6 +23,7 @@ export default function TrainerPlans () {
 
   return (
     <TrainerLayout onSearch={search} placeholder="Buscar afiliados...">
+      <Calendar />
       <Members affiliates={shown} />
     </TrainerLayout>
   )

@@ -32,7 +32,7 @@ export default function Trainers () {
 
       <div className={style.title}>
         <h1>ENTRENADORES</h1>
-        <Link href={'#'} className={style.add}>Añadir nuevo</Link>
+        <Link href={'/admin/trainers/add-trainer'} className={style.add}>Añadir nuevo</Link>
       </div>
       {
         shown.length > 0 ? (

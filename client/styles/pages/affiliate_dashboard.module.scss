@@ -1,0 +1,90 @@
+@import '@/styles/variables.scss';
+
+.header {
+  min-width: fit-content;
+  max-width: 100%;
+  font-family: 'Montserrat';
+  margin: 40px;
+
+  .user {
+    width: 100%;
+    height: fit-content;
+    
+    .icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+    }
+
+    .data {
+      color: $white;
+      display: flex;
+      justify-content: space-between;
+
+      h4 {
+        font-family: 'Manrope';
+      }
+
+      small {
+        opacity: .5;
+      }
+
+      span {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .alert {
+      color: $white;
+    }
+
+    .picture {
+      display: flex;
+    }
+  }
+}
+
+.name {
+  font-family: 'Manrope';
+  font-size: 32px;
+  color: $white;
+  margin: 0;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  background-image: url('/landingpage.png');
+  background-repeat: no-repeat;
+  background-size: auto;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-position: center;
+  background-color: $orange;
+
+  p {
+    color: $orange;
+  }
+}
+
+@media (min-width: $lg) {
+  .name {
+    font-size: 64px;
+  }
+}
+
+.calendar {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plan {
+  display: block;
+  width: fit-content;
+  margin: 20px auto;
+}
