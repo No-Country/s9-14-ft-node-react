@@ -51,28 +51,28 @@ export default function Trainers(){
     <h1 className={`${style.title} ${isOpen ? style.hidden : ''}`}>CON LOS MEJORES <br></br> <span className={style.color_orange}>ENTRENADORES</span></h1>
     <section className={`${style.cards} ${isOpen ? style.hidden : ''}`}>
         <article>
-            <Image src={trainer1}></Image>
+            <Image alt="trainer" src={trainer1}></Image>
         </article>
         <article>
-            <Image src={trainer2}></Image>
+            <Image alt="trainer" src={trainer2}></Image>
         </article>
         <article>
-            <Image src={trainer3}></Image>
+            <Image alt="trainer" src={trainer3}></Image>
         </article>
         <article>
-            <Image src={trainer4}></Image>
+            <Image alt="trainer" src={trainer4}></Image>
         </article>
         <article>
-            <Image src={trainer5}></Image>
+            <Image alt="trainer" src={trainer5}></Image>
         </article>
         <article>
-            <Image src={trainer6}></Image>
+            <Image alt="trainer" src={trainer6}></Image>
         </article>
         <article>
-            <Image src={trainer7}></Image>
+            <Image alt="trainer" src={trainer7}></Image>
         </article>
         <article>
-            <Image src={trainer8}></Image>
+            <Image alt="trainer" src={trainer8}></Image>
         </article>
     </section>
     </div>)

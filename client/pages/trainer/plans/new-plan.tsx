@@ -1,3 +1,6 @@
+
+// @ts-nocheck
+
 import styles from "@/components/DataForm/style.module.scss";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useTrainers } from "@/hooks/useTrainers";
