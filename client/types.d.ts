@@ -40,3 +40,19 @@ export interface Activity {
   status: boolean
 }
 
+interface Exercise {
+  name: string;
+  setsAndRepetitions: string;
+  weight: number;
+  duration: number;
+  days: string[];
+  _id: string;
+}
+
+interface ExercisePlan {
+  _id: string;
+  name: string;
+  trainer: Trainer[];
+  affiliates: User[];
+  exercises: Exercise[];
+}

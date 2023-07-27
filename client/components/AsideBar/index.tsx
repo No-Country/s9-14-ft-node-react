@@ -28,14 +28,6 @@ export function AsideBar ({Nav}: {Nav: () => React.ReactNode}) {
         <div className={style.others}>
             <ul className={style.list}>
               <li className={style.item}>
-                <Link href="/admin/profile" className={style.link}>
-                <User className={style.icons} />
-                <p>
-                  Perfil
-                </p>
-                </Link>
-              </li>
-              <li className={style.item}>
                 <div className={style.exit} onClick={()=> logout()}>
                 <Exit className={style.icons} />
                 <p>
