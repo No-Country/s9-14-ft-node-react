@@ -5,8 +5,8 @@ import button_burger_close from "@/public/button_container_close.png"
 import Link from 'next/link'
 import { useState } from "react";
 
-export default function HomeNav() {
-    const [isOpen, setIsOpen] = useState(false);
+export function HomeNav({Open} : {Open : boolean}) {
+    const [isOpen, setIsOpen] = useState(Open);
     const handleToggleMenu = () => {
     setIsOpen(!isOpen);
     };
@@ -27,7 +27,6 @@ export default function HomeNav() {
               <Link href="/membresia" className={style.a}>Membresia</Link>
               <Link href="/entrenadores" className={style.a}>Entrenadores</Link>
               <Link href="/actividades" className={style.a}>Actividades</Link>
-              <Link href="/sedes" className={style.a}>Sedes</Link>
             </nav>  
             <Link href="/login" className={style.heading_button}>Iniciar Sesion</Link>
             <button className={style.burger_button} onClick={handleToggleMenu}> 
