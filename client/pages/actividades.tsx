@@ -1,26 +1,31 @@
 import {HomeNav} from "@/components/HomeNav";
-import style from "@/styles/pages/home_trainers.module.scss";
-import trainer1 from "@/public/trainer_1.png"
-import trainer2 from "@/public/trainer_2.png"
-import trainer3 from "@/public/trainer_3.png"
-import trainer4 from "@/public/trainer_4.png"
-import trainer5 from "@/public/trainer_5.png"
-import trainer6 from "@/public/trainer_6.png"
-import trainer7 from "@/public/trainer_7.png"
-import trainer8 from "@/public/trainer_8.png"
+import style from "@/styles/pages/home_activities.module.scss";
+import Image from "next/image";
 import button_burger from "@/public/button_container.png"
 import button_burger_close from "@/public/button_container_close.png"
-import Image from "next/image";
+import activity1 from "@/public/actividad 1.png"
+import activity2 from "@/public/actividad 2.png"
+import activity3 from "@/public/actividad 3.png"
+import { Activity } from "@/types";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useState } from "react";
+//    const {getActivities} = useActivitiesActions();
+export default function Actividades(){
 
-export default function Trainers(){
+    /*async function getAllActivities() {
+      const activities = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/activities`);                                 ;
+      const data = await activities.json();
+      data.activities.map((activity: Activity) => (
+        <li key={activity._id}> <p>{activity.name}</p> {activity.trainer.name}</li>
+      ))
+    } */
     const [isOpen, setIsOpen] = useState(false);
     const handleToggleMenu = () => {
         setIsOpen(!isOpen);
-      };
+    };
+
     return(
-    <div className={style.trainers}>
+    <div className={style.actividades}>
       <div className={style.heading}>
             <svg width="83" height="68" viewBox="0 0 83 68" fill="none" xmlns="http://www.w3.org/2000/svg">
              <path d="M14.1807 0.0113633C17.0835 0.000112127 19.9863 0.000112127 22.8928 0.0113633C22.8816 5.69695 22.8891 11.3825 22.8853 17.0681C24.3742 17.0719 25.8594 17.0681 27.3483 17.0681C27.352 19.5021 27.3445 21.9399 27.352 24.3776C25.8631 24.3814 24.3742 24.3814 22.8891 24.3814C22.8853 29.8795 22.8816 35.3775 22.8891 40.8794C19.9863 40.8869 17.0835 40.8869 14.1807 40.8756C14.1882 27.2542 14.1882 13.6328 14.1807 0.0113633Z" fill="white"/>
@@ -43,32 +48,38 @@ export default function Trainers(){
             {!isOpen ? <Image alt="burger" src={button_burger}/> : <Image alt='' src={button_burger_close}/>}
             </button>
           </div>
-    <h1 className={`${style.title} ${isOpen ? style.hidden : ''}`}>CON LOS MEJORES <br></br> <span className={style.color_orange}>ENTRENADORES</span></h1>
-    <section className={`${style.cards} ${isOpen ? style.hidden : ''}`}>
-        <article>
-            <Image src={trainer1}></Image>
-        </article>
-        <article>
-            <Image src={trainer2}></Image>
-        </article>
-        <article>
-            <Image src={trainer3}></Image>
-        </article>
-        <article>
-            <Image src={trainer4}></Image>
-        </article>
-        <article>
-            <Image src={trainer5}></Image>
-        </article>
-        <article>
-            <Image src={trainer6}></Image>
-        </article>
-        <article>
-            <Image src={trainer7}></Image>
-        </article>
-        <article>
-            <Image src={trainer8}></Image>
-        </article>
+    <h1 className={`${style.title} ${isOpen ? style.hidden : ''}`}>NUESTRAS ACTIVIDADES</h1>
+    <section className={`${style.cards} ${isOpen ? style.hidden : ''}`}>         
+       <article className={style.card}>
+         <Image src={activity1}/>
+         <p className={style.text}>Fer Ruiz
+          <br/>
+          Lunes-Martes-Miercoles
+          <br/>
+          18:00 / 20:00
+         </p>
+         <Link href="/login" className={style.activity_button}>Inscribirme</Link>
+       </article>
+       <article className={style.card}>
+         <Image src={activity2}/>
+         <p className={style.text}>Fer Ruiz
+          <br/>
+          Martes-Jueves
+          <br/>
+          10:00 / 12:00
+         </p>
+         <Link href="/login" className={style.activity_button}>Inscribirme</Link>
+       </article>
+       <article className={style.card}>
+         <Image src={activity3}/>
+         <p className={style.text}>Fer Ruiz
+          <br/>
+          Miercoles-Viernes
+          <br/>
+          16:00 / 18:00
+         </p>
+         <Link href="/login" className={style.activity_button}>Inscribirme</Link>
+       </article>
     </section>
     </div>)
 }

@@ -6,6 +6,7 @@ import { useSession } from "@/hooks/useSession";
 import { useActivitiesActions } from "@/hooks/useActivities";
 import { useRouter } from "next/router";
 
+
 interface FormData {
   name: string;
   description: string;
@@ -27,6 +28,7 @@ interface weekFormState {
 const Component2: React.FC = () => {
   const {push} = useRouter()
   const {addActivity} = useActivitiesActions()
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
@@ -157,6 +159,7 @@ const Component2: React.FC = () => {
 
 
     if (formData && sesion?.token && imageUrl) {
+
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/activities`, {
         method: "POST",
         headers: {
@@ -483,6 +486,7 @@ const Component2: React.FC = () => {
             placeholder="Describe la tarea"
             onChange={handleInputChange}
           />
+
         </div>
         <button type="submit">Submit</button>
       </form>
