@@ -113,6 +113,11 @@ const TrainingPlanSchema = new mongoose.Schema({
   ]
 });
 
+TrainingPlanSchema.methods.toJSON = function () {
+  const { __v, ...trainingPlan } = this.toObject();
+  return trainingPlan;
+};
+
 const TrainingPlan = mongoose.model("TrainingPlan", TrainingPlanSchema);
 
 module.exports = TrainingPlan;
