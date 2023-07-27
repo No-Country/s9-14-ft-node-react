@@ -1,6 +1,6 @@
 import { Icons } from '@/components/Icons';
 import { useEffect, useState } from 'react';
-import style from './style.module.scss'
+import style from './admin.module.scss'
 import type { User } from '@/types';
 import { AlDia } from '@/components/Statuses/AlDia';
 import { Vencido } from '@/components/Statuses/Vencido';
