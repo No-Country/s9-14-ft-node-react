@@ -7,8 +7,22 @@ const {
 const getAllSubscriptions = async (req, res) => {
   try {
     // Se devuelven sólo los 4 tipos de suscripciones que brinda el gimnasio (Básico mensual y anual - Premium mensual y anual).
-    const subscriptions = await Subscription.find({ status: { $exists: false } }, "-__v");
-    res.status(200).json(subscriptions);
+    const subscriptions = await Subscription.find({ status: { $exists: false } });
+    res.status(200).json({ subscriptions });
+  } catch (error) {
+    return res.status(500).json({ errorMessage: error.message });
+  }
+};
+
+const getSubscriptionById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Se busca la suscripción con el id pasado por params. Si se obtiene algún resultado se lo devuelve, sino se envía un mensaje en formato JSON con un status 404, informando que la suscripción no se ha encontrado.
+    const subscriptionFound = await Subscription.findById(id);
+    !subscriptionFound
+      ? res.status(404).json({ message: "Subscription not found." })
+      : res.status(200).json(subscriptionFound);
   } catch (error) {
     return res.status(500).json({ errorMessage: error.message });
   }
@@ -93,4 +107,9 @@ const deleteUserSubscription = async (req, res) => {
   }
 };
 
-module.exports = { addUserNewSubscription, deleteUserSubscription, getAllSubscriptions };
+module.exports = {
+  addUserNewSubscription,
+  deleteUserSubscription,
+  getAllSubscriptions,
+  getSubscriptionById
+};

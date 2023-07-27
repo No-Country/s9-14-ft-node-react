@@ -88,6 +88,11 @@ const SubscriptionSchema = new mongoose.Schema({
   }
 });
 
+SubscriptionSchema.methods.toJSON = function () {
+  const { __v, ...subscription } = this.toObject();
+  return subscription;
+};
+
 const Subscription = mongoose.model("Subscription", SubscriptionSchema);
 
 module.exports = Subscription;
