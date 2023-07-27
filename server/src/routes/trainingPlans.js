@@ -1,26 +1,72 @@
 const { Router } = require("express");
 const {
   getUserTrainingPlan,
-  getAllUserTrainingPlan,
   createUserTrainingPlan,
   addTrainingPlanToAffiliate,
   deleteTrainingPlan,
   removeTrainingPlanToAffiliate,
-  updateTrainingPlan
+  updateTrainingPlan,
+  getTrainingPlanById,
+  getAllTrainingPlans
 } = require("../controllers/trainingPlans");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
 const { param } = require("express-validator");
 const { validateFields } = require("../middlewares/validate-fields");
-const { idIsNotAdmin, idIsAdminOrTrainer } = require("../helpers/db-validators");
+const { idIsNotAdmin, idIsNotAffiliateOrTrainer } = require("../helpers/db-validators");
 
 const router = Router();
 
 /**
  * @openapi
+ * /api/trainingPlans:
+ *   get:
+ *     summary: Obtener una lista de todos los planes de entrenamiento existentes.
+ *     tags: [TrainingPlans]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación.
+ *     responses:
+ *       200:
+ *         description: Respuesta exitosa que devuelve un objeto con la propiedad 'trainingPlans' que consiste en un arreglo que contiene todos los planes de entrenamiento existentes.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 trainingPlans:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/TrainingPlan'
+ *       401:
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin y los entrenadores son los únicos que tienen acceso.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
+ */
+router.get("/", [validateJWT, hasRole(["admin", "trainer"]), validateFields], getAllTrainingPlans);
+
+/**
+ * @openapi
  * /api/trainingPlans/{userId}:
  *   get:
- *     summary: Obtener el plan de entrenamiento de un afiliado o los planes de entrenamiento armados por un entrenador a través de su ID.
+ *     summary: Obtener el plan de entrenamiento de un afiliado o los planes de entrenamiento armados por un entrenador a través del ID de alguno de ellos.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -46,20 +92,21 @@ const router = Router();
  *         name: userId
  *         schema:
  *           type: string
+ *         required: true
  *         description: Id del afiliado o del entrenador.
  *     responses:
  *       200:
- *         description: Plan de entrenamiento del afiliado o planes de entrenamiento armados por el entrenador.
+ *         description: Respuesta exitosa que devuelve un arreglo con el plan de entrenamiento del afiliado o bien un arreglo con los planes de entrenamiento armados por el entrenador.
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/TrainingPlan'
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/TrainingPlan'
  *       400:
- *         description: Respuesta no exitosa que indica que el id pasado por params no es válido.
+ *         description: Respuesta no exitosa que indica que el id pasado por params no es válido o no corresponde a un afiliado o entrenador existente.
  *       401:
  *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que los entrenadores y los afiliados son los únicos que tienen acceso.
- *       404:
- *         description: Respuesta no exitosa que indica que el usuario no se encontró debido a que el id pasado por params no pertenece a ningún usuario existente o pertenece al usuario admin.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
@@ -69,6 +116,7 @@ router.get(
     validateJWT,
     hasRole(["trainer", "affiliate"]),
     param("userId", "userId is not a MongoId").isMongoId(),
+    param("userId").custom(idIsNotAffiliateOrTrainer),
     validateFields
   ],
   getUserTrainingPlan
@@ -76,12 +124,9 @@ router.get(
 
 /**
  * @openapi
- * /api/trainingPlans:
+ * /api/trainingPlans/tp/{id}:
  *   get:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Obtener el plan de entramiento de un afiliado en concreto a través de su ID.
+ *     summary: Obtener un plan de entrenamiento a través de su ID.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -93,6 +138,9 @@ router.get(
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -100,28 +148,44 @@ router.get(
  *           type: string
  *         required: true
  *         description: Token de autenticación.
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Id del plan de entrenamiento.
  *     responses:
  *       200:
- *         description: Plan de entrenamiento del afiliado.
+ *         description: Respuesta exitosa que devuelve un objeto que representa el plan de entrenamiento encontrado.
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/components/schemas/TrainingPlan'
+ *       400:
+ *         description: Respuesta no exitosa que indica que el id pasado por params no es válido.
+ *       401:
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que los entrenadores y los afiliados son los únicos que tienen acceso.
+ *       404:
+ *         description: Respuesta no exitosa que indica que no se encontró un plan de entrenamiento con el id pasado por params.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
 router.get(
-  "/",
-  [validateJWT, hasRole(["admin", "trainer"]), validateFields],
-  getAllUserTrainingPlan
+  "/tp/:id",
+  [
+    validateJWT,
+    hasRole(["trainer", "affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  getTrainingPlanById
 );
 
 /**
  * @openapi
  * /api/trainingPlans:
  *   post:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Crea un plan de entrenamiento.
+ *     summary: Crear un nuevo plan de entrenamiento.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -133,6 +197,9 @@ router.get(
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -202,11 +269,7 @@ router.get(
  */
 router.post(
   "/",
-  [
-    validateJWT,
-    hasRole(["admin", "trainer"]),
-    validateFields
-  ],
+  [validateJWT, hasRole(["admin", "trainer"]), validateFields],
   createUserTrainingPlan
 );
 
@@ -214,10 +277,7 @@ router.post(
  * @openapi
  * /api/trainingPlans/addtoaffiliate:
  *   patch:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Agrega un afiliado a un plan de entrenamiento.
+ *     summary: Agregar un afiliado a un plan de entrenamiento.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -229,6 +289,9 @@ router.post(
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -275,10 +338,7 @@ router.patch(
  * @openapi
  * /api/trainingPlans/removeffiliate:
  *   patch:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Elimina un afiliado de un plan de entrenamiento.
+ *     summary: Eliminar un afiliado de un plan de entrenamiento.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -290,6 +350,9 @@ router.patch(
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -336,10 +399,7 @@ router.patch(
  * @openapi
  * /api/trainingPlans/{id}:
  *   put:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Obtén el plan de entramiento de un afiliado en concreto a través de su id.
+ *     summary: Actualizar un plan de entrenamiento a través de su ID.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -351,6 +411,9 @@ router.patch(
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -359,10 +422,11 @@ router.patch(
  *         required: true
  *         description: Token de autenticación.
  *       - in: path
- *         name: userId
+ *         name: id
  *         schema:
  *           type: string
- *         description: Id del afiliado.
+ *         required: true
+ *         description: Id del plan de entrenamiento.
  *     responses:
  *       200:
  *         description: Plan de entrenamiento del afiliado.
@@ -387,10 +451,7 @@ router.put(
  * @openapi
  * /api/trainingPlans/{id}:
  *   delete:
- *     security:
- *       - bearerAuth: []
- *       - apiKeyAuth: []
- *     summary: Obtén el plan de entramiento de un afiliado en concreto a través de su id.
+ *     summary: Eliminar un plan de entramiento a través de su ID.
  *     tags: [TrainingPlans]
  *     components:
  *       securitySchemes:
@@ -402,6 +463,9 @@ router.put(
  *           type: apiKey
  *           in: header
  *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
  *     parameters:
  *       - in: header
  *         name: x-token
@@ -410,10 +474,11 @@ router.put(
  *         required: true
  *         description: Token de autenticación.
  *       - in: path
- *         name: userId
+ *         name: id
  *         schema:
  *           type: string
- *         description: Id del afiliado.
+ *         required: true
+ *         description: Id del plan de entrenamiento.
  *     responses:
  *       200:
  *         description: Plan de entrenamiento del afiliado.

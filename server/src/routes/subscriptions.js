@@ -2,7 +2,8 @@ const { Router } = require("express");
 const {
   addUserNewSubscription,
   deleteUserSubscription,
-  getAllSubscriptions
+  getAllSubscriptions,
+  getSubscriptionById
 } = require("../controllers/subscriptions");
 const { validateJWT } = require("../middlewares/validate-jwt");
 const hasRole = require("../middlewares/validate-role");
@@ -16,7 +17,7 @@ const router = Router();
  * @openapi
  * /api/subscriptions:
  *   get:
- *     summary: Obtener todas las suscripciones que ofrece el gimnasio.
+ *     summary: Obtener una lista de todas las suscripciones que ofrece el gimnasio.
  *     tags: [Subscriptions]
  *     components:
  *       securitySchemes:
@@ -37,22 +38,88 @@ const router = Router();
  *         schema:
  *           type: string
  *         required: true
- *         description: Token de autenticación
+ *         description: Token de autenticación.
  *     responses:
  *       200:
- *         description: Lista de todas las suscripciones que brinda el gimnasio.
+ *         description: Respuesta exitosa que devuelve un objeto con la propiedad 'subscriptions' que consiste en un arreglo que contiene todas las suscripciones brindadas por el gimnasio.
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 $ref: "#/components/schemas/Subscription"
+ *               type: object
+ *               properties:
+ *                 subscriptions:
+ *                   type: array
+ *                   items:
+ *                     $ref: "#/components/schemas/Subscription"
  *       401:
- *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin es el único que tiene acceso.
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin y los afiliados son los únicos que tienen acceso.
  *       500:
  *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
  */
-router.get("/", [validateJWT, hasRole(["admin"]), validateFields], getAllSubscriptions);
+router.get(
+  "/",
+  [validateJWT, hasRole(["admin", "affiliate"]), validateFields],
+  getAllSubscriptions
+);
+
+/**
+ * @openapi
+ * /api/subscriptions/{id}:
+ *   get:
+ *     summary: Obtener una suscripción a través de su ID.
+ *     tags: [Subscriptions]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *         apiKeyAuth:
+ *           type: apiKey
+ *           in: header
+ *           name: x-token
+ *     security:
+ *       - bearerAuth: []
+ *       - apiKeyAuth: []
+ *     parameters:
+ *       - in: header
+ *         name: x-token
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Token de autenticación.
+ *       - in: path
+ *         name: id
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Id de la suscripción.
+ *     responses:
+ *       200:
+ *         description: Respuesta exitosa que devuelve un objeto que representa la suscripción encontrada.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Subscription"
+ *       400:
+ *         description: Respuesta no exitosa que indica que el id pasado por params no es válido.
+ *       401:
+ *         description: Respuesta no exitosa que indica; o que no se ha provisto el token en la consulta, o que no existe un usuario con ese token, o que el admin y los afiliados son los únicos que tienen acceso.
+ *       404:
+ *         description: Respuesta no exitosa que indica que no se encontró una suscripción con el id pasado por params.
+ *       500:
+ *         description: Respuesta no exitosa que indica que se produjo un error interno del servidor con su correspondiente mensaje.
+ */
+router.get(
+  "/:id",
+  [
+    validateJWT,
+    hasRole(["admin", "affiliate"]),
+    param("id", "id is not a MongoId").isMongoId(),
+    validateFields
+  ],
+  getSubscriptionById
+);
 
 /**
  * @openapi
@@ -84,6 +151,7 @@ router.get("/", [validateJWT, hasRole(["admin"]), validateFields], getAllSubscri
  *         name: id
  *         schema:
  *           type: string
+ *         required: true
  *         description: ID del afiliado.
  *     requestBody:
  *       required: true
@@ -158,6 +226,7 @@ router.put(
  *         name: id
  *         schema:
  *           type: string
+ *         required: true
  *         description: ID del afiliado.
  *     requestBody:
  *       required: true
