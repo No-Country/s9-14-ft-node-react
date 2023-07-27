@@ -1,0 +1,50 @@
+@import '@/styles/variables.scss';
+
+.add {
+  font-size: 12px;
+  height: fit-content;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 600;
+  border-radius: 4px;
+  color: $white;
+  background-color: $orange;
+  border: none;
+  outline: none;
+  padding: 8px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.title {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  gap: 20px;
+  color: $white;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 11px;
+  margin-bottom: 30px;
+  margin-top: 50px;
+}
+
+.shown {
+  display: flex;
+  color: $white;
+  list-style-type: none;
+  font-family: 'Manrope', sans-serif;
+  flex-direction: column;
+
+  .item {
+    border-top: 1px solid $white;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    .detail {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

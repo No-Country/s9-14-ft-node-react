@@ -16,7 +16,8 @@ const { body, param } = require("express-validator");
 const {
   idIsNotAdmin,
   idIsNotAdminOrTrainer,
-  idIsNotAffiliateOrTrainer
+  idIsNotAffiliateOrTrainer,
+  idIsAdminOrTrainer
 } = require("../helpers/db-validators");
 const { uploadImage } = require("../controllers/activities");
 
@@ -826,7 +827,7 @@ router.delete(
     validateJWT,
     hasRole(["admin"]),
     param("id", "id is not a MongoId").isMongoId(),
-    param("id").custom(idIsNotAffiliateOrTrainer),
+    param("id").custom(idIsAdminOrTrainer),
     validateFields
   ],
   deleteUser
