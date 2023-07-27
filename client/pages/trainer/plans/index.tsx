@@ -28,7 +28,7 @@ export default function TrainerPlans () {
     <TrainerLayout placeholder="Buscar plan" onSearch={search}>
       <div className={style.title}>
         <h1>PLAN SEMANAL</h1>
-        <Link href={'#'} className={style.add}>Asignar plan a afiliado</Link>
+        <Link href={'/trainer/plans/new-plan'} className={style.add}>Asignar plan a afiliado</Link>
       </div>
 
       <section className={style.section}>

@@ -1,9 +1,9 @@
-import styles from "../../../components/DataForm/style.module.scss";
+import styles from "@/components/DataForm/style.module.scss";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useTrainers } from "@/hooks/useTrainers";
 import { useSession } from "@/hooks/useSession";
-import { AdminLayout } from "@/components/AdminLayout";
 import { useAffiliates } from "@/hooks/useAffiliates";
+import { TrainerLayout } from "@/components/TrainerLayout";
 
 interface exercice {
   name: string;
@@ -209,10 +209,10 @@ const Component: React.FC = () => {
 
 export default function newPlan() {
   return (
-    <AdminLayout disabled={true} placeholder="">
+    <TrainerLayout disabled={true} placeholder="">
       <section>
         <Component />
       </section>
-    </AdminLayout>
+    </TrainerLayout>
   );
 }

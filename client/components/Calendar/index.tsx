@@ -1,14 +1,9 @@
-import styles from "../DataForm/style.module.scss";
-import { AdminLayout } from "@/components/AdminLayout";
-import { useEffect, useState } from "react";
+import styles from "./style.module.scss";
 
-const Component: React.FC = () => {
-
-  const [data, setData] = useState()
+export const Calendar: React.FC = () => {
 
   return (
     <div className={styles.App}>
-      <h2 className={styles.Title}>Calendario</h2>
       <div className={styles.container}>
         <div className={styles.labels}>
           <div><p>07:00</p></div>
@@ -47,14 +42,3 @@ const Component: React.FC = () => {
     </div>
   );
 };
-
-export default function calendar() {
-  return (
-    <AdminLayout disabled={true} placeholder="">
-      <section>
-        <Component />
-      </section>
-    </AdminLayout>
-  );
-}
-

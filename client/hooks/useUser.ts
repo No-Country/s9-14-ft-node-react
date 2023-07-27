@@ -55,7 +55,7 @@ export function useUser () {
       .then (res => setUser(res))
       .catch(console.error)
     }
-  }, [])
+  }, [session?.token])
 
   return user
 }

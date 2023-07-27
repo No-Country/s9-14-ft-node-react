@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useSessionActions } from "@/hooks/useSession";
 import { useUserActions } from "@/hooks/useUser";
 import { useRouter } from "next/router";
+import Head from "next/head";
 interface FormData {
   email: string;
   password: string;
@@ -75,6 +76,9 @@ export default function LogIn() {
 
   return (
     <div className={styles.App}>
+      <Head>
+        <title>Login | MANAGYM</title>
+      </Head>
       <nav className={styles.Nav}>
         <Image src={logoSvg} alt="Logo" />
         <Image src={burgerSvg} alt="burgermenu" />
