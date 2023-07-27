@@ -8,6 +8,7 @@ interface Store {
   actions: {
     getActivities: (token?: string) => Promise<void>
     deleteActivity: (id: string, token: string) => Promise<void>
+    addActivity: (token:string, activity: Activity) => void
   }
 }
 
@@ -66,6 +67,20 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
         if (request.ok) {
           set((state) => ({activities: state.activities.filter((activity) => activity._id !== id)}))
         }
+    },
+    addActivity: async (token, activity: Activity) => {
+      fetch(`${process.env.NEXT_PUBLIC_SERVER_URL as string}/api/users/${activity.trainer}/profile`, {
+          headers: {
+            'x-token': token || '',
+            'Content-Type': 'application/json'
+          }
+        })
+        .then(res => res.ok ? res.json() : res)
+        .then(res=> {
+          const withTrainerActivity = {...activity, trainer: res.user}
+          set((state) => ({activities: [...state.activities, withTrainerActivity]}))
+        })
+        .catch(console.error)
     }
   }
 }))
@@ -73,8 +88,9 @@ const useActivityStore = create<Store>((set)=> ({ // Store creation
 export function useActivitiesActions () {
   const getActivities = useActivityStore(state => state.actions.getActivities)
   const deleteActivity = useActivityStore(state => state.actions.deleteActivity)
+  const addActivity = useActivityStore(state => state.actions.addActivity)
 
-  return {getActivities, deleteActivity}
+  return {getActivities, deleteActivity, addActivity}
 }
 
 export function useActivities () { // Returns activities

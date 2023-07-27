@@ -3,6 +3,7 @@ import { AsideBar } from "@/components/AsideBar"
 import styles from './style.module.scss'
 import { ProtectedWrapper } from "@/components/ProtectedWrapper"
 import { AdminNav } from "@/components/Navigation/AdminNav";
+import Head from "next/head";
 interface Props {
   children: React.ReactNode
   placeholder: string
@@ -10,10 +11,14 @@ interface Props {
   disabled?: boolean
 }
 
+
 export function AdminLayout ({children, placeholder, onSearch, disabled}: Props) {
 
   return (
     <ProtectedWrapper>
+      <Head>
+        <title>Admin | MANAGYM</title>
+      </Head>
       <main className={styles.main}>
         <AsideBar Nav={AdminNav} />
         <section className={styles.content}>

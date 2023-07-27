@@ -1,8 +1,10 @@
 import { AdminLayout } from "@/components/AdminLayout";
 import styles from "../../../components/DataForm/style.module.scss";
-import { useState, ChangeEvent, FormEvent, useEffect } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect, useRef } from "react";
 import { useTrainers } from "@/hooks/useTrainers";
 import { useSession } from "@/hooks/useSession";
+import { useActivitiesActions } from "@/hooks/useActivities";
+import { useRouter } from "next/router";
 
 
 interface FormData {
@@ -23,7 +25,10 @@ interface weekFormState {
   [key: string]: boolean;
 }
 
-const Component: React.FC = () => {
+const Component2: React.FC = () => {
+  const {push} = useRouter()
+  const {addActivity} = useActivitiesActions()
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     description: "",
@@ -33,6 +38,8 @@ const Component: React.FC = () => {
     limit: 0,
     trainer: ""
   });
+
+  const imageRef = useRef<HTMLInputElement>(null);
 
   const initialFormState: CheckboxFormState = {
     7: false,
@@ -61,14 +68,18 @@ const Component: React.FC = () => {
     Viernes: false
   };
 
+  const days = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado"]
   const [checkboxes, setCheckboxes] = useState<CheckboxFormState>(initialFormState);
   const [weekCheckboxes, setWeekCheckboxes] = useState<weekFormState>(initialWeekFormState);
   const trainers = useTrainers();
+
   useEffect(() => {
     let finalDays: string[] = [];
-    for (let prop in weekCheckboxes) {
-      if (weekCheckboxes[prop]) {
-        finalDays.push(`${prop}`);
+    const checked = Object.values(weekCheckboxes)
+
+    for (let i = 0; i < checked.length; i++) {
+      if (checked[i]) {
+        finalDays.push(days[i])
       }
     }
 
@@ -105,6 +116,7 @@ const Component: React.FC = () => {
     }));
   };
 
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target;
     setCheckboxes(prevCheckboxes => ({
@@ -125,23 +137,42 @@ const Component: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(formData);
+    const image = imageRef.current?.files?.[0];
+    const toCloud = new FormData();
+    toCloud.append("file", image as Blob);
+    toCloud.append("upload_preset", "bkurgssr");
+    let imageUrl
 
-    
+    try {
+      const response = await fetch(
+        "https://api.cloudinary.com/v1_1/dfdgsotzz/image/upload",
+        {
+          method: "POST",
+          body: toCloud,
+        }
+      );
+      const data = await response.json();
+      imageUrl = data.secure_url
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
 
-    if (formData) {
+
+    if (formData && sesion?.token && imageUrl) {
+
       const request = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/api/activities`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           "x-token": sesion.token
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify({...formData, image: imageUrl, quota: 20})
       });
 
       if (request.ok) {
         const response = await request.json();
-        console.log(response);
+        addActivity(sesion.token, response.activity)
+        push('/admin/activities')
       } else {
         const error = await request.json();
         console.log(error);
@@ -187,8 +218,7 @@ const Component: React.FC = () => {
                 type="file"
                 id="image"
                 name="image"
-                value={formData.image}
-                onChange={handleInputChange}
+                ref={imageRef}
                 required
               />
             </div>
@@ -453,10 +483,10 @@ const Component: React.FC = () => {
             id="description"
             cols="30"
             rows="10"
+            placeholder="Describe la tarea"
             onChange={handleInputChange}
-          >
-            Describe la tarea
-          </textarea>
+          />
+
         </div>
         <button type="submit">Submit</button>
       </form>
@@ -464,11 +494,113 @@ const Component: React.FC = () => {
   );
 };
 
+// const Component: React.FC = () => {
+
+//   interface exercice {
+//     name: string;
+//     setsAndRepetitions: string;
+//     weight: string;
+//     duration: string;
+//     days: string[];
+//   }
+
+//   interface excercices extends Array<exercice> { }
+
+//   interface newPlan {
+//     name: string;
+//     trainer: string;
+//     affiliates: string[];
+//     exercices: excercices;
+//   }
+
+//   const [first, setfirst] = useState(second)
+
+//   function newExcercise() {
+//     event.preventDefault();
+
+//     // Step 1: Select the element with the id 'holder'
+//     const holder = document.getElementById("holder");
+
+//     // Make sure the 'holder' element exists
+//     if (!holder) {
+//       console.error("Element with id 'holder' not found.");
+//       return;
+//     }
+
+//     // Step 2: Create a new div element with the classname attribute equal to {styles.exercises_item}
+//     const newDiv = document.createElement("div");
+//     newDiv.classList.add(`${styles.excercices_item}`);
+
+//     // Step 3: Edit the HTML inside the div element (You can replace 'Your content goes here' with your desired content)
+//     newDiv.innerHTML = `              
+//     <input
+//     type="text"
+//     id="name"
+//     name="name"
+//     value=""
+//     placeholder="Nombre de Ejercicio"
+//     required
+//   />
+//   <input type="number" id="sets" name="sets" value="" required />
+//   <input
+//     type="number"
+//     id="repetitionsDuration"
+//     name="repetitionsDuration"
+//     value=""
+//     required
+//   />
+//   <input type="checkbox" />
+//   `;
+
+//     // Step 4: Add the div element at the end of the holder element
+//     holder.appendChild(newDiv);
+//   }
+
+//   return (
+//     <div className={styles.App}>
+//       <h2 className={styles.Title}>NUEVO PLAN DE EJERCICIOS</h2>
+//       <form className={styles.formNew}>
+//         <div className={styles.ex_formcont}>
+//           <div className={`${styles.ex_labels}`}>
+//             <p>Nombre</p>
+//             <p>Sets</p>
+//             <p>Tiempo/Repeticion</p>
+//             <p>Es tiempo?</p>
+//           </div>
+//           <div className={`${styles.excercices}`} id="holder">
+//             <div className={styles.excercices_item}>
+//               <input
+//                 type="text"
+//                 id="name"
+//                 name="name"
+//                 value=""
+//                 placeholder="Nombre de Ejercicio"
+//                 required
+//               />
+//               <input type="number" id="sets" name="sets" value="" required />
+//               <input
+//                 type="number"
+//                 name="reps"
+//                 id="repetitionsDuration"
+//                 value=""
+//                 required
+//               />
+//               <input type="checkbox" name="isreps"/>
+//             </div>
+//           </div>
+//           <button onClick={newExcercise}>Agregar ejercicio</button>
+//         </div>
+//         <button type="submit">Submit</button>
+//       </form>
+//     </div>
+//   );
+// };
+
 export default function newActivity() {
   return (
     <AdminLayout disabled={true} placeholder="">
       <section>
-        <Component />
+        <Component2 />
       </section>
     </AdminLayout>
   );
