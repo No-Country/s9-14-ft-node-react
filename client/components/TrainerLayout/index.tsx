@@ -3,6 +3,7 @@ import { AsideBar } from "../AsideBar"
 import { TrainerNav } from "@/components/Navigation/TrainerNav"
 import { Header } from "@/components/Header"
 import style from './style.module.scss'
+import Head from "next/head"
 
 interface Props {
   children: React.ReactNode
@@ -14,6 +15,9 @@ interface Props {
 export function TrainerLayout ({children, disabled, placeholder, onSearch}: Props) {
   return (
     <ProtectedWrapper>
+      <Head>
+        <title>Trainer | MANAGYM</title>
+      </Head>
       <main className={style.main}>
         <AsideBar Nav={TrainerNav} />
         <section className={style.content}>
