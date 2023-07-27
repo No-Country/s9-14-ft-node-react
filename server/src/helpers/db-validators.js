@@ -32,7 +32,7 @@ const idIsNotAffiliateOrTrainer = async id => {
   const user = await User.findById(id);
 
   if (!user) throw new Error("Admin or trainer not found");
-  if (user.role !== "affiliate" || user.role !== "trainer")
+  if (user.role !== "affiliate" && user.role !== "trainer")
     throw new Error("User ID is not an affiliate nor a trainer");
 };
 
@@ -40,7 +40,7 @@ const idIsNotAdminOrTrainer = async id => {
   const user = await User.findById(id);
 
   if (!user) throw new Error("Admin or trainer not found");
-  if (user.role !== "admin" || user.role !== "trainer")
+  if (user.role !== "admin" && user.role !== "trainer")
     throw new Error("User ID is not an admin nor a trainer");
 };
 
