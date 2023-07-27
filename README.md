@@ -10,16 +10,22 @@ A continuación, se presentan las funcionalidades según el tipo de usuario:
 	+ Registro de entrenadores.
 	+ Registro de actividades.
 + Entrenador:
-	+ Armar plan semanal.
+	+ Visualizar horario del entrenador.
+ 	+ Armar plan semanal.
 	+ Asignar plan semanal a un usuario.
 	+ Asignar plan semanal a varios usuarios.
+ + Afiliado:
+ 	+ Visualizar plan de ejercicios.
+  	+ Visualizar horario de actividades grupales.
 
 ## Tecnologías
 En esta sección se listan las tecnologías utilizadas por el equipo de desarrollo, las cuales fueron:
 + Frontend developer:
 	+ NextJS.
 	+ Typescript.
-	+ SASS.
+	+ SCSS.
+	+ React.
+	+ FLUX.
 + Backend developer:
 	+ NodeJs.
 	+ Express.
@@ -38,11 +44,10 @@ El equipo esta conformado por 10 personas, 1 Project Manager, 3 Frontend Develop
 | Marco Romero  | Backend Developer  | GitHub: https://github.com/marcodromero  |
 | Franco Corniglione  | Backend Developer  | GitHub: https://github.com/Francormin LinkedIn: https://www.linkedin.com/in/franco-corniglione/  |
 | Miguel Miche  | Backend Developer  | GitHub: https://github.com/migmm LinkedIn: https://www.linkedin.com/in/miguelmiche/  |
-| Francisco Rey  | Backend Developer  | GitHub: https://github.com/franrey98 LinkedIn: https://www.linkedin.com/in/francisco-rey-71060419a/  |
 | Tania Soto  | UX/UI Designer  | Behance: https://www.behance.net/tanisoto GitHub: https://github.com/tanisoto LinkedIn: https://www.linkedin.com/in/taniasotoarq  |
 | Andrés Bejarano Sánchez  | UX/UI Designer | Pagina web: https://andresbs.myportfolio.com LinkedIn: https://www.linkedin.com/in/andres-bejarano-6765aa241/  |
 
 
 ## Links
-+ Link Deploy Frontend: [MANAGYM - Frontend](https://managym.vercel.app/ "MANAGYM - Frontend")
++ Link Deploy Frontend: [MANAGYM - Frontend](http://managym.vercel.app/ "MANAGYM - Frontend")
 + Link Deploy Backend: [MANAGYM - Backend](https://managym.cyclic.app/ "MANAGYM - Backend")
