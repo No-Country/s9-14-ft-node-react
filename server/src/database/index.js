@@ -1,26 +1,34 @@
 const mongoose = require("mongoose");
-const User = require("../models/user");
-const { ObjectId } = require("mongodb");
+const User = require("../models/User");
+const Activity = require("../models/Activity");
+const Subscription = require("../models/Subscription");
+const TrainingPlan = require("../models/TrainingPlan");
+const seedDb = require("../seeders");
+require("dotenv").config();
+
+const MONGO_URI = process.env.MONGO_URI;
+const CLUSTER_URI = process.env.CLUSTER_URI;
 
 const connectAndPopulateDb = async () => {
   // connect to the db
-  mongoose
-    .connect("mongodb://localhost:27017/ManaGym")
-    .then(() => console.log("Database connected successfully!"))
-    .catch(error => console.error(`Database connection error: ${error}`));
+  try {
+    await mongoose
+      .connect(MONGO_URI)
+      .then(() => console.log("Database connected successfully!"))
+      .catch(error => console.error(`Database connection error: ${error}`));
 
-  // populate the db
-  const users = await User.find();
-  if (!users.length) {
-    // create some sample data for the database to work with in case it's empty
-    User.create({
-      name: "Test",
-      surname: "Test",
-      email: "test@email.com",
-      phone: 246939613,
-      role_id: new ObjectId(1),
-      subscription_id: new ObjectId(1)
-    });
+    // populate the db
+    const users = await User.find();
+    const activities = await Activity.find();
+    const subscriptions = await Subscription.find();
+    const trainingPlans = await TrainingPlan.find();
+
+    if (!users.length && !activities.length && !subscriptions.length && !trainingPlans.length) {
+      // create some sample data for the database to work with in case it's empty
+      seedDb();
+    }
+  } catch (error) {
+    console.error(`Connecting and populating db error: ${error}`);
   }
 };
 

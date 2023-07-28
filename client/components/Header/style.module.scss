@@ -1,0 +1,259 @@
+@import "@/styles/variables.scss";
+
+.header {
+  width: 100%;
+  font-family: 'Montserrat';
+
+  .user {
+    width: 100%;
+    height: fit-content;
+    
+    .icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      
+      .logo {
+        scale: .3;
+        color: white;
+      }
+
+    }
+
+    .burger {
+      color: white;
+    }
+
+    .data {
+      color: $white;
+      display: flex;
+
+      h4 {
+        font-family: 'Manrope';
+        display: none;
+      }
+
+      small {
+        opacity: .5;
+        display: none;
+      }
+
+      span {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+    .alert {
+      color: $white;
+      display: none;
+    }
+
+    .picture {
+      display: flex;
+    }
+
+  }
+
+  .menu {
+    display: flex; 
+    gap: 10px;
+
+    .burger {
+      width: 48px;
+      height: 48px;
+    }
+  }
+}
+
+@media (min-width: $lg) {
+  .header {
+    display: flex;
+    padding: 30px;
+    width: 100%;
+    justify-content: space-around;
+    .burger, .logo {
+      display: none;
+    }
+  
+    .user {
+      order: 2;
+      width: fit-content;
+      white-space: nowrap;
+      
+      .icons {
+        width: fit-content;
+
+        .alert {
+          display: inline-block;
+          margin-left: 20px;
+        }
+      }
+
+      .data {
+        h4, small {
+          display: inline-block;
+        }
+      }
+    }
+
+    .menu {
+      order: 1;
+      width: 650px;
+    }
+  }
+}
+.active_menu {
+  opacity: 0;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.active_menu {
+  width: 100vw;
+  position: absolute;
+  top: 100px;
+  left: 0;
+  background-color: $black;
+  height: calc(100% - 100px);
+  animation: fade-in 0.5s ease-in-out forwards;
+  overflow-x: hidden;
+  z-index: 100;
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 5px;
+    list-style-type: none;
+    margin: 0 auto;
+    gap: 1rem;
+    
+    .item {
+      color: $white;
+      border-radius: 5px;
+      
+      .exit {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 200px;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $white;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        border-radius: 5px;
+
+        &::before {
+          content: '';
+          width: 200vw;
+          height: 1px;
+          background-color: $white;
+          position: absolute;
+          right: -50%;
+          transform: translateX(20%);
+          bottom: 130%;
+        }
+
+        &:hover {
+        background-color: $orange;
+        color: $white;
+        cursor: pointer;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+      }
+
+      .icons {
+        width: 30px;
+        height: fit;
+        margin-right: 15px;
+        color: $white;
+      }
+      
+      .link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $white;
+        line-height: 1.5;
+
+        p {
+          margin: 0;
+          display: inline-block;
+          
+        }
+      }
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+        cursor: pointer;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+
+      &.active {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+    }
+  }
+
+  span {
+    font-weight: 600;
+    font-family: 'Montserrat';
+    color: $white;
+    padding: 20px;
+    text-align: center;
+
+    .icon {
+      border: 1px solid $orange; 
+      padding: 3px;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      width: 48px;
+      height: 48px;     
+    }
+  }
+
+  @media (min-width: $lg) {
+    display: none;
+  }
+}

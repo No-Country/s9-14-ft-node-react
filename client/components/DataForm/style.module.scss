@@ -1,0 +1,453 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope&family=Montserrat:wght@600&display=swap');
+
+.App {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding: 30px;
+
+  button {
+    width: 150px;
+    height: 40px;
+    color: white;
+    background-color: #FF8A00;
+    border: none;
+    border-radius: 4px;
+    align-self: flex-end;
+    cursor: pointer;
+  }
+}
+
+.Title {
+  box-sizing: border-box;
+  width: 100%;
+  border: solid #FF8A00;
+  padding: 13px 33px;
+  font-size: 16px;
+  border-radius: 11px;
+  margin-bottom: 30px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+}
+
+.formcont {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.part {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.field {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+
+  label {
+    min-width: 120px;
+    flex-grow: 1;
+  }
+
+  input {
+    max-width: 450px;
+    width: 200px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 15px;
+    flex-grow: 2;
+  }
+
+  select {
+    max-width: 450px;
+    width: 200px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 0px 15px;
+    flex-grow: 2;
+  }
+}
+
+.field_description {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0px;
+
+  textarea {
+    max-width: 650px;
+    width: 200px;
+    height: 150px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 15px;
+    flex-grow: 2;
+    text-align: auto;
+    word-wrap: break-word;
+    word-break: break-all;
+    font-family: 'Montserrat', sans-serif;
+
+  }
+}
+
+.lasts {
+  justify-content: space-between;
+
+  label {
+    width: 110px;
+  }
+
+  input {
+    width: 150px;
+  }
+}
+
+.status {
+  height: 24px;
+  width: 60px;
+  color: #A65959;
+  flex-shrink: 2;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #EDDEDE;
+  font-family: 'Manrope', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.plan {
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  width: 60px;
+  color: black;
+  flex-shrink: 2;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #FF8A00;
+  font-family: 'Manrope', sans-serif;
+}
+
+@media (min-width: 1024px) {
+
+  .formcont {
+    flex-direction: row;
+  }
+
+
+
+  .last {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
+.article {
+  position: relative;
+  width: 50px;
+  height: 25px;
+  margin: 5px;
+  float: left;
+  border: 2px solid #FF8A00;
+  box-sizing: border-box;
+}
+
+.article div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+  transition: .5s ease;
+}
+
+.article input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 25px;
+  opacity: 0;
+  cursor: pointer;
+  background-color: gray;
+  outline: solid 5px black;
+}
+
+.article input[type=checkbox]:checked~div {
+  background-color: #FF8A00;
+  color: black;
+}
+
+.articleweek {
+  position: relative;
+  width: 100px;
+  height: 25px;
+  margin: 5px;
+  float: left;
+  border: 2px solid #FF8A00;
+  box-sizing: border-box;
+}
+
+.articleweek div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+  transition: .5s ease;
+}
+
+.articleweek input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 25px;
+  opacity: 0;
+  cursor: pointer;
+  background-color: gray;
+  outline: solid 5px black;
+}
+
+.articleweek input[type=checkbox]:checked~div {
+  background-color: #FF8A00;
+  color: black;
+}
+
+.formNew {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.timeline {
+  display: flex;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+
+
+/* New Excercices*/
+
+.excercices_top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ex_labels,
+.excercices_item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  height: 50px;
+}
+
+.excercices_item {
+  input {
+    max-width: 450px;
+    width: 100%;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 15px;
+  }
+}
+
+.field_ex {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+
+  label {
+    min-width: 120px;
+    flex-grow: 1;
+  }
+
+  input {
+    max-width: 450px;
+    width: 200px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 15px;
+    flex-grow: 2;
+  }
+
+  select {
+    max-width: 450px;
+    width: 200px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 0px 15px;
+    flex-grow: 2;
+  }
+}
+
+/* Calendar */
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px 20px;
+  grid-template-areas:
+    ". labels2 labels2 labels2 labels2 labels2 labels2"
+    "labels . . . . . ."
+    "labels . item5 . item2 . ."
+    "labels . . . . . ."
+    "labels . . . . . ."
+    "labels . . . . . ."
+    "labels . item3 . item6 . ."
+    "labels . . . . item4 ."
+    "labels . . . . . ."
+    "labels . item7 . . . ."
+    "labels item9 . . . . ."
+    "labels . item8 . item . ."
+    "labels . . item10 . . ."
+    "labels . . . . . .";
+}
+
+.labels, .labels2{
+
+  div{
+    height: 25px;
+    background-color: rgb(223, 223, 223);
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.labels {
+  grid-area: labels;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px 20px;
+  grid-template-areas:
+    "labels2"
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    ".";
+}
+
+.labels2 {
+  grid-area: labels2;
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  grid-template-rows: 1fr; 
+  gap: 20px; 
+
+}
+
+
+@mixin entry{
+  background-color: #FF8A00;
+  z-index: 3;
+  width: 100%;
+  height: 25px;
+  color: black;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #EDDEDE;
+  }
+}
+
+.item {
+  grid-area: item;
+  @include entry()
+}
+
+.item2 {
+  grid-area: item2;
+  @include entry()
+}
+
+.item3 {
+  grid-area: item3;
+  @include entry()
+}
+
+.item4 {
+  grid-area: item4;
+  @include entry()
+}
+
+.item5 {
+  grid-area: item5;
+  @include entry()
+}
+.item6 {
+  grid-area: item6;
+  @include entry()
+}
+
+.item7 {
+  grid-area: item7;
+  @include entry()
+}
+
+.item8 {
+  grid-area: item8;
+  @include entry()
+}
+
+.item9 {
+  grid-area: item9;
+  @include entry()
+}
+
+.item10 {
+  grid-area: item10;
+  @include entry()
+}

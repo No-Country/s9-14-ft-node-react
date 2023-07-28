@@ -1,0 +1,68 @@
+@import '@/styles/variables.scss';
+
+.card {
+  min-width: 250px;
+  min-height: 360px;
+  border: 1px solid $orange; 
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-right: 4px;
+  padding: 14px;
+  color: $white;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+
+  .image {
+    border-radius: 11px;
+    width: 187px;
+    height: 128px;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .data {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px;
+
+    .name {
+      display: flex;
+      justify-content: space-between;
+      margin: 10px 0;
+
+      .trash {
+        cursor: pointer;
+      }
+
+      h2 {
+        font-weight: 600;
+        font-size: 16px;
+      }
+
+    }
+
+    .metadata {
+      span {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        
+        .icon {
+          flex-shrink: 0;
+        }
+        
+        p {
+          width: fit-content;
+          padding: 0 ;
+        }
+      }
+
+      .trainer {
+  
+      }
+    }
+
+  }
+}

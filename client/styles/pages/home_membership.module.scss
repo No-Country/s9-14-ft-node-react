@@ -1,0 +1,195 @@
+@import "@/styles/_variables.scss";
+
+.membership{
+    background-image: url("../../public/membresia.png");
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+}
+.font_16{
+    font-size: 1rem;
+}
+.font_30{
+    font-size: 2rem;
+}
+.font_50{
+    font-size: 3rem;
+}
+.title{
+    font-family: 'Bebas_Neue';
+    text-align: center;
+    font-size: 45px;
+    padding-top: 1rem;
+}
+
+.plans{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    row-gap: 3rem;
+    color: $white;
+}
+
+.plan{
+    font-family: 'Montserrat';
+    padding: 3rem;
+    height: 500px;
+    position: relative;
+}
+.basic{
+    background-color: #FFFFFF33;
+}
+.premium{
+    background-color: #FF8A0099;
+    
+}
+.list{
+    padding-top: 1rem;
+    margin-top: 1rem;
+    border-top: 2px solid $orange;
+}
+
+.li{
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+.button{
+    position: absolute;
+    border: none;
+    border-radius: 20px;
+    width: 80%;
+    height: 50px;
+    bottom: 5%;
+    left: 10%;
+    cursor: pointer;
+}
+
+.button_basic{ 
+    background-color: $orange;
+    color: $white;
+}
+
+.button_premium{
+    background-color: $white;
+    color: $orange;
+}
+
+.color_orange{
+    color: $orange;
+}
+
+.price{
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.heading{
+    display: flex;
+    justify-content: space-between;
+    color: $white;   
+    background-color: rgba(0, 0, 0, .4);
+    padding: 0.5rem 3rem;
+}
+    
+.heading_nav{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 20px;
+    gap:30px;
+    width: 100%;
+    left: 0;
+    bottom: 30%;
+    font-size: 'Montserrat';
+    position: absolute;
+}
+
+.heading_button{
+    //width: 11rem;
+    height: 3rem;
+    font-family: 'Montserrat';
+    padding: 0.5rem 2rem 0.5rem 2rem;
+    border-radius: 4px;
+    gap: 10px;
+    background-color: $orange;
+    color: $white;
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+}
+.heading_nav a{
+    color: $white;
+    text-decoration: none;
+    border-bottom: 1px solid $white;
+    font-family: 'Montserrat';
+}
+
+.heading_nav a:hover{
+    color: $orange;
+    border-bottom: 1px solid $orange;
+}
+    
+.heading_nav a:focus{
+    color: $orange;
+    border-bottom: 1px solid $orange;
+}   
+
+.burger_button{
+    border: none;
+    background-color: transparent;
+}
+.hidden{
+    visibility: hidden;
+}
+
+.flex{
+    display: flex;
+}
+    
+.none{
+    display: none;
+}
+
+
+@media screen and (min-width: 860px){
+    .plans{
+        width:70%;
+        display: grid;
+        column-gap: 3rem;
+        grid-template-columns: repeat(2, minmax(200px,1fr));
+        margin: 1rem auto auto auto;
+        padding-bottom: 1rem;
+        
+    }
+
+    .plan{
+        transition: transform 0.3s ease;
+    }
+    .plan:hover {
+        transform: scale(1.1); /* Aumentamos el tamaño en un 20% */
+      }
+
+      .heading_nav{
+        flex-direction: row;
+        font-size: 18px;
+        gap:0;
+        left: 50%;
+        display:flex;
+        position: static;  
+    }
+    
+    .heading_nav a{
+        padding: 1rem;
+    }
+
+    .burger_button{
+       display: none;
+    }
+}

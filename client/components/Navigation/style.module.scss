@@ -1,0 +1,140 @@
+@import "@/styles/variables.scss";
+
+.nav {
+  margin-top: 10rem;
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 5px;
+    list-style-type: none;
+    margin: 0 auto;
+    gap: 1rem;
+
+    .item {
+      color: $white;
+      border-radius: 5px;
+
+      .icons {
+        width: 30px;
+        height: fit;
+        margin-right: 15px;
+        color: $white;
+      }
+      
+      .exit, .link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $white;
+        line-height: 1.5;
+
+        p {
+          margin: 0;
+          display: inline-block;
+        }
+
+      }
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+
+      &.active {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+    }
+  }
+
+}
+
+@media (min-width: $lg) {
+.nav {
+  margin-top: 0;
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    width: 200px;
+    padding: 5px;
+    list-style-type: none;
+    margin: 0 auto;
+    gap: 1rem;
+
+    .item {
+      color: $opaque-gray;
+      border-radius: 5px;
+
+      .icons {
+        width: 30px;
+        height: fit;
+        margin-right: 15px;
+        color: black;
+      }
+      
+      .exit, .link {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        font-family: 'Montserrat';
+        text-decoration: none;
+        color: $opaque-gray;
+        line-height: 1.5;
+
+        p {
+          margin: 0;
+          display: inline-block;
+        }
+      }
+
+      &:hover {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+
+      &.active {
+        background-color: $orange;
+        color: $white;
+
+        .icons {
+          color: white;
+        }
+
+        .link {
+          color: $white;
+        }
+      }
+    }
+  }
+
+}
+}

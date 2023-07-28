@@ -1,0 +1,131 @@
+@import "@/styles/variables.scss";
+
+.App {
+ background: url('../../public/bglogin.png');
+ margin: 0;
+ height: 100vh;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ color: white;
+ font-family: 'Montserrat';
+ font-size: 18px;
+ font-weight: 400;
+ line-height: 30px;
+ letter-spacing: 0em;
+ text-align: center;
+
+ a{
+  color: #BAC0C7;
+ }
+}
+
+.Nav{
+ width: 320px;
+ margin-top: 20px;
+ position: absolute;
+ top: 0;
+ display: flex;
+ justify-content: space-between;
+ flex-direction: row;
+}
+
+.Logo{
+ filter: invert(-1);
+ height: 32px;
+}
+
+.loginform {
+ display: flex;
+ flex-direction: column;
+ gap: 20px;
+ align-items: center;
+
+ input {
+  box-sizing: border-box;
+  width: 320px;
+  height: 36px;
+  padding: 10px;
+  border: 0px;
+  border-bottom: 1px solid white;
+  color: $white;
+  background: transparent;
+  font-family: 'Montserrat';
+  outline: none;
+ }
+
+ h2 {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 600;
+ }
+
+ form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+ }
+
+ button {
+  widows: 320px;
+  height: 44px;
+  font-size: 16px;
+  border-radius: 99px;
+  border: 0;
+  background-color: rgba(255, 138, 0, 1);
+  color: white;
+
+font-family: 'Manrope';
+font-size: 16px;
+font-weight: 600;
+
+
+ }
+}
+
+.Footer{
+ display: none;
+}
+
+@media (min-width: 1024px) {
+
+.Nav{
+ display: none;
+}
+
+.Footer{
+ display: flex;
+ align-items: center;
+ position: absolute;
+ bottom: 0;
+ height: 110px;
+ background-color: #0F0F0F;
+ width: 100vw;
+ font-size: 16px;
+ font-family: 'Inter';
+ justify-content: space-around;
+}
+
+.Footer_holder{
+ display: flex;
+ gap: 30px;
+}
+
+.FooterLogo{
+ width: 83px;
+}
+
+.Icons_holder{
+ display: flex;
+ gap: 15px;
+}
+
+.IconCont{
+ width: 20px;
+ height: 20px;
+ background-color: white;
+ border-radius: 50%;
+}
+
+}

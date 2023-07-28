@@ -1,0 +1,343 @@
+@import '@/styles/variables.scss';
+
+.App {
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+  padding: 30px;
+  overflow-x: scroll;
+
+
+  button {
+    width: 150px;
+    height: 40px;
+    color: white;
+    background-color: #FF8A00;
+    border: none;
+    border-radius: 4px;
+    align-self: flex-end;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar {
+    width: 2px;
+    height: 7px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    width: 2px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: $orange;
+    border-radius: 11px;
+    width: 2px;
+    cursor: pointer;
+  }
+}
+
+
+@media (min-width: 1024px) {
+
+  .formcont {
+    flex-direction: row;
+  }
+
+
+
+  .last {
+    display: inline-grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+}
+
+
+.article {
+  position: relative;
+  width: 50px;
+  height: 25px;
+  margin: 5px;
+  float: left;
+  border: 2px solid #FF8A00;
+  box-sizing: border-box;
+}
+
+.article div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+  transition: .5s ease;
+}
+
+.article input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
+  height: 25px;
+  opacity: 0;
+  cursor: pointer;
+  background-color: gray;
+  outline: solid 5px black;
+}
+
+.article input[type=checkbox]:checked~div {
+  background-color: #FF8A00;
+  color: black;
+}
+
+.articleweek {
+  position: relative;
+  width: 100px;
+  height: 25px;
+  margin: 5px;
+  float: left;
+  border: 2px solid #FF8A00;
+  box-sizing: border-box;
+}
+
+.articleweek div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  line-height: 25px;
+  transition: .5s ease;
+}
+
+.articleweek input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 25px;
+  opacity: 0;
+  cursor: pointer;
+  background-color: gray;
+  outline: solid 5px black;
+}
+
+.articleweek input[type=checkbox]:checked~div {
+  background-color: #FF8A00;
+  color: black;
+}
+
+.formNew {
+  display: flex;
+  flex-direction: column;
+
+}
+
+.timeline {
+  display: flex;
+  margin-top: 20px;
+  gap: 20px;
+}
+
+
+
+/* New Excercices*/
+
+.excercices_top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.ex_labels,
+.excercices_item {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 20px;
+  height: 50px;
+}
+
+.excercices_item {
+  input {
+    max-width: 450px;
+    width: 100%;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 15px;
+  }
+}
+
+.field_ex {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: center;
+
+  label {
+    min-width: 120px;
+    flex-grow: 1;
+  }
+
+  input {
+    max-width: 450px;
+    width: 200px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 15px;
+    flex-grow: 2;
+  }
+
+  select {
+    max-width: 450px;
+    width: 200px;
+    height: 42px;
+    border-radius: 5px;
+    border: none;
+    box-sizing: border-box;
+    padding: 0px 15px;
+    flex-grow: 2;
+  }
+}
+
+/* Calendar */
+
+.container {
+  display: grid;
+  scroll-snap-type: x mandatory;
+  padding-bottom: 10px;
+  width: 1000px;
+
+
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px 20px;
+  grid-template-areas:
+    ". labels2 labels2 labels2 labels2 labels2 labels2"
+    "labels . . . . . ."
+    "labels . item5 . item2 . ."
+    "labels . . . . . ."
+    "labels . . . . . ."
+    "labels . . . . . ."
+    "labels . item3 . item6 . ."
+    "labels . . . . item4 ."
+    "labels . . . . . ."
+    "labels . item7 . . . ."
+    "labels item9 . . . . ."
+    "labels . item8 . item . ."
+    "labels . . item10 . . ."
+    "labels . . . . . .";
+}
+
+.labels, .labels2{
+  div{
+    height: 25px;
+    background-color: transparent;
+    color: $white;
+    border-bottom: 1px solid $white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.labels {
+  grid-area: labels;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px 20px;
+  grid-template-areas:
+    "labels2"
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    "."
+    ".";
+}
+
+.labels2 {
+  grid-area: labels2;
+  display: grid; 
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr; 
+  grid-template-rows: 1fr; 
+  gap: 20px; 
+  
+}
+
+
+@mixin entry{
+  background: linear-gradient(0deg, #FF8A00, #FF8A00),  linear-gradient(0deg, rgba(255, 138, 0, 0.1) 0%, rgba(255, 138, 0, 0) 150%);
+
+  // background-color: #FF8A00;
+  z-index: 3;
+  width: 100%;
+  height: 25px;
+  color: black;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.item {
+  grid-area: item;
+  @include entry()
+}
+
+.item2 {
+  grid-area: item2;
+  @include entry()
+}
+
+.item3 {
+  grid-area: item3;
+  @include entry()
+}
+
+.item4 {
+  grid-area: item4;
+  @include entry()
+}
+
+.item5 {
+  grid-area: item5;
+  @include entry()
+}
+.item6 {
+  grid-area: item6;
+  @include entry()
+}
+
+.item7 {
+  grid-area: item7;
+  @include entry()
+}
+
+.item8 {
+  grid-area: item8;
+  @include entry()
+}
+
+.item9 {
+  grid-area: item9;
+  @include entry()
+}
+
+.item10 {
+  grid-area: item10;
+  @include entry()
+}
